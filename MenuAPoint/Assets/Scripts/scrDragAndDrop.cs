@@ -1,42 +1,62 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class scrDragAndDrop : MonoBehaviour
 {
+    public string ponct;
+
     bool dragging;
     bool willSnap;
     Vector3 ogPos;
     Vector3 snapPos;
+    Collider2D col;
 
-    public void Start()
+    public GameObject textManager;
+
+    public void Awake()
     {
+        textManager = GameObject.Find("GameManager");
+
         ogPos = transform.position;
         snapPos = ogPos;
         willSnap = false;
 
-        // might help for "depth" collision
-        //transform.SetAsLastSibling();
     }
 
     public void StartDragUI()
     {
+        Debug.Log("pointer picked up");
         if (!dragging) dragging = true;
         // might help for "depth" collision
         transform.SetAsLastSibling();
+
+        if (col != null)
+        {
+            col.GetComponent<scrSlot>().SendPonct("");
+            col.GetComponent<scrSlot>().isUsed = false;
+        }
+
+
+        textManager.GetComponent<scrTextManager>().ShowSlots();
     }
 
     public void StopDragUI()
     {
+        Debug.Log("pointer dropped");
         if (dragging) dragging = false;
         if (!willSnap)
         {
-            transform.position = ogPos;
-            // or might delete, will see
+            Destroy(gameObject);
         } else
         {
             transform.position = snapPos;
+            col.GetComponent<scrSlot>().SendPonct(ponct);
+            col.GetComponent<scrSlot>().isUsed = true;
         }
+
+        textManager.GetComponent<scrTextManager>().HideSlots();
     }
 
     private void Update()
@@ -44,19 +64,25 @@ public class scrDragAndDrop : MonoBehaviour
         if (dragging)
         {
             Vector3 vect = Input.mousePosition;
-            vect.z = -10;
+            //vect.z = -10;
             transform.position = vect;
+            gameObject.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
+        } else
+        {
+            gameObject.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Slot"))
+        if (collision.CompareTag("Slot") && collision.GetComponent<scrSlot>().isUsed == false)
         {
             willSnap = true;
             Vector3 vect = collision.transform.position;
-            vect.z = -10; // MIGHT BE USELESS TOO
+            vect.y = vect.y - 10;
             snapPos = vect;
+
+            col = collision;
         }
     }
 
@@ -69,31 +95,4 @@ public class scrDragAndDrop : MonoBehaviour
         }
     }
 
-    /*
-    private Vector3 dragOffset;
-    private Camera cam;
-
-    private void Awake()
-    {
-        cam = Camera.main;
-    }
-
-    private void OnMouseDown()
-    {
-        dragOffset = transform.position - GetMousePos();
-        Debug.Log("oui");
-    }
-
-    private void OnMouseDrag()
-    {
-        transform.position = GetMousePos() + dragOffset;
-    }
-
-    Vector3 GetMousePos()
-    {
-        var mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0;
-        return mousePos;
-    }
-    */
 }

@@ -9,14 +9,29 @@ public class scrTextManager : MonoBehaviour
     public TextAsset TextFile;
     public GameObject WordPrefab;
     public GameObject SlotPrefab;
-    public GameObject Canvas;
+    public GameObject canvas;
 
-    private List<string> s; // list of words
-    private string[] separators = { ".", "," };
+    private List<string> s; // list of words and separators
+    private List<string> words; // list of words and separators
+    [HideInInspector]
+    public GameObject[] slots;
+    public string[] separators;
+    public GameObject[] wordsObj;
+
+    private string correctText;
+    private string currentText;
 
     private float lineWidth = 800f;
     private float textFloor = 200f; // vertical position of the top of the text
     private float spaceSize = 20f;
+
+    public Text debugText;
+
+    private Color colorBasique = new Color(1f, 1f, 1f);
+    private Color colorVirgule = new Color(1f, 0.6f, 0f);
+    private Color colorPoint = new Color(0.9f, 0.9f, 0.5f);
+
+
 
 
     // Start is called before the first frame update
@@ -25,8 +40,11 @@ public class scrTextManager : MonoBehaviour
         // !!! Will not work with "..."
 
         s = new List<string>();
+        words = new List<string>();
 
-        //  Filters the text into a list of words
+        correctText = TextFile.text;
+
+        //  Filters the text into a list of words and separators
         string word = "";
         string fullText = ""; // may be useless
         bool skipNext = false;
@@ -39,6 +57,7 @@ public class scrTextManager : MonoBehaviour
                     // VIRGULE
                     fullText += word + " ";
                     s.Add(word);
+                    words.Add(word);
                     s.Add(",");
                     word = "";
                     skipNext = true; // we skip the next char because it is a ' '
@@ -47,6 +66,7 @@ public class scrTextManager : MonoBehaviour
                     // POINT
                     fullText += word + " ";
                     s.Add(word);
+                    words.Add(word);
                     s.Add(".");
                     word = "";
                     skipNext = true; // we skip the next char because it is a ' '
@@ -58,6 +78,7 @@ public class scrTextManager : MonoBehaviour
                     {
                         fullText += word + " ";
                         s.Add(word);
+                        words.Add(word);
                         word = "";
                     } else
                     {
@@ -76,55 +97,52 @@ public class scrTextManager : MonoBehaviour
                     break;
             }
         }
-        
 
+        // creates a separators 
+        separators = new string[words.Count];
+        for (int i = 0; i < separators.Length; i++) separators[i] = "";
+        wordsObj = new GameObject[words.Count];
+        slots = new GameObject[words.Count];
 
 
 
         // Places the words
         float W = 0f; // width cursor
         float H = 0f; // height cursor
-        for (int i = 0; i < s.Count; i++)
+        for (int i = 0; i < words.Count; i++)
         {
-            // Because this is the full text with separators
-            // if the "word" to add is a separator, we skip it
-            bool skip = false;
-            for (int j = 0; j < separators.Length; j++)
+            GameObject wordObj = Instantiate(WordPrefab);
+            wordObj.GetComponentInChildren<TextMeshProUGUI>().text = words[i];
+            float pw = wordObj.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
+
+            if (W + pw > lineWidth) // if the word is too long for the line size
             {
-                if (s[i].Equals(separators[j])) {
-                    skip = true;
-                }
+                W = 0f; // moves cursors to the next line
+                H -= 50f;
             }
+            W += (pw) + spaceSize;
 
-            if (!skip)
-            {
-                GameObject wordObj = Instantiate(WordPrefab);
-                wordObj.GetComponentInChildren<TextMeshProUGUI>().text = s[i];
-                float pw = wordObj.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
+            GameObject slot = Instantiate(SlotPrefab);
+            slot.transform.SetParent(canvas.transform);
+            slot.transform.localPosition = new Vector3(W - (spaceSize/2) - (lineWidth / 2), textFloor + H, 0); // test
 
-                if (W + pw > lineWidth) // if the word is too long for the line size
-                {
-                    W = 0f; // moves cursors to the next line
-                    H -= 50f;
-                }
-                W += (pw) + spaceSize;
+            slot.GetComponent<scrSlot>().INDEX = i;
+            slot.GetComponent<scrSlot>().txtManager = gameObject;
+            slots[i] = slot;
 
-                GameObject slot = Instantiate(SlotPrefab);
-                slot.transform.SetParent(Canvas.transform);
-                slot.transform.localPosition = new Vector3(W - (spaceSize/2) - (lineWidth / 2), textFloor + H, 0); // test
+            //wordObj.transform.parent = Canvas.transform;
+            wordObj.transform.SetParent(canvas.transform);
+            wordObj.transform.localPosition = new Vector3(W - (pw / 2) - spaceSize - (lineWidth/2), textFloor + H, 0);
 
-                //wordObj.transform.parent = Canvas.transform;
-                wordObj.transform.SetParent(Canvas.transform);
-                wordObj.transform.localPosition = new Vector3(W - (pw / 2) - spaceSize - (lineWidth/2), textFloor + H, 0);
+            wordObj.GetComponent<Image>().enabled = false;
+            //wordObj.GetComponent<Image>().enabled = true; //trust me, it works
 
-                wordObj.GetComponent<Image>().enabled = false;
-                //wordObj.GetComponent<Image>().enabled = true; //trust me, it works
+            wordsObj[i] = wordObj;
 
-            }
         } // end of word placement
 
-
-
+        RefreshText();
+        HideSlots();
 
 
     }
@@ -133,5 +151,88 @@ public class scrTextManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void RefreshText()
+    {
+        debugText.text = "";
+        for (int i = 0; i < words.Count; i++)
+        {
+            debugText.text += words[i] + separators[i] + " ";
+            wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().color = colorBasique;
+
+
+            if (i > 0 && separators[i-1].Equals(".")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
+            {
+                string mot = wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().text;
+                wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().text = mot.Substring(0, 1).ToUpper() + mot.Substring(1, mot.Length - 1);
+            } else
+            {
+                wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().text = words[i];
+            }
+
+            switch (separators[i])
+            {
+                case ",":
+                    int j = i-1;
+                    wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().color = colorVirgule;
+                    while (j >= 0 && separators[j].Equals("")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
+                    {
+                        wordsObj[j].GetComponentInChildren<TextMeshProUGUI>().color = colorVirgule;
+                        j--;
+                    }
+                    break;
+                case ".":
+                    // find the first (0;i-1) and last word (i), and make something
+                    // if i+1 exists, uppercase the letter (what will lowercase it?)
+                    int k = i - 1;
+                    wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().color = colorPoint;
+                    while (k >= 0 && !separators[k].Equals(".")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
+                    {
+                        if (wordsObj[k].GetComponentInChildren<TextMeshProUGUI>().color == colorBasique)
+                        {
+                            wordsObj[k].GetComponentInChildren<TextMeshProUGUI>().color = colorPoint;
+                        }
+                        k--;
+                    }
+
+
+                    break;
+
+
+
+                default:
+                    //nothing
+                    break;
+            }
+        }
+        currentText = debugText.text.Substring(0, debugText.text.Length-1); // to remove the last space
+
+        if (currentText.ToLower().Equals(correctText.ToLower())) // to lower pour éviter les ennuis atm
+        {
+            debugText.color = new Color(0, 200, 0);
+        } else
+        {
+            debugText.color = new Color(0, 0, 0);
+        }
+    }
+
+    public void ShowSlots()
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            slots[i].GetComponentInChildren<Image>().enabled = true;
+        }
+    }
+
+    public void HideSlots()
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (!slots[i].GetComponent<scrSlot>().isUsed)
+            {
+                slots[i].GetComponentInChildren<Image>().enabled = false;
+            }
+        }
     }
 }

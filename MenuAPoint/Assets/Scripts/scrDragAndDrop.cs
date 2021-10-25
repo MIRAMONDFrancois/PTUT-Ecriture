@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class scrDragAndDrop : MonoBehaviour
 {
@@ -64,12 +65,15 @@ public class scrDragAndDrop : MonoBehaviour
         if (dragging)
         {
             Vector3 vect = Input.mousePosition;
-            //vect.z = -10;
+            vect.x = vect.x - 5;
+            vect.y = vect.y + 5;
             transform.position = vect;
-            gameObject.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
+            //gameObject.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
+            //gameObject.GetComponentInChildren<TextMeshProUGUI>().color = new Color(0, 0, 0, 1);
         } else
         {
-            gameObject.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
+            //gameObject.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
+            //gameObject.GetComponentInChildren<TextMeshProUGUI>().color = new Color(1, 1, 1, 1);
         }
     }
 

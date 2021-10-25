@@ -21,15 +21,18 @@ public class scrTextManager : MonoBehaviour
     private string correctText;
     private string currentText;
 
-    private float lineWidth = 800f;
+    private float lineWidth = 850f; // 800f
     private float textFloor = 200f; // vertical position of the top of the text
-    private float spaceSize = 20f;
+    private float spaceSize = 25f; // 20f
 
     public Text debugText;
 
-    private Color colorBasique = new Color(1f, 1f, 1f);
-    private Color colorVirgule = new Color(1f, 0.6f, 0f);
-    private Color colorPoint = new Color(0.9f, 0.9f, 0.5f);
+    [HideInInspector]
+    public Color colorBasique = new Color(1f, 1f, 1f);
+    [HideInInspector]
+    public Color colorVirgule = new Color(1f, 0.6f, 0f);
+    [HideInInspector]
+    public Color colorPoint = new Color(0.9f, 0.9f, 0.5f);
 
 
 

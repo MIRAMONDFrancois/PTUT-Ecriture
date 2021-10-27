@@ -11,8 +11,20 @@ public class scrTextManager : MonoBehaviour
     public GameObject SlotPrefab;
     public GameObject canvas;
 
+    public GameObject ButtonLayer;
+    
+    // Cursor
+    public GameObject cursor;
+    private bool movingCursor;
+    private int cursorSpeed = 5;
+    private int lineCursor = 0;
+    private float lineToStop = 0;
+    private float posToStop;
+    private Vector3 cursorStart;
+
+    // Words
     private List<string> s; // list of words and separators
-    private List<string> words; // list of words and separators
+    private List<string> words; // list of words
     [HideInInspector]
     public GameObject[] slots;
     public string[] separators;
@@ -21,18 +33,28 @@ public class scrTextManager : MonoBehaviour
     private string correctText;
     private string currentText;
 
+    // Text pos
     private float lineWidth = 850f; // 800f
     private float textFloor = 200f; // vertical position of the top of the text
     private float spaceSize = 25f; // 20f
 
+    // Text errors
+    private bool pointTropTot = false;
+    private bool manquePoint = false;
+    private bool tropVirgule = false;
+    private bool pasAssezVirgule = false;
+    private bool mauvaiseVirgule = false;
+
+    // Debug text obj
     public Text debugText;
 
+    // Colors
     [HideInInspector]
-    public Color colorBasique = new Color(1f, 1f, 1f);
+    public Color colorBasique;
     [HideInInspector]
-    public Color colorVirgule = new Color(1f, 0.6f, 0f);
+    public Color colorVirgule; // Color(1f, 0.6f, 0f);
     [HideInInspector]
-    public Color colorPoint = new Color(0.9f, 0.9f, 0.5f);
+    public Color colorPoint; // Color(0.9f, 0.9f, 0.5f);
 
 
 
@@ -40,6 +62,12 @@ public class scrTextManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        colorBasique = new Color(1f, 1f, 1f);
+        colorVirgule = new Color(1f, 0.6f, 0f); // Color(1f, 0.6f, 0f);
+        colorPoint = new Color(0.9f, 0.9f, 0.5f); // Color(0.9f, 0.9f, 0.5f);
+
+        cursorStart = cursor.transform.localPosition;
+
         // !!! Will not work with "..."
 
         s = new List<string>();
@@ -122,6 +150,7 @@ public class scrTextManager : MonoBehaviour
             {
                 W = 0f; // moves cursors to the next line
                 H -= 50f;
+                lineToStop++;
             }
             W += (pw) + spaceSize;
 
@@ -142,6 +171,8 @@ public class scrTextManager : MonoBehaviour
 
             wordsObj[i] = wordObj;
 
+            posToStop = W - (lineWidth / 2) - 10f;
+
         } // end of word placement
 
         RefreshText();
@@ -151,9 +182,46 @@ public class scrTextManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        if (movingCursor)
+        {
+            Vector3 trans = cursor.transform.localPosition;
+            trans.x += cursorSpeed;
+
+            if ( (trans.x > (lineWidth/2)) )
+            {
+                trans.x = -(lineWidth / 2f);
+                trans.y -= 50f;
+                lineCursor++;
+            }
+            if (lineCursor >= lineToStop)
+            {
+                // last line
+                if (trans.x > posToStop)
+                {
+                    // play animations
+                    trans.x = posToStop; // stop
+                    movingCursor = false;
+                    trans = cursorStart; // reset
+
+                    if (pointTropTot) Debug.Log("<color=orange>(MAIGRE)</color> Point trop tôt");
+                    if (manquePoint) Debug.Log("<color=orange>(GROS)</color> Manque de point");
+                    if (tropVirgule) Debug.Log("<color=orange>(FEU)</color> Trop de virgules");
+                    if (pasAssezVirgule) Debug.Log("<color=orange>(FADE)</color> Pas assez de virgules");
+                    if (mauvaiseVirgule) Debug.Log("<color=orange>(CONFUS)</color> Mauvais placement de virgule");
+
+                    if (!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule)
+                    {
+                        Debug.Log("<color=green>CORRECT!</color>");
+                    }
+                    ButtonLayer.SetActive(true);
+                }
+            }
+
+            cursor.transform.localPosition = trans;
+
+        }
     }
 
     public void RefreshText()
@@ -163,6 +231,7 @@ public class scrTextManager : MonoBehaviour
         {
             debugText.text += words[i] + separators[i] + " ";
             wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().color = colorBasique;
+            wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Normal;
 
 
             if (i > 0 && separators[i-1].Equals(".")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
@@ -190,12 +259,14 @@ public class scrTextManager : MonoBehaviour
                     // if i+1 exists, uppercase the letter (what will lowercase it?)
                     int k = i - 1;
                     wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().color = colorPoint;
+                    wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
                     while (k >= 0 && !separators[k].Equals(".")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
                     {
                         if (wordsObj[k].GetComponentInChildren<TextMeshProUGUI>().color == colorBasique)
                         {
                             wordsObj[k].GetComponentInChildren<TextMeshProUGUI>().color = colorPoint;
                         }
+                        wordsObj[k].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
                         k--;
                     }
 
@@ -223,25 +294,20 @@ public class scrTextManager : MonoBehaviour
 
     public void Valider()
     {
-        // spawn le curseur
-        // avancer le curseur
-        //Debug.Log("DEBUT DE LA VALIDATION");
+        Debug.Log("Validation...");
 
         bool willStop = false;
         bool forceStop = false;
         int vN = 0; // nombre de virgule
         int vNC = 0; // nombre de virgule dans la correction
         int vNBP = 0; // nombre de virgule bien placée
-        
 
-        //int pN = 0; // nombre de point
-        //int pNC = 0; // nombre de point dans la correction
 
-        bool pointTropTot = false;
-        bool manquePoint = false;
-        bool tropVirgule = false;
-        bool pasAssezVirgule = false;
-        bool mauvaiseVirgule = false;
+        pointTropTot = false;
+        manquePoint = false;
+        tropVirgule = false;
+        pasAssezVirgule = false;
+        mauvaiseVirgule = false;
 
 
         int i = 0; // indice current
@@ -250,15 +316,11 @@ public class scrTextManager : MonoBehaviour
 
         while ( (i < currentText.Length) && (! (willStop && currentText[i].Equals('.')) ) && !forceStop)
         {
-            //Debug.Log("Indice CURRENT" + i + " / " + currentText.Length);
-            //Debug.Log("Indice CORRECT" + j + " / " + correctText.Length);
             vN += currentText[i].Equals(',') ? 1 : 0;
             vNBP += (currentText[i].Equals(',') && correctText[j].Equals(',')) ? 1 : 0;
             if (!willStop)
             {
                 vNC += correctText[j].Equals(',') ? 1 : 0;
-                //pN += currentText[i].Equals('.') ? 1 : 0;
-                //pNC += correctText[j].Equals('.') ? 1 : 0;
             }
 
             if (currentText[i].Equals('.'))
@@ -326,7 +388,7 @@ public class scrTextManager : MonoBehaviour
                 manquePoint = true;
             }
 
-            if (i < currentText.Length)
+            if (i < currentText.Length && !willStop)
             {
                 if (currentText[i].Equals('.') && !correctText[j].Equals('.'))
                 {
@@ -347,17 +409,53 @@ public class scrTextManager : MonoBehaviour
                 }
             }
         }
-        if (pointTropTot) Debug.Log("<color=orange>(MAIGRE)</color> Point trop tôt");
-        if (manquePoint) Debug.Log("<color=orange>(GROS)</color> Manque de point");
-        if (tropVirgule) Debug.Log("<color=orange>(FEU)</color> Trop de virgules");
-        if (pasAssezVirgule) Debug.Log("<color=orange>(FADE)</color> Pas assez de virgules");
-        if (mauvaiseVirgule) Debug.Log("<color=orange>(CONFUS)</color> Mauvais placement de virgule");
-        
-        if (!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule)
+
+        // <- here were the debug.logs of the errors
+
+        if (pointTropTot || manquePoint || tropVirgule || pasAssezVirgule || mauvaiseVirgule)
         {
-            Debug.Log("<color=green>CORRECT!</color>");
+            // il faut trouver l'indice du point sur lequel s'arrêter
+            int cCount = 0;
+
+            string t = currentText.Substring(0, i);
+            char[] a = { ',', '.' };
+            int l = t.Split(a).Length;
+
+            int cIndex = i - 1 - l; // char sur lequel s'arrêter
+            //Debug.Log("char de fin : " + cIndex);
+            //Debug.Log("char de fin : " + cIndex);
+            //Debug.Log("" + currentText[i]);
+            //Debug.Log("i : " + currentText[cIndex]);
+            bool found = false;
+            int k = 0;
+            while ( (!found) && (k < words.Count) )
+            {
+                cCount += words[k].Length;
+                if (cCount >= cIndex)
+                {
+                    found = true;
+                } else
+                {
+                    k++;
+                    cCount++; // espace
+                }
+            }
+            //Debug.Log("-> " + k);
+            //Debug.Log("->" + wordsObj[k].GetComponentInChildren<TextMeshProUGUI>().text);
+            //Debug.Log("->" + wordsObj[k].transform.localPosition.y);
+            lineToStop = (Mathf.Abs( (int) wordsObj[k].transform.localPosition.y - textFloor) ) / 50;
+
+            posToStop = slots[k].transform.localPosition.x;
+
+            //Debug.Log("line: " + lineToStop + "; xpos = " + posToStop);
         }
-        Debug.Log("FIN DE LA VALIDATION (" + i + "/" + currentText.Length + ")");
+        //Debug.Log("FIN DE LA VALIDATION (" + i + "/" + currentText.Length + ")");
+
+        movingCursor = true;
+        cursor.transform.localPosition = cursorStart;
+        lineCursor = 0;
+        cursor.transform.SetAsLastSibling();
+        ButtonLayer.SetActive(false);
     }
 
 

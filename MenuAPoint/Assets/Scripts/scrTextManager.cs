@@ -319,9 +319,16 @@ public class scrTextManager : MonoBehaviour
                 j++;
             }
         }
-        if (willStop || !currentText[currentText.Length-1].Equals('.'))
+        if (willStop || !currentText[currentText.Length - 1].Equals('.'))
         {
-            manquePoint = true;
+            if (i < currentText.Length)
+            {
+                if (currentText[i].Equals('.') && !correctText[j].Equals('.'))
+                {
+                    pointTropTot = true;
+                }
+            }
+
             if (vN != vNC)
             {
                 pasAssezVirgule = (vN < vNC);

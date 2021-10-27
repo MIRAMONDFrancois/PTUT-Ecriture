@@ -347,12 +347,16 @@ public class scrTextManager : MonoBehaviour
                 }
             }
         }
-        if (pointTropTot) Debug.Log("(MAIGRE) Point trop tôt");
-        if (manquePoint) Debug.Log("(GROS) Manque de point");
-        if (tropVirgule) Debug.Log("(FEU) Trop de virgules");
-        if (pasAssezVirgule) Debug.Log("(FADE) Pas assez de virgules");
-        if (mauvaiseVirgule) Debug.Log("(CONFUS) Mauvais placement de virgule");
+        if (pointTropTot) Debug.Log("<color=orange>(MAIGRE)</color> Point trop tôt");
+        if (manquePoint) Debug.Log("<color=orange>(GROS)</color> Manque de point");
+        if (tropVirgule) Debug.Log("<color=orange>(FEU)</color> Trop de virgules");
+        if (pasAssezVirgule) Debug.Log("<color=orange>(FADE)</color> Pas assez de virgules");
+        if (mauvaiseVirgule) Debug.Log("<color=orange>(CONFUS)</color> Mauvais placement de virgule");
         
+        if (!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule)
+        {
+            Debug.Log("<color=green>CORRECT!</color>");
+        }
         Debug.Log("FIN DE LA VALIDATION (" + i + "/" + currentText.Length + ")");
     }
 

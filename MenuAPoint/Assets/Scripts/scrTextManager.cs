@@ -220,6 +220,131 @@ public class scrTextManager : MonoBehaviour
         }
     }
 
+
+    public void Valider()
+    {
+        // spawn le curseur
+        // avancer le curseur
+        //Debug.Log("DEBUT DE LA VALIDATION");
+
+        bool willStop = false;
+        bool forceStop = false;
+        int vN = 0; // nombre de virgule
+        int vNC = 0; // nombre de virgule dans la correction
+        int vNBP = 0; // nombre de virgule bien placée
+        
+
+        //int pN = 0; // nombre de point
+        //int pNC = 0; // nombre de point dans la correction
+
+        bool pointTropTot = false;
+        bool manquePoint = false;
+        bool tropVirgule = false;
+        bool pasAssezVirgule = false;
+        bool mauvaiseVirgule = false;
+
+
+        int i = 0; // indice current
+        int j = 0; // indice correct
+
+
+        while ( (i < currentText.Length) && (! (willStop && currentText[i].Equals('.')) ) && !forceStop)
+        {
+            //Debug.Log("Indice CURRENT" + i + " / " + currentText.Length);
+            //Debug.Log("Indice CORRECT" + j + " / " + correctText.Length);
+            vN += currentText[i].Equals(',') ? 1 : 0;
+            vNBP += (currentText[i].Equals(',') && correctText[j].Equals(',')) ? 1 : 0;
+            if (!willStop)
+            {
+                vNC += correctText[j].Equals(',') ? 1 : 0;
+                //pN += currentText[i].Equals('.') ? 1 : 0;
+                //pNC += correctText[j].Equals('.') ? 1 : 0;
+            }
+
+            if (currentText[i].Equals('.'))
+            {
+                if (!correctText[j].Equals('.'))
+                {
+                    // point trop tôt
+                    forceStop = true;
+                    pointTropTot = true;
+                } else
+                {
+                    if (vN != vNC)
+                    {
+                        // mauvais nombre de virgule
+                        forceStop = true;
+                        pasAssezVirgule = (vN < vNC);
+                        tropVirgule = !pasAssezVirgule;
+                    } else
+                    {
+                        if (vNBP != vNC)
+                        {
+                            // nombre de virgule bon, mais mal placées
+                            forceStop = true;
+                            mauvaiseVirgule = true;
+                        }
+                    }
+                }
+            }
+            if (correctText[j].Equals(',') && !currentText[i].Equals(','))
+            {
+                willStop = true;
+                //mauvaiseVirgule = true;
+            }
+            if (correctText[j].Equals('.') && !currentText[i].Equals('.'))
+            {
+                willStop = true;
+                manquePoint = true;
+            }
+
+            bool currPonct = (currentText[i].Equals(',') || currentText[i].Equals('.'));
+            bool corrPonct = (correctText[j].Equals(',') || correctText[j].Equals('.'));
+            if (currPonct && !corrPonct)
+            {
+                i++;
+            }
+            if (!currPonct && corrPonct)
+            {
+                j++;
+            }
+            if (currPonct && corrPonct)
+            {
+                i++;
+                j++;
+            }
+            if (!currPonct && !corrPonct)
+            {
+                i++;
+                j++;
+            }
+        }
+        if (willStop || !currentText[currentText.Length-1].Equals('.'))
+        {
+            manquePoint = true;
+            if (vN != vNC)
+            {
+                pasAssezVirgule = (vN < vNC);
+                tropVirgule = !pasAssezVirgule;
+            }
+            else
+            {
+                if (vNBP != vNC)
+                {
+                    mauvaiseVirgule = true;
+                }
+            }
+        }
+        if (pointTropTot) Debug.Log("(MAIGRE) Point trop tôt");
+        if (manquePoint) Debug.Log("(GROS) Manque de point");
+        if (tropVirgule) Debug.Log("(FEU) Trop de virgules");
+        if (pasAssezVirgule) Debug.Log("(FADE) Pas assez de virgules");
+        if (mauvaiseVirgule) Debug.Log("(CONFUS) Mauvais placement de virgule");
+        
+        Debug.Log("FIN DE LA VALIDATION (" + i + "/" + currentText.Length + ")");
+    }
+
+
     public void ShowSlots()
     {
         for (int i = 0; i < slots.Length; i++)

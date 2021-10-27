@@ -28,7 +28,7 @@ public class scrDragAndDrop : MonoBehaviour
 
     public void StartDragUI()
     {
-        Debug.Log("pointer picked up");
+        //Debug.Log("pointer picked up");
         if (!dragging) dragging = true;
         // might help for "depth" collision
         transform.SetAsLastSibling();
@@ -45,7 +45,7 @@ public class scrDragAndDrop : MonoBehaviour
 
     public void StopDragUI()
     {
-        Debug.Log("pointer dropped");
+        //Debug.Log("pointer dropped");
         if (dragging) dragging = false;
         if (!willSnap)
         {

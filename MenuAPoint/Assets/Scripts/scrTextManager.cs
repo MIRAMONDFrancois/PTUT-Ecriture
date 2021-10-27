@@ -321,6 +321,11 @@ public class scrTextManager : MonoBehaviour
         }
         if (willStop || !currentText[currentText.Length - 1].Equals('.'))
         {
+            if ( (i == currentText.Length) && !currentText[currentText.Length - 1].Equals('.'))
+            {
+                manquePoint = true;
+            }
+
             if (i < currentText.Length)
             {
                 if (currentText[i].Equals('.') && !correctText[j].Equals('.'))

@@ -16,7 +16,7 @@ public class scrTextManager : MonoBehaviour
     // Cursor
     public GameObject cursor;
     private bool movingCursor;
-    private int cursorSpeed = 5;
+    private int cursorSpeed = 9;
     private int lineCursor = 0;
     private float lineToStop = 0;
     private float posToStop;
@@ -34,9 +34,10 @@ public class scrTextManager : MonoBehaviour
     private string currentText;
 
     // Text pos
-    private float lineWidth = 850f; // 800f
-    private float textFloor = 200f; // vertical position of the top of the text
-    private float spaceSize = 25f; // 20f
+    private float lineWidth = 1550f; // 
+    private float textFloor = 350f; // vertical position of the top of the text
+    private float spaceSize = 50f; // 
+    private float lineJump = 80f;
 
     // Text errors
     private bool pointTropTot = false;
@@ -66,7 +67,8 @@ public class scrTextManager : MonoBehaviour
         colorVirgule = new Color(1f, 0.6f, 0f); // Color(1f, 0.6f, 0f);
         colorPoint = new Color(0.9f, 0.9f, 0.5f); // Color(0.9f, 0.9f, 0.5f);
 
-        cursorStart = cursor.transform.localPosition;
+        cursorStart = new Vector3(-(lineWidth/2) - spaceSize, textFloor, 0); //cursor.transform.localPosition;
+        cursor.transform.localPosition = cursorStart;
 
         // !!! Will not work with "..."
 
@@ -149,7 +151,7 @@ public class scrTextManager : MonoBehaviour
             if (W + pw > lineWidth) // if the word is too long for the line size
             {
                 W = 0f; // moves cursors to the next line
-                H -= 50f;
+                H -= lineJump;
                 lineToStop++;
             }
             W += (pw) + spaceSize;
@@ -189,11 +191,12 @@ public class scrTextManager : MonoBehaviour
             Vector3 trans = cursor.transform.localPosition;
             trans.x += cursorSpeed;
 
-            if ( (trans.x > (lineWidth/2)) )
+            if ( trans.x > (lineWidth/2) - spaceSize )
             {
                 trans.x = -(lineWidth / 2f);
-                trans.y -= 50f;
+                trans.y -= lineJump;
                 lineCursor++;
+                //Debug.Log(lineCursor);
             }
             if (lineCursor >= lineToStop)
             {
@@ -443,7 +446,7 @@ public class scrTextManager : MonoBehaviour
             //Debug.Log("-> " + k);
             //Debug.Log("->" + wordsObj[k].GetComponentInChildren<TextMeshProUGUI>().text);
             //Debug.Log("->" + wordsObj[k].transform.localPosition.y);
-            lineToStop = (Mathf.Abs( (int) wordsObj[k].transform.localPosition.y - textFloor) ) / 50;
+            lineToStop = (Mathf.Abs( (int) wordsObj[k].transform.localPosition.y - textFloor) ) / lineJump;
 
             posToStop = slots[k].transform.localPosition.x;
 

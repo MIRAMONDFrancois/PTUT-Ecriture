@@ -8,11 +8,12 @@ public class scrDragAndDrop : MonoBehaviour
 {
     public string ponct;
 
-    bool dragging;
-    bool willSnap;
-    Vector3 ogPos;
-    Vector3 snapPos;
-    Collider2D col;
+    private bool dragging;
+    private bool willSnap;
+    private Vector3 ogPos;
+    private Vector3 snapPos;
+    private Collider2D col;
+    private float offset = 8;
 
     public GameObject textManager;
 
@@ -65,8 +66,8 @@ public class scrDragAndDrop : MonoBehaviour
         if (dragging)
         {
             Vector3 vect = Input.mousePosition;
-            vect.x = vect.x - 5;
-            vect.y = vect.y + 5;
+            vect.x = vect.x - offset;
+            vect.y = vect.y + offset;
             transform.position = vect;
             //gameObject.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
             //gameObject.GetComponentInChildren<TextMeshProUGUI>().color = new Color(0, 0, 0, 1);
@@ -83,10 +84,11 @@ public class scrDragAndDrop : MonoBehaviour
         {
             willSnap = true;
             Vector3 vect = collision.transform.position;
-            vect.y = vect.y - 10;
+            vect.y = vect.y - 25;
             snapPos = vect;
 
             col = collision;
+            //Debug.Log("enter coll");
         }
     }
 
@@ -96,6 +98,7 @@ public class scrDragAndDrop : MonoBehaviour
         {
             willSnap = false;
             snapPos = ogPos;
+            //Debug.Log("exit coll");
         }
     }
 

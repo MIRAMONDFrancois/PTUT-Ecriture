@@ -19,6 +19,7 @@ public class scrTextManager : MonoBehaviour
     private int cursorSpeed = 9;
     private int lineCursor = 0;
     private float lineToStop = 0;
+    private float lineNumber = 0;
     private float posToStop;
     private Vector3 cursorStart;
 
@@ -153,6 +154,7 @@ public class scrTextManager : MonoBehaviour
                 W = 0f; // moves cursors to the next line
                 H -= lineJump;
                 lineToStop++;
+                lineNumber++;
             }
             W += (pw) + spaceSize;
 
@@ -384,6 +386,7 @@ public class scrTextManager : MonoBehaviour
                 j++;
             }
         }
+        // post search error check
         if (willStop || !currentText[currentText.Length - 1].Equals('.'))
         {
             if ( (i == currentText.Length) && !currentText[currentText.Length - 1].Equals('.'))
@@ -391,7 +394,7 @@ public class scrTextManager : MonoBehaviour
                 manquePoint = true;
             }
 
-            if (i < currentText.Length && !willStop)
+            if (i < currentText.Length && !manquePoint) //  && !willStop ------ bruteforce, i know
             {
                 if (currentText[i].Equals('.') && !correctText[j].Equals('.'))
                 {
@@ -451,6 +454,10 @@ public class scrTextManager : MonoBehaviour
             posToStop = slots[k].transform.localPosition.x;
 
             //Debug.Log("line: " + lineToStop + "; xpos = " + posToStop);
+        } else
+        {
+            lineToStop = lineNumber;
+            posToStop = slots[slots.Length-1].transform.localPosition.x;
         }
         //Debug.Log("FIN DE LA VALIDATION (" + i + "/" + currentText.Length + ")");
 

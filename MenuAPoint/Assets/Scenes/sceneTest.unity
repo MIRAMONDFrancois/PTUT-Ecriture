@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &124640224
 RectTransform:
   m_ObjectHideFlags: 0
@@ -547,6 +547,9 @@ MonoBehaviour:
   canvas: {fileID: 937505845}
   ButtonLayer: {fileID: 639069586}
   cursor: {fileID: 1916187030}
+  addColors: 0
+  useSpecial: 1
+  SpecialFile: {fileID: 4900000, guid: dd0be7d3e86165e4a928d01d29d1440e, type: 3}
   slots: []
   separators: []
   wordsObj: []

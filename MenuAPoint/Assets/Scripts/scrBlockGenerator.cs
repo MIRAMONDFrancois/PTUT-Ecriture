@@ -23,18 +23,22 @@ public class scrBlockGenerator : MonoBehaviour
     {
         obj = Instantiate(block);
         obj.transform.SetParent(canvas.transform);
+        obj.GetComponent<scrDragAndDrop>().canBeMoved = true;
+        obj.GetComponent<scrDragAndDrop>().canBeDeleted = true;
 
-        //eventSys.GetComponent<UnityEventQueueSystem>();
-        //var eventData = new PointerEventData(EventSystem.current);
-        //eventData.pointerPress = obj;
+        obj.GetComponent<scrDragAndDrop>().StartDragUI();
+    }
 
-
+    public GameObject CreatesBlockForManager() //brute as heck
+    {
+        obj = Instantiate(block);
+        obj.transform.SetParent(canvas.transform);
+        obj.GetComponent<scrDragAndDrop>().canBeMoved = true;
+        obj.GetComponent<scrDragAndDrop>().canBeDeleted = true;
 
         obj.GetComponent<scrDragAndDrop>().StartDragUI();
 
-
-
-
+        return obj;
     }
 
     public void DouillePointerUp()

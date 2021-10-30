@@ -6,15 +6,27 @@ using TMPro;
 
 public class scrTextManager : MonoBehaviour
 {
+    [Header("Text File")]
     public TextAsset TextFile;
+
+    [Header("Prefabs")]
     public GameObject WordPrefab;
     public GameObject SlotPrefab;
-    public GameObject canvas;
 
+    [Header("Canvas")]
+    public GameObject canvas;
     public GameObject ButtonLayer;
-    
-    // Cursor
     public GameObject cursor;
+
+    [Header("Custom")]
+    public bool addColors = false; // if the blocks color the words or not
+
+    [Header("Fixed Separators")]
+    public bool useSpecial = false;
+    public TextAsset SpecialFile;
+    private string[] sp;
+
+    // Cursor
     private bool movingCursor;
     private int cursorSpeed = 9;
     private int lineCursor = 0;
@@ -28,7 +40,9 @@ public class scrTextManager : MonoBehaviour
     private List<string> words; // list of words
     [HideInInspector]
     public GameObject[] slots;
+    [HideInInspector]
     public string[] separators;
+    [HideInInspector]
     public GameObject[] wordsObj;
 
     private string correctText;
@@ -48,6 +62,7 @@ public class scrTextManager : MonoBehaviour
     private bool mauvaiseVirgule = false;
 
     // Debug text obj
+    [Header("DEBUG")]
     public Text debugText;
 
     // Colors
@@ -179,9 +194,59 @@ public class scrTextManager : MonoBehaviour
 
         } // end of word placement
 
+
+        // reads potential special file and adds unmovable or undeletable separators
+        // incroyablement brut, on n'en parlera pas
+        string st = SpecialFile.text;
+        sp = st.Split('|');
+
+        bool canMoved = sp[0].Equals("true");
+        bool canDeleted = sp[1].Equals("true");
+
+        GameObject virguleGen = GameObject.Find("Virgule Gen");
+        GameObject pointGen = GameObject.Find("Point Gen");
+        GameObject block;
+
+
+        string[] ss = sp[2].Split(';');
+        for (int i = 0; i < ss.Length; i++)
+        {
+            //separators[i] = ss[i];
+            switch (ss[i])
+            {
+                case ",":
+                    block = virguleGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
+                    slots[i].GetComponent<scrSlot>().SendPonct(",");
+                    break;
+                case ".":
+                    block = pointGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
+                    slots[i].GetComponent<scrSlot>().SendPonct(".");
+                    break;
+                default:
+                    block = null;
+                    break;
+            }
+            if (block != null)
+            {
+                block.GetComponent<scrDragAndDrop>().dragging = false;
+                block.GetComponent<scrDragAndDrop>().canBeMoved = canMoved;
+                block.GetComponent<scrDragAndDrop>().canBeDeleted = canDeleted;
+                slots[i].GetComponent<scrSlot>().isUsed = true;
+                block.GetComponent<scrDragAndDrop>().willSnap = true;
+                Vector3 vect = slots[i].transform.position;
+                vect.y -= 25;
+                block.GetComponent<scrDragAndDrop>().ogPos = vect;
+                block.GetComponent<scrDragAndDrop>().snapPos = vect;
+                block.transform.position = vect;
+                block.GetComponent<scrDragAndDrop>().col = slots[i].GetComponent<BoxCollider2D>();
+
+            }
+        }
+
+
+
         RefreshText();
         HideSlots();
-
 
     }
 
@@ -235,55 +300,58 @@ public class scrTextManager : MonoBehaviour
         for (int i = 0; i < words.Count; i++)
         {
             debugText.text += words[i] + separators[i] + " ";
-            wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().color = colorBasique;
-            wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Normal;
 
-
-            if (i > 0 && separators[i-1].Equals(".")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
+            // adds an UPPERCASE letter to the next word
+            if (i > 0 && separators[i - 1].Equals(".")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
             {
                 string mot = wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().text;
                 wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().text = mot.Substring(0, 1).ToUpper() + mot.Substring(1, mot.Length - 1);
-            } else
+            }
+            else
             {
                 wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().text = words[i];
             }
 
-            switch (separators[i])
-            {
-                case ",":
-                    int j = i-1;
-                    wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().color = colorVirgule;
-                    while (j >= 0 && separators[j].Equals("")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
-                    {
-                        wordsObj[j].GetComponentInChildren<TextMeshProUGUI>().color = colorVirgule;
-                        j--;
-                    }
-                    break;
-                case ".":
-                    // find the first (0;i-1) and last word (i), and make something
-                    // if i+1 exists, uppercase the letter (what will lowercase it?)
-                    int k = i - 1;
-                    wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().color = colorPoint;
-                    wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
-                    while (k >= 0 && !separators[k].Equals(".")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
-                    {
-                        if (wordsObj[k].GetComponentInChildren<TextMeshProUGUI>().color == colorBasique)
+            if (addColors)
+            { 
+                // resets color
+                wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().color = colorBasique;
+                wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Normal;
+
+                // colors the left part of the block
+                switch (separators[i])
+                {
+                    case ",":
+                        int j = i - 1;
+                        wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().color = colorVirgule;
+                        while (j >= 0 && separators[j].Equals("")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
                         {
-                            wordsObj[k].GetComponentInChildren<TextMeshProUGUI>().color = colorPoint;
+                            wordsObj[j].GetComponentInChildren<TextMeshProUGUI>().color = colorVirgule;
+                            j--;
                         }
-                        wordsObj[k].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
-                        k--;
-                    }
-
-
-                    break;
-
-
-
-                default:
-                    //nothing
-                    break;
+                        break;
+                    case ".":
+                        // find the first (0;i-1) and last word (i), and make something
+                        // if i+1 exists, uppercase the letter (what will lowercase it?)
+                        int k = i - 1;
+                        wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().color = colorPoint;
+                        wordsObj[i].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
+                        while (k >= 0 && !separators[k].Equals(".")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
+                        {
+                            if (wordsObj[k].GetComponentInChildren<TextMeshProUGUI>().color == colorBasique)
+                            {
+                                wordsObj[k].GetComponentInChildren<TextMeshProUGUI>().color = colorPoint;
+                            }
+                            wordsObj[k].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
+                            k--;
+                        }
+                        break;
+                    default:
+                        //nothing
+                        break;
+                }
             }
+
         }
         currentText = debugText.text.Substring(0, debugText.text.Length-1); // to remove the last space
 

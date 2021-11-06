@@ -14,6 +14,6 @@ public class scrSlot : MonoBehaviour
         if (fromSlotsOne) txtManager.GetComponent<scrTextManager>().separators[INDEX] = ponct;
         else txtManager.GetComponent<scrTextManager>().separators2[INDEX] = ponct;
         txtManager.GetComponent<scrTextManager>().RefreshText();
-        Debug.Log("Sent ponct [" + ponct + "] to list " + fromSlotsOne + " (true=1;false=2)");
+        //Debug.Log("Sent ponct [" + ponct + "] to list " + fromSlotsOne + " (true=1;false=2)");
     }
 }

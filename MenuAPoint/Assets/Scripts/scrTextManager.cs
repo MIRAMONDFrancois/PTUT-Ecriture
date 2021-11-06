@@ -122,9 +122,9 @@ public class scrTextManager : MonoBehaviour
         {
             // DUAL LEVEL
 
-            // "removes" cursor
-            cursorStart = new Vector3(-2000, -2000, 0);
-            cursor.transform.localPosition = cursorStart;
+            // "removes" cursor and point gen
+            cursor.SetActive(false);
+            GameObject.Find("Point Gen").transform.position = new Vector3(-2000, 0, 0); // BEGONE
 
             // WORDS 1
             s = new List<string>();

@@ -358,7 +358,7 @@ public class scrTextManager : MonoBehaviour
         return (W, H);
     }
 
-    private void RefreshTextN(string curr, string corr, List<string> W, string[] SEP, GameObject[] WOBJ, int INDEX)
+    private string RefreshTextN(string curr, string corr, List<string> W, string[] SEP, GameObject[] WOBJ, int INDEX)
     {
         if (INDEX == 1) debugText.text = ""; else debugText2.text = "";
         curr = "";
@@ -416,7 +416,6 @@ public class scrTextManager : MonoBehaviour
                         break;
                 }
             }
-
         }
         curr = curr.Substring(0, curr.Length - 1); // to remove the last space
         if (INDEX == 1) debugText.text = curr; else debugText2.text = curr;
@@ -429,12 +428,13 @@ public class scrTextManager : MonoBehaviour
         {
             if (INDEX == 1) debugText.color = new Color(0, 0, 0); else debugText2.color = new Color(0, 0, 0);
         }
+        return curr;
     }
 
     public void RefreshText()
     {
-        RefreshTextN(currentText, correctText, words, separators, wordsObj, 1);
-        if (dualPhrases) RefreshTextN(currentText2, correctText2, words2, separators2, wordsObj2, 2);
+        currentText = RefreshTextN(currentText, correctText, words, separators, wordsObj, 1);
+        if (dualPhrases) currentText2 = RefreshTextN(currentText2, correctText2, words2, separators2, wordsObj2, 2);
     }
 
     public void ValiderClick()
@@ -444,7 +444,7 @@ public class scrTextManager : MonoBehaviour
             Valider();
         } else
         {
-            Debug.Log("EN CONSTRUCTION");
+            ValiderDual();
         }
     }
 
@@ -619,6 +619,16 @@ public class scrTextManager : MonoBehaviour
         ButtonLayer.SetActive(false);
     }
 
+    private void ValiderDual()
+    {
+        if ((currentText.Equals(correctText)) && (currentText2.Equals(correctText2)))
+        {
+            Debug.Log("Les deux phrases sont correctes");
+        } else
+        {
+            Debug.Log("C'est incorrect...");
+        }
+    }
 
     public void ShowSlots()
     {

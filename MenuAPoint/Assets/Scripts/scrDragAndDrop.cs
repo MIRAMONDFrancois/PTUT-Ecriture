@@ -15,11 +15,13 @@ public class scrDragAndDrop : MonoBehaviour
     [HideInInspector]
     public bool willSnap;
     [HideInInspector]
-    public Vector3 ogPos;
+    public Vector3 ogPos; // more of a "last viable position" than "original"
     [HideInInspector]
     public Vector3 snapPos;
     [HideInInspector]
     public Collider2D col;
+    [HideInInspector]
+    public Collider2D prevcol;
     [HideInInspector]
     public float offset = 8;
 
@@ -33,6 +35,25 @@ public class scrDragAndDrop : MonoBehaviour
         snapPos = ogPos;
         willSnap = false;
 
+    }
+
+
+    private void Update()
+    {
+        if (dragging && canBeMoved)
+        {
+            Vector3 vect = Input.mousePosition;
+            vect.x = vect.x - offset;
+            vect.y = vect.y + offset;
+            transform.position = vect;
+            //gameObject.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
+            //gameObject.GetComponentInChildren<TextMeshProUGUI>().color = new Color(0, 0, 0, 1);
+        }
+        else
+        {
+            //gameObject.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
+            //gameObject.GetComponentInChildren<TextMeshProUGUI>().color = new Color(1, 1, 1, 1);
+        }
     }
 
     public void StartDragUI()
@@ -59,38 +80,38 @@ public class scrDragAndDrop : MonoBehaviour
         {
             //Debug.Log("pointer dropped");
             if (dragging) dragging = false;
-            if (!willSnap)
+            if (willSnap)
             {
-                if (canBeDeleted) Destroy(gameObject);
-            }
-            else
-            {
+                // WILL SNAP TO A SLOT NEARBY
                 //transform.position = snapPos;
                 col.GetComponent<scrSlot>().SendPonct(ponct);
                 col.GetComponent<scrSlot>().isUsed = true;
+                prevcol = col;
+
+            } else
+            {
+                // WILL NOT SNAP TO A SLOT
+                if (canBeDeleted)
+                {
+                    // DESTROY
+                    Destroy(gameObject);
+                } else
+                {
+                    // SNAP BACK TO THE LAST POSSIBLE POSITION
+                    col = prevcol;
+                    col.GetComponent<scrSlot>().SendPonct(ponct);
+                    col.GetComponent<scrSlot>().isUsed = true;
+                }
             }
 
             transform.position = snapPos;
             textManager.GetComponent<scrTextManager>().HideSlots();
+            ogPos = snapPos; // this becomes the "last viable position"
+
+
         }
     }
 
-    private void Update()
-    {
-        if (dragging && canBeMoved)
-        {
-            Vector3 vect = Input.mousePosition;
-            vect.x = vect.x - offset;
-            vect.y = vect.y + offset;
-            transform.position = vect;
-            //gameObject.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
-            //gameObject.GetComponentInChildren<TextMeshProUGUI>().color = new Color(0, 0, 0, 1);
-        } else
-        {
-            //gameObject.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
-            //gameObject.GetComponentInChildren<TextMeshProUGUI>().color = new Color(1, 1, 1, 1);
-        }
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -118,6 +139,9 @@ public class scrDragAndDrop : MonoBehaviour
                 willSnap = false;
                 snapPos = ogPos;
                 //Debug.Log("exit coll");
+
+                // exits the first slot and save it in case of problems
+                if (prevcol == null) { prevcol = col;  }
             }
         }
     }

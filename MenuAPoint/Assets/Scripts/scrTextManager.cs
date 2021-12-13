@@ -17,6 +17,7 @@ public class scrTextManager : MonoBehaviour
     public GameObject canvas;
     public GameObject ButtonLayer;
     public GameObject cursor;
+    public Text animationLog;
 
     [Header("Custom")]
     public bool addColors = false; // if the blocks color the words or not
@@ -48,23 +49,9 @@ public class scrTextManager : MonoBehaviour
     private string correctText; // correct string
     private string currentText; // string composed of the words and separators
 
-    [Header("Dual Phrases")]
-    public bool dualPhrases;
-    public TextAsset TextFile2;
-
-    private List<string> s2; // list of words and separators
-    private List<string> words2; // list of words
-    [HideInInspector]
-    public GameObject[] slots2; // list of slots
-    [HideInInspector]
-    public string[] separators2; // list of the content of the slots
-    [HideInInspector]
-    public GameObject[] wordsObj2; // list of the objects of the words
-
-    private string correctText2; // correct string
-    private string currentText2; // string composed of the words and separators
-
-    // ---------------- dual
+    [Header("Dual Animation mode")]
+    public bool dualAnim;
+    public bool hideGen;
 
 
     // Text pos
@@ -83,7 +70,6 @@ public class scrTextManager : MonoBehaviour
     // Debug text obj
     [Header("DEBUG")]
     public Text debugText;
-    public Text debugText2;
 
     // Colors
     [HideInInspector]
@@ -103,46 +89,22 @@ public class scrTextManager : MonoBehaviour
         colorVirgule = new Color(1f, 0.6f, 0f); // Color(1f, 0.6f, 0f);
         colorPoint = new Color(0.9f, 0.9f, 0.5f); // Color(0.9f, 0.9f, 0.5f);
 
-        if (!dualPhrases)
-        {
-            // NORMAL LEVEL
-
-            cursorStart = new Vector3(-(lineWidth/2) - spaceSize, textFloor, 0); //cursor.transform.localPosition;
-            cursor.transform.localPosition = cursorStart;
-
-
-            s = new List<string>();
-            words = new List<string>();
-
-            correctText = TextFile.text;
-
-            CutsWordsDual(TextFile, s, words);
-
-        } else
-        {
-            // DUAL LEVEL
-
-            // "removes" cursor and point gen
-            cursor.SetActive(false);
-            GameObject.Find("Point Gen").transform.position = new Vector3(-2000, 0, 0); // BEGONE
-
-            // WORDS 1
-            s = new List<string>();
-            words = new List<string>();
-            correctText = TextFile.text;
-
-            CutsWordsDual(TextFile, s, words);
-
-            // WORDS 2
-            s2 = new List<string>();
-            words2 = new List<string>();
-            correctText2 = TextFile2.text;
-
-            CutsWordsDual(TextFile2, s2, words2);
-        }
         
+        cursorStart = new Vector3(-(lineWidth/2) - spaceSize, textFloor, 0); //cursor.transform.localPosition;
+        cursor.transform.localPosition = cursorStart;
 
-        
+
+        s = new List<string>();
+        words = new List<string>();
+
+        correctText = TextFile.text;
+
+        CutsWordsDual(TextFile, s, words);
+
+        // animation log
+        animationLog.text = "Les clients ont hâte de manger votre plat !";
+
+
 
         // creates separators list
         separators = new string[words.Count];
@@ -150,13 +112,6 @@ public class scrTextManager : MonoBehaviour
         wordsObj = new GameObject[words.Count];
         slots = new GameObject[words.Count];
 
-        if (dualPhrases)
-        {
-            separators2 = new string[words2.Count];
-            for (int i = 0; i < separators2.Length; i++) separators2[i] = "";
-            wordsObj2 = new GameObject[words2.Count];
-            slots2 = new GameObject[words2.Count];
-        }
 
 
 
@@ -167,14 +122,15 @@ public class scrTextManager : MonoBehaviour
         W = thing.Item1;
         H = thing.Item2;
 
-        if (dualPhrases)
+
+        GameObject virguleGen = GameObject.Find("Virgule Gen");
+        GameObject pointGen = GameObject.Find("Point Gen");
+
+        if (hideGen)
         {
-            W = 0f;
-            H -= lineJump * 2f;
-            placesWords(words2, slots2, wordsObj2, W, H, 2);
+            virguleGen.SetActive(false);
+            pointGen.SetActive(false);
         }
-
-
 
         // reads potential special file and adds unmovable or undeletable separators
         // incroyablement brut, on n'en parlera pas
@@ -186,8 +142,7 @@ public class scrTextManager : MonoBehaviour
             bool canMoved = sp[0].Equals("true");
             bool canDeleted = sp[1].Equals("true");
 
-            GameObject virguleGen = GameObject.Find("Virgule Gen");
-            GameObject pointGen = GameObject.Find("Point Gen");
+            
             GameObject block;
 
 
@@ -226,8 +181,10 @@ public class scrTextManager : MonoBehaviour
                 }
             }
         } // END OF SPECIAL
-        if (dualPhrases)
-        {
+
+        /*
+        if (false) // COMMENT PLACER UN POINT FIXE
+        { 
             // same as special, but to add unmovable points to the text
             GameObject virguleGen = GameObject.Find("Virgule Gen");
             GameObject pointGen = GameObject.Find("Point Gen");
@@ -235,7 +192,6 @@ public class scrTextManager : MonoBehaviour
 
             // point 1
             block = pointGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-            slots2[slots2.Length - 1].GetComponent<scrSlot>().fromSlotsOne = true;
             slots[slots.Length - 1].GetComponent<scrSlot>().SendPonct(".");
             block.GetComponent<scrDragAndDrop>().dragging = false;
             block.GetComponent<scrDragAndDrop>().canBeMoved = false;
@@ -249,22 +205,7 @@ public class scrTextManager : MonoBehaviour
             block.transform.position = vect;
             block.GetComponent<scrDragAndDrop>().col = slots[slots.Length - 1].GetComponent<BoxCollider2D>();
 
-            // point 2
-            block = pointGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-            slots2[slots2.Length - 1].GetComponent<scrSlot>().fromSlotsOne = false;
-            slots2[slots2.Length - 1].GetComponent<scrSlot>().SendPonct(".");
-            block.GetComponent<scrDragAndDrop>().dragging = false;
-            block.GetComponent<scrDragAndDrop>().canBeMoved = false;
-            block.GetComponent<scrDragAndDrop>().canBeDeleted = false;
-            slots2[slots2.Length - 1].GetComponent<scrSlot>().isUsed = true;
-            block.GetComponent<scrDragAndDrop>().willSnap = true;
-            Vector3 vect2 = slots2[slots2.Length - 1].transform.position;
-            vect2.y -= 25;
-            block.GetComponent<scrDragAndDrop>().ogPos = vect2;
-            block.GetComponent<scrDragAndDrop>().snapPos = vect2;
-            block.transform.position = vect2;
-            block.GetComponent<scrDragAndDrop>().col = slots2[slots2.Length - 1].GetComponent<BoxCollider2D>();
-        }
+        }*/
 
 
 
@@ -307,8 +248,32 @@ public class scrTextManager : MonoBehaviour
                     if (!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule)
                     {
                         Debug.Log("<color=green>CORRECT!</color>");
+                        animationLog.text = "Les clients ont trouvé ça: PARFAIT !";
                     }
                     ButtonLayer.SetActive(true);
+
+                    // recap phrase for the animation recall
+                    string recap = "";
+                    switch (Random.Range(1, 4))
+                    {
+                        case 1:
+                            recap = "Les clients ont trouvé ça";
+                            break;
+                        case 2:
+                            recap = "Ils pensent que c'est";
+                            break;
+                        case 3:
+                            recap = "Votre plat est peut-être";
+                            break;
+                    }
+                    if (tropVirgule) { recap += " trop épicé"; }
+                    if (pasAssezVirgule) { recap += " un peu fade"; }
+                    if (mauvaiseVirgule) { recap += " bizarrement épicé"; }
+                    if ((tropVirgule || pasAssezVirgule || mauvaiseVirgule) && (pointTropTot || manquePoint)) { recap += " et"; }
+                    if (pointTropTot) { recap += " trop léger."; }
+                    if (manquePoint) { recap += " trop lourd."; }
+                    animationLog.text = recap;
+
                 }
             }
 
@@ -340,7 +305,6 @@ public class scrTextManager : MonoBehaviour
 
             slot.GetComponent<scrSlot>().INDEX = i;
             slot.GetComponent<scrSlot>().txtManager = gameObject;
-            if (INDEX == 2) slot.GetComponent<scrSlot>().fromSlotsOne = false;
             slots_e[i] = slot;
 
             //wordObj.transform.parent = Canvas.transform;
@@ -358,9 +322,9 @@ public class scrTextManager : MonoBehaviour
         return (W, H);
     }
 
-    private string RefreshTextN(string curr, string corr, List<string> W, string[] SEP, GameObject[] WOBJ, int INDEX)
+    private string RefreshTextN(string curr, string corr, List<string> W, string[] SEP, GameObject[] WOBJ)
     {
-        if (INDEX == 1) debugText.text = ""; else debugText2.text = "";
+        debugText.text = "";
         curr = "";
         for (int i = 0; i < W.Count; i++)
         {
@@ -418,39 +382,34 @@ public class scrTextManager : MonoBehaviour
             }
         }
         curr = curr.Substring(0, curr.Length - 1); // to remove the last space
-        if (INDEX == 1) debugText.text = curr; else debugText2.text = curr;
+        debugText.text = curr;
 
         if (curr.ToLower().Equals(corr.ToLower())) // to lower pour éviter les ennuis atm
         {
-            if (INDEX == 1) debugText.color = new Color(0, 200, 0); else debugText2.color = new Color(0, 200, 0);
+            debugText.color = new Color(0, 200, 0);
         }
         else
         {
-            if (INDEX == 1) debugText.color = new Color(0, 0, 0); else debugText2.color = new Color(0, 0, 0);
+            debugText.color = new Color(0, 0, 0);
         }
         return curr;
     }
 
     public void RefreshText()
     {
-        currentText = RefreshTextN(currentText, correctText, words, separators, wordsObj, 1);
-        if (dualPhrases) currentText2 = RefreshTextN(currentText2, correctText2, words2, separators2, wordsObj2, 2);
+        currentText = RefreshTextN(currentText, correctText, words, separators, wordsObj);
     }
 
     public void ValiderClick()
     {
-        if (!dualPhrases)
-        {
-            Valider();
-        } else
-        {
-            ValiderDual();
-        }
+        Valider();
     }
 
     private void Valider()
     {
         Debug.Log("Validation...");
+
+        
 
         bool willStop = false;
         bool forceStop = false;
@@ -604,13 +563,17 @@ public class scrTextManager : MonoBehaviour
 
             posToStop = slots[k].transform.localPosition.x;
 
-            //Debug.Log("line: " + lineToStop + "; xpos = " + posToStop);
+
         } else
         {
             lineToStop = lineNumber;
             posToStop = slots[slots.Length-1].transform.localPosition.x;
         }
         //Debug.Log("FIN DE LA VALIDATION (" + i + "/" + currentText.Length + ")");
+
+
+
+        animationLog.text = "Les clients sont en train de tester votre plat...";
 
         movingCursor = true;
         cursor.transform.localPosition = cursorStart;
@@ -619,29 +582,12 @@ public class scrTextManager : MonoBehaviour
         ButtonLayer.SetActive(false);
     }
 
-    private void ValiderDual()
-    {
-        if ((currentText.Equals(correctText)) && (currentText2.Equals(correctText2)))
-        {
-            Debug.Log("Les deux phrases sont correctes");
-        } else
-        {
-            Debug.Log("C'est incorrect...");
-        }
-    }
 
     public void ShowSlots()
     {
         for (int i = 0; i < slots.Length; i++)
         {
             slots[i].GetComponentInChildren<Image>().enabled = true;
-        }
-        if (dualPhrases)
-        {
-            for (int i = 0; i < slots2.Length; i++)
-            {
-                slots2[i].GetComponentInChildren<Image>().enabled = true;
-            }
         }
     }
 
@@ -650,13 +596,6 @@ public class scrTextManager : MonoBehaviour
         for (int i = 0; i < slots.Length; i++)
         {
             slots[i].GetComponentInChildren<Image>().enabled = false;
-        }
-        if (dualPhrases)
-        {
-            for (int i = 0; i < slots2.Length; i++)
-            {
-                slots2[i].GetComponentInChildren<Image>().enabled = false;
-            }
         }
     }
 

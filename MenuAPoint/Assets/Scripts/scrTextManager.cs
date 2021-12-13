@@ -248,32 +248,46 @@ public class scrTextManager : MonoBehaviour
                     if (!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule)
                     {
                         Debug.Log("<color=green>CORRECT!</color>");
-                        animationLog.text = "Les clients ont trouvé ça: PARFAIT !";
+                        
+                        switch (Random.Range(1, 4))
+                        {
+                            case 1:
+                                animationLog.text = "Les clients ont trouvé ça parfait !";
+                                break;
+                            case 2:
+                                animationLog.text = "Tout le monde a trouvé ça délicieux !";
+                                break;
+                            case 3:
+                                animationLog.text = "Ce plat était vraiment au point !";
+                                break;
+                        }
                     }
                     ButtonLayer.SetActive(true);
 
                     // recap phrase for the animation recall
-                    string recap = "";
-                    switch (Random.Range(1, 4))
+                    if (pointTropTot || manquePoint || tropVirgule || pasAssezVirgule || mauvaiseVirgule)
                     {
-                        case 1:
-                            recap = "Les clients ont trouvé ça";
-                            break;
-                        case 2:
-                            recap = "Ils pensent que c'est";
-                            break;
-                        case 3:
-                            recap = "Votre plat est peut-être";
-                            break;
+                        string recap = "";
+                        switch (Random.Range(1, 4))
+                        {
+                            case 1:
+                                recap = "Les clients ont trouvé ça";
+                                break;
+                            case 2:
+                                recap = "Ils pensent que c'est";
+                                break;
+                            case 3:
+                                recap = "Votre plat est peut-être";
+                                break;
+                        }
+                        if (tropVirgule) { recap += " trop épicé"; }
+                        if (pasAssezVirgule) { recap += " un peu fade"; }
+                        if (mauvaiseVirgule) { recap += " bizarrement épicé"; }
+                        if ((tropVirgule || pasAssezVirgule || mauvaiseVirgule) && (pointTropTot || manquePoint)) { recap += " et"; }
+                        if (pointTropTot) { recap += " trop léger."; }
+                        if (manquePoint) { recap += " trop lourd."; }
+                        animationLog.text = recap;
                     }
-                    if (tropVirgule) { recap += " trop épicé"; }
-                    if (pasAssezVirgule) { recap += " un peu fade"; }
-                    if (mauvaiseVirgule) { recap += " bizarrement épicé"; }
-                    if ((tropVirgule || pasAssezVirgule || mauvaiseVirgule) && (pointTropTot || manquePoint)) { recap += " et"; }
-                    if (pointTropTot) { recap += " trop léger."; }
-                    if (manquePoint) { recap += " trop lourd."; }
-                    animationLog.text = recap;
-
                 }
             }
 

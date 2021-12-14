@@ -288,7 +288,7 @@ public class scrTextManager : MonoBehaviour
                     if (!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule)
                     {
                         Debug.Log("<color=green>CORRECT!</color>");
-                        
+                        cursor.GetComponent<Animator>().SetBool("Reussite",true);
                         switch (Random.Range(1, 4))
                         {
                             case 1:
@@ -348,6 +348,8 @@ public class scrTextManager : MonoBehaviour
             // counts frames (for the timer) when the cursor isn't moving, to be fair
             frames++;
         }
+
+        cursor.GetComponent<Animator>().SetBool("Validation",movingCursor);
     }
 
     private (float, float) placesWords(List<string> words_e, GameObject[] slots_e, GameObject[] wordsObj_e, float W, float H, int INDEX)

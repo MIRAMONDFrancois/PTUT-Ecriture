@@ -5,6 +5,7 @@ using UnityEngine;
 public class scrGlobal : MonoBehaviour
 {
     public string playerName;
+    public int levelNum;
     public bool level2unlocked = false;
     public TextAsset file;
 

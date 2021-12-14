@@ -80,7 +80,11 @@ public class scrTextManager : MonoBehaviour
     [HideInInspector]
     public Color colorPoint; // Color(0.9f, 0.9f, 0.5f);
 
-
+    // Data Export
+    private string fullFolderName;
+    private string recapContent;
+    private int frames;
+    private int errorNum;
 
 
     // Start is called before the first frame update
@@ -93,15 +97,6 @@ public class scrTextManager : MonoBehaviour
         
         cursorStart = new Vector3(-(lineWidth/2) - spaceSize, textFloor, 0); //cursor.transform.localPosition;
         cursor.transform.localPosition = cursorStart;
-
-
-        //create Folder
-        if (!Directory.Exists ("./DOSSIER")) {
-    
-            Directory.CreateDirectory ("./DOSSIER");
-        }
-        string pn = GameObject.Find("Global").GetComponent<scrGlobal>().playerName;
-        System.IO.File.WriteAllText("./DOSSIER/" + pn + ".txt", pn + " est un.e gentil.le élève.");
 
 
         s = new List<string>();
@@ -218,6 +213,33 @@ public class scrTextManager : MonoBehaviour
         }*/
 
 
+        // DATA EXPORT
+        scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
+        globalScript.playerName = "MICHEL"; // DEBUG
+        globalScript.levelNum = 4; // DEBUG
+        string pn = globalScript.playerName;
+        int ln = globalScript.levelNum;
+        string folderName = System.DateTime.Now.Day + "-" + System.DateTime.Now.Month + "-" + System.DateTime.Now.Year;
+        fullFolderName = "./RESULTATS/" + folderName + "/" + pn;
+
+        if (!Directory.Exists ("./RESULTATS")) {
+            Directory.CreateDirectory ("./RESULTATS");
+            Debug.Log("created result folder");
+        }
+        if (!Directory.Exists ("./RESULTATS/" + folderName)) {
+            Directory.CreateDirectory ("./RESULTATS/" + folderName);
+            Debug.Log("created date folder");
+        }
+        if (!Directory.Exists (fullFolderName)) {
+            Directory.CreateDirectory (fullFolderName);
+            Debug.Log("created player folder");
+        }
+        recapContent = "Fichier de " + pn + " sur le niveau " + ln + ".\nLe texte correct est:\n" + correctText + "\n";
+        recapContent += "\n----------------------------------------------\n";
+        //System.IO.File.WriteAllText(fullFolderName + "/NiveauX.txt", pn + " est un.e gentil.le élève.");
+        // way to get the text:
+        //Debug.Log(System.IO.File.ReadAllText("./DOSSIER/" + pn + ".txt"));
+
 
         RefreshText();
         HideSlots();
@@ -227,6 +249,7 @@ public class scrTextManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        
         if (movingCursor)
         {
             Vector3 trans = cursor.transform.localPosition;
@@ -271,6 +294,9 @@ public class scrTextManager : MonoBehaviour
                                 animationLog.text = "Ce plat était vraiment au point !";
                                 break;
                         }
+                        // writes on the .txt
+                        recapContent += "\nTerminé en " + frames/60 + " secondes avec " + errorNum + " erreur(s).";
+                        System.IO.File.WriteAllText(fullFolderName + "/NiveauX.txt", recapContent);
                     }
                     ButtonLayer.SetActive(true);
 
@@ -290,19 +316,30 @@ public class scrTextManager : MonoBehaviour
                                 recap = "Votre plat est peut-être";
                                 break;
                         }
-                        if (tropVirgule) { recap += " trop épicé"; }
-                        if (pasAssezVirgule) { recap += " un peu fade"; }
-                        if (mauvaiseVirgule) { recap += " bizarrement épicé"; }
+                        recapContent += "\nErreur à " + frames/60 + " secondes :\n";
+
+                        if (tropVirgule) { recap += " trop épicé"; recapContent += "- trop de virgule\n"; }
+                        if (pasAssezVirgule) { recap += " un peu fade"; recapContent += "- pas assez de virgule\n"; }
+                        if (mauvaiseVirgule) { recap += " bizarrement épicé"; recapContent += "- mauvais placement de virgule\n"; }
                         if ((tropVirgule || pasAssezVirgule || mauvaiseVirgule) && (pointTropTot || manquePoint)) { recap += " et"; }
-                        if (pointTropTot) { recap += " trop léger."; }
-                        if (manquePoint) { recap += " trop lourd."; }
+                        if (pointTropTot) { recap += " trop léger."; recapContent += "- point trop tôt\n"; }
+                        if (manquePoint) { recap += " trop lourd."; recapContent += "- manque d'un point\n"; }
                         animationLog.text = recap;
+
+                        // data recap
+                        recapContent += currentText + "\n";
+                        recapContent += "\n----------------------------------------------\n";
+                        errorNum++;
+                        
                     }
                 }
             }
 
             cursor.transform.localPosition = trans;
 
+        } else {
+            // counts frames (for the timer) when the cursor isn't moving, to be fair
+            frames++;
         }
     }
 

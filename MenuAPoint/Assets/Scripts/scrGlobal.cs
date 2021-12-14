@@ -10,7 +10,7 @@ public class scrGlobal : MonoBehaviour
 
 
     void Awake() {
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("global");
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Global");
 
         if (objs.Length > 1)
         {

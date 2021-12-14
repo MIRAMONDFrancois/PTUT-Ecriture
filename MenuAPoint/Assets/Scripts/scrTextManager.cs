@@ -100,9 +100,8 @@ public class scrTextManager : MonoBehaviour
     
             Directory.CreateDirectory ("./DOSSIER");
         }
-        //Create Text file.. but dont know how.. How to create the Text file to save to.
-        //save to textfile
-        System.IO.File.WriteAllText("./DOSSIER/RETOUR.txt", "content");
+        string pn = GameObject.Find("Global").GetComponent<scrGlobal>().playerName;
+        System.IO.File.WriteAllText("./DOSSIER/" + pn + ".txt", pn + " est un.e gentil.le élève.");
 
 
         s = new List<string>();

@@ -90,6 +90,16 @@ public class scrTextManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // DATA IMPORT
+        scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
+        globalScript.playerName = "MICHEL"; // DEBUG
+        globalScript.levelNum = 4; // DEBUG
+        //TextFile = globalScript.file;
+        //useSpecial = globalScript.useSpecial;
+        //SpacialFile = globalScript.SpecialFile;
+        // ???
+
+
         colorBasique = new Color(1f, 1f, 1f);
         colorVirgule = new Color(1f, 0.6f, 0f); // Color(1f, 0.6f, 0f);
         colorPoint = new Color(0.9f, 0.9f, 0.5f); // Color(0.9f, 0.9f, 0.5f);
@@ -214,9 +224,6 @@ public class scrTextManager : MonoBehaviour
 
 
         // DATA EXPORT
-        scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
-        globalScript.playerName = "MICHEL"; // DEBUG
-        globalScript.levelNum = 4; // DEBUG
         string pn = globalScript.playerName;
         int ln = globalScript.levelNum;
         string folderName = System.DateTime.Now.Day + "-" + System.DateTime.Now.Month + "-" + System.DateTime.Now.Year;

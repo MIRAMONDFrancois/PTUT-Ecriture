@@ -555,7 +555,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fce558439664a5b4592ec11b7eb246c4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f0a341a15ba312344a9762a58b9dcc23, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1079,6 +1079,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: 
+  levelNum: 0
   level2unlocked: 0
   file: {fileID: 0}
 --- !u!4 &2107711006

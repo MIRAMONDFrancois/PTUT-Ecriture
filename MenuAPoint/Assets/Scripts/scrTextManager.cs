@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.IO;
 
 public class scrTextManager : MonoBehaviour
 {
@@ -92,6 +93,16 @@ public class scrTextManager : MonoBehaviour
         
         cursorStart = new Vector3(-(lineWidth/2) - spaceSize, textFloor, 0); //cursor.transform.localPosition;
         cursor.transform.localPosition = cursorStart;
+
+
+        //create Folder
+        if (!Directory.Exists ("./DOSSIER")) {
+    
+            Directory.CreateDirectory ("./DOSSIER");
+        }
+        //Create Text file.. but dont know how.. How to create the Text file to save to.
+        //save to textfile
+        System.IO.File.WriteAllText("./DOSSIER/RETOUR.txt", "content");
 
 
         s = new List<string>();

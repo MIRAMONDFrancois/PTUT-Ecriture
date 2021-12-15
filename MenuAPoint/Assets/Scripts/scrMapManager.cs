@@ -38,53 +38,55 @@ public class scrMapManager : MonoBehaviour
         switch(EventSystem.current.currentSelectedGameObject.name)
         {
             case "Level01":
-                modifValue(1, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
+                modifValue(1, false, false, Resources.Load("Texts/Level1") as TextAsset, null);
                 break;
             case "Level02":
-                modifValue(2, true, false, Resources.Load("Texts/dual_2A") as TextAsset, Resources.Load("Texts/dual_2B") as TextAsset);
+                modifValue(2, true, false, Resources.Load("Texts/dual_1A") as TextAsset, Resources.Load("Texts/dual_1B") as TextAsset);
                 break;
             case "Level03":
-                modifValue(3, false, true, Resources.Load("Texts/dual_1A") as TextAsset, null);
+                modifValue(3, false, true, Resources.Load("Texts/Level2") as TextAsset, null);
                 break;
             case "Level04":
-                modifValue(4, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
+                modifValue(4, false, false, Resources.Load("Texts/Level3") as TextAsset, null);
                 break;
             case "Level05":
-                modifValue(5, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
+                modifValue(5, false, false, Resources.Load("Texts/Level4") as TextAsset, null);
                 break;
             case "Level06":
                 modifValue(6, true, true, Resources.Load("Texts/dual_2A") as TextAsset, Resources.Load("Texts/dual_2B") as TextAsset);
                 break;
             case "Level07":
-                modifValue(7, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
+                modifValue(7, false, false, Resources.Load("Texts/Level5") as TextAsset, null);
                 break;
             case "Level08":
-                modifValue(8, true, true, Resources.Load("Texts/dual_1A") as TextAsset, Resources.Load("Texts/dual_1B") as TextAsset);
+                modifValue(8, true, true, Resources.Load("Texts/dual_3A") as TextAsset, Resources.Load("Texts/dual_3B") as TextAsset);
                 break;
             case "Level09":
-                modifValue(9, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
+                modifValue(9, false, false, Resources.Load("Texts/Level6") as TextAsset, null);
                 break;
             case "Level10":
-                modifValue(10, true, false, Resources.Load("Texts/dual_2A") as TextAsset, Resources.Load("Texts/dual_2B") as TextAsset);
+                modifValue(10, true, false, Resources.Load("Texts/dual_4A") as TextAsset, Resources.Load("Texts/dual_4B") as TextAsset);
                 break;
             case "Level11":
-                modifValue(11, false, true, Resources.Load("Texts/dual_1A") as TextAsset, null);
+                modifValue(11, false, true, Resources.Load("Texts/Level7") as TextAsset, null);
                 break;
             case "Level12":
-                modifValue(12, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
+                modifValue(12, false, false, Resources.Load("Texts/Level8") as TextAsset, null);
                 break;
             case "Level13":
-                modifValue(13, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
+                modifValue(13, false, false, Resources.Load("Texts/Level9") as TextAsset, null);
                 break;
             case "Level14":
-                modifValue(14, true, true, Resources.Load("Texts/dual_1A") as TextAsset, Resources.Load("Texts/dual_1B") as TextAsset);
+                modifValue(14, true, true, Resources.Load("Texts/dual_5A") as TextAsset, Resources.Load("Texts/dual_5B") as TextAsset);
                 break;
             case "Level15":
-                modifValue(15, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
+                modifValue(15, false, false, Resources.Load("Texts/Level10") as TextAsset, null);
                 break;
             default:
                 throw new ArgumentException("Element not found", nameof(EventSystem.current.currentSelectedGameObject.name));
         }
+
+        LoadNewScene();
 
     }
 }

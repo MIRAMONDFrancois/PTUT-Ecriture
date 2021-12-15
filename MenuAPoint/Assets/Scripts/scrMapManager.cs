@@ -24,56 +24,63 @@ public class scrMapManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
+    private void modifValue(int level, bool isSpecial, bool nivAntiOubli, TextAsset text, TextAsset specialText)
+    {
+        GameObject.Find("Global").GetComponent<scrGlobal>().file = text;
+        GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = level;
+        GameObject.Find("Global").GetComponent<scrGlobal>().specialFile = specialText;
+        GameObject.Find("Global").GetComponent<scrGlobal>().isSpecial = isSpecial;
+        GameObject.Find("Global").GetComponent<scrGlobal>().nivAntiOubli = nivAntiOubli;
+    }
+
     public void selectLevel()
     {
         switch(EventSystem.current.currentSelectedGameObject.name)
         {
             case "Level01":
-                GameObject.Find("Global").GetComponent<scrGlobal>().file = Resources.Load("Texts/dual_1A") as TextAsset;
-                GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = 1;
+                modifValue(1, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
                 break;
             case "Level02":
-                GameObject.Find("Global").GetComponent<scrGlobal>().file = Resources.Load("Texts/dual_2A") as TextAsset;
-                GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = 2;
+                modifValue(2, true, false, Resources.Load("Texts/dual_2A") as TextAsset, Resources.Load("Texts/dual_2B") as TextAsset);
                 break;
             case "Level03":
-                GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = 3;
+                modifValue(3, false, true, Resources.Load("Texts/dual_1A") as TextAsset, null);
                 break;
             case "Level04":
-                GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = 4;
+                modifValue(4, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
                 break;
             case "Level05":
-                GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = 5;
+                modifValue(5, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
                 break;
             case "Level06":
-                GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = 6;
+                modifValue(6, true, true, Resources.Load("Texts/dual_2A") as TextAsset, Resources.Load("Texts/dual_2B") as TextAsset);
                 break;
             case "Level07":
-                GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = 7;
+                modifValue(7, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
                 break;
             case "Level08":
-                GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = 8;
+                modifValue(8, true, true, Resources.Load("Texts/dual_1A") as TextAsset, Resources.Load("Texts/dual_1B") as TextAsset);
                 break;
             case "Level09":
-                GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = 9;
+                modifValue(9, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
                 break;
             case "Level10":
-                GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = 10;
+                modifValue(10, true, false, Resources.Load("Texts/dual_2A") as TextAsset, Resources.Load("Texts/dual_2B") as TextAsset);
                 break;
             case "Level11":
-                GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = 11;
+                modifValue(11, false, true, Resources.Load("Texts/dual_1A") as TextAsset, null);
                 break;
             case "Level12":
-                GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = 12;
+                modifValue(12, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
                 break;
             case "Level13":
-                GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = 13;
+                modifValue(13, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
                 break;
             case "Level14":
-                GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = 14;
+                modifValue(14, true, true, Resources.Load("Texts/dual_1A") as TextAsset, Resources.Load("Texts/dual_1B") as TextAsset);
                 break;
             case "Level15":
-                GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = 15;
+                modifValue(15, false, false, Resources.Load("Texts/dual_1A") as TextAsset, null);
                 break;
             default:
                 throw new ArgumentException("Element not found", nameof(EventSystem.current.currentSelectedGameObject.name));

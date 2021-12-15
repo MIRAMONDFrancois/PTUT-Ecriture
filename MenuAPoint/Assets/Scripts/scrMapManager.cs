@@ -96,7 +96,7 @@ public class scrMapManager : MonoBehaviour
                 throw new ArgumentException("Element not found", nameof(EventSystem.current.currentSelectedGameObject.name));
         }
 
-        if(checkUnlocked(levelActuel - 1))
+        if(checkUnlocked(levelActuel - 1) || checkUnlocked(levelActuel))
             LoadNewScene();
 
     }

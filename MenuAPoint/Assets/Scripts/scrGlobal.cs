@@ -18,7 +18,8 @@ public class scrGlobal : MonoBehaviour
     public int virguleLimit = 0;
 
     public void Start(){
-        for (int i = 0; i<= 14; i++){
+        levelunlocked.Add(true);
+        for (int i = 1; i<= 14; i++){
             levelunlocked.Add(false);
         }
         

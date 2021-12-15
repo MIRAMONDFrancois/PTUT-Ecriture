@@ -70,27 +70,35 @@ public class scrMapManager : MonoBehaviour
                 break;
             case "Level08":
                 modifValue(8, true, true, Resources.Load("Texts/dual_3A") as TextAsset, Resources.Load("Texts/dual_3B") as TextAsset, 0, 0);
+                levelActuel = 8;
                 break;
             case "Level09":
                 modifValue(9, false, false, Resources.Load("Texts/Level6") as TextAsset, null, 1, 0);
+                levelActuel = 9;
                 break;
             case "Level10":
+                levelActuel = 10;
                 modifValue(10, false, true, Resources.Load("Texts/Level7") as TextAsset, null, 2, 5);
                 break;
             case "Level11":
                 modifValue(11, true, false, Resources.Load("Texts/dual_4A") as TextAsset, Resources.Load("Texts/dual_4B") as TextAsset, 0, 0);
+                levelActuel = 11;
                 break;
             case "Level12":
                 modifValue(12, false, false, Resources.Load("Texts/Level8") as TextAsset, null, 5, 4);
+                levelActuel = 12;
                 break;
             case "Level13":
                 modifValue(13, false, false, Resources.Load("Texts/Level9") as TextAsset, null, 4, 4);
+                levelActuel = 13;
                 break;
             case "Level14":
                 modifValue(14, true, true, Resources.Load("Texts/dual_5A") as TextAsset, Resources.Load("Texts/dual_5B") as TextAsset, 0, 0);
+                levelActuel = 14;
                 break;
             case "Level15":
                 modifValue(15, false, false, Resources.Load("Texts/Level10") as TextAsset, null, 0, 0);
+                levelActuel = 15;
                 break;
             default:
                 throw new ArgumentException("Element not found", nameof(EventSystem.current.currentSelectedGameObject.name));

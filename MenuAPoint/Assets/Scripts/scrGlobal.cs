@@ -11,6 +11,8 @@ public class scrGlobal : MonoBehaviour
     public TextAsset specialFile;
     public bool isSpecial = false;
     public bool nivAntiOubli = false;
+    public int pointLimit = 0;
+    public int virguleLimit = 0;
 
 
     void Awake() {

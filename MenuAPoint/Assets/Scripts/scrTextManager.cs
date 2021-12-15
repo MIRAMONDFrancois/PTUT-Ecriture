@@ -337,8 +337,8 @@ public class scrTextManager : MonoBehaviour
                         recapContent += currentText + "\n";
                         recapContent += "\n----------------------------------------------\n";
                         errorNum++;
-                        
                     }
+                    cursor.transform.SetAsFirstSibling();
                 }
             }
 
@@ -348,7 +348,6 @@ public class scrTextManager : MonoBehaviour
             // counts frames (for the timer) when the cursor isn't moving, to be fair
             frames++;
         }
-
         cursor.GetComponent<Animator>().SetBool("Validation",movingCursor);
     }
 

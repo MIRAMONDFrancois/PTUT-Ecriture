@@ -99,12 +99,12 @@ public class scrTextManager : MonoBehaviour
     {
         // DATA IMPORT
         scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
-        globalScript.playerName = "MICHEL"; // DEBUG
-        globalScript.levelNum = 4; // DEBUG
-        //TextFile = globalScript.file;
-        //useSpecial = globalScript.useSpecial;
-        //SpacialFile = globalScript.SpecialFile;
-        // ???
+        TextFile = globalScript.file;
+        useSpecial = globalScript.isSpecial;
+        SpecialFile = globalScript.specialFile;
+        // nivAntiOubli???
+        // pointLimit???
+        // virguleLimit???
 
 
         // WILL PROBABLY MOVE WITH THE NEXT TYPE OF GAME

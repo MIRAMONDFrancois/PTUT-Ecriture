@@ -117,12 +117,12 @@ TextureImporter:
       name: client_trop_fade_0
       rect:
         serializedVersion: 2
-        x: 245
+        x: 0
         y: 1201
-        width: 424
-        height: 836
+        width: 948
+        height: 847
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -138,12 +138,12 @@ TextureImporter:
       name: client_trop_fade_1
       rect:
         serializedVersion: 2
-        x: 1193
+        x: 948
         y: 1201
-        width: 424
+        width: 948
         height: 847
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -159,12 +159,12 @@ TextureImporter:
       name: client_trop_fade_2
       rect:
         serializedVersion: 2
-        x: 2116
-        y: 1943
-        width: 10
-        height: 9
+        x: 1896
+        y: 1201
+        width: 948
+        height: 847
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -180,10 +180,10 @@ TextureImporter:
       name: client_trop_fade_3
       rect:
         serializedVersion: 2
-        x: 2015
+        x: 1896
         y: 1201
-        width: 684
-        height: 726
+        width: 948
+        height: 847
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -201,12 +201,12 @@ TextureImporter:
       name: client_trop_fade_4
       rect:
         serializedVersion: 2
-        x: 2901
+        x: 2844
         y: 1201
-        width: 822
-        height: 596
+        width: 948
+        height: 847
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -222,12 +222,12 @@ TextureImporter:
       name: client_trop_fade_5
       rect:
         serializedVersion: 2
-        x: 49
-        y: 355
-        width: 852
-        height: 564
+        x: 0
+        y: 354
+        width: 948
+        height: 847
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -243,12 +243,12 @@ TextureImporter:
       name: client_trop_fade_6
       rect:
         serializedVersion: 2
-        x: 945
-        y: 344
+        x: 948
+        y: 354
         width: 948
-        height: 515
+        height: 847
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -264,12 +264,12 @@ TextureImporter:
       name: client_trop_fade_7
       rect:
         serializedVersion: 2
-        x: 1947
-        y: 355
-        width: 824
-        height: 504
+        x: 1896
+        y: 354
+        width: 948
+        height: 847
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -285,12 +285,12 @@ TextureImporter:
       name: client_trop_fade_8
       rect:
         serializedVersion: 2
-        x: 2895
-        y: 355
-        width: 822
-        height: 504
+        x: 2844
+        y: 354
+        width: 948
+        height: 847
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

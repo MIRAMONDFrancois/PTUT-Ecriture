@@ -29,6 +29,15 @@ TextureImporter:
   - first:
       213: -8747629707263368678
     second: client_mauvais_placement_8
+  - first:
+      213: 8863117711331063922
+    second: client_mauvais_placement_9
+  - first:
+      213: -4928708982074767983
+    second: client_mauvais_placement_10
+  - first:
+      213: -7257373857100211278
+    second: client_mauvais_placement_11
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -120,9 +129,9 @@ TextureImporter:
         x: 0
         y: 3249
         width: 479
-        height: 802
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 847
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -138,12 +147,12 @@ TextureImporter:
       name: client_mauvais_placement_1
       rect:
         serializedVersion: 2
-        x: 501
+        x: 479
         y: 3249
-        width: 422
+        width: 479
         height: 847
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -159,12 +168,12 @@ TextureImporter:
       name: client_mauvais_placement_2
       rect:
         serializedVersion: 2
-        x: 977
+        x: 958
         y: 3249
-        width: 424
-        height: 820
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 479
+        height: 847
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -180,12 +189,12 @@ TextureImporter:
       name: client_mauvais_placement_3
       rect:
         serializedVersion: 2
-        x: 1455
+        x: 1437
         y: 3249
-        width: 440
-        height: 820
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 479
+        height: 847
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -201,12 +210,12 @@ TextureImporter:
       name: client_mauvais_placement_4
       rect:
         serializedVersion: 2
-        x: 23
-        y: 2401
-        width: 424
-        height: 820
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 0
+        y: 2402
+        width: 479
+        height: 847
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -222,12 +231,12 @@ TextureImporter:
       name: client_mauvais_placement_5
       rect:
         serializedVersion: 2
-        x: 501
-        y: 2401
-        width: 422
-        height: 820
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 479
+        y: 2402
+        width: 479
+        height: 847
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -243,12 +252,12 @@ TextureImporter:
       name: client_mauvais_placement_6
       rect:
         serializedVersion: 2
-        x: 977
-        y: 2401
-        width: 424
-        height: 820
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 958
+        y: 2402
+        width: 479
+        height: 847
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -264,12 +273,12 @@ TextureImporter:
       name: client_mauvais_placement_7
       rect:
         serializedVersion: 2
-        x: 1455
-        y: 2401
-        width: 422
-        height: 820
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 1437
+        y: 2402
+        width: 479
+        height: 847
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -285,12 +294,12 @@ TextureImporter:
       name: client_mauvais_placement_8
       rect:
         serializedVersion: 2
-        x: 23
-        y: 1530
-        width: 442
-        height: 843
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 0
+        y: 1555
+        width: 479
+        height: 847
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -298,6 +307,69 @@ TextureImporter:
       bones: []
       spriteID: a12a9efc02d2a9680800000000000000
       internalID: -8747629707263368678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: client_mauvais_placement_9
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 1555
+        width: 479
+        height: 847
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2787c52899e100b70800000000000000
+      internalID: 8863117711331063922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: client_mauvais_placement_10
+      rect:
+        serializedVersion: 2
+        x: 958
+        y: 1555
+        width: 479
+        height: 847
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19508225b45b99bb0800000000000000
+      internalID: -4928708982074767983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: client_mauvais_placement_11
+      rect:
+        serializedVersion: 2
+        x: 1437
+        y: 1555
+        width: 479
+        height: 847
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bbd55d9de0a84b90800000000000000
+      internalID: -7257373857100211278
       vertices: []
       indices: 
       edges: []

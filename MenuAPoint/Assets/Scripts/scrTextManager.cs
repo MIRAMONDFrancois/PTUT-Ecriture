@@ -19,6 +19,8 @@ public class scrTextManager : MonoBehaviour
     public GameObject canvas;
     public GameObject ButtonLayer;
     public GameObject cursor;
+    public GameObject fondu;
+    public GameObject client_virgule;
     public Text animationLog;
 
     [Header("Custom")]
@@ -288,6 +290,7 @@ public class scrTextManager : MonoBehaviour
 
                     if (pointTropTot) Debug.Log("<color=orange>(MAIGRE)</color> Point trop tôt");
                     if (manquePoint) Debug.Log("<color=orange>(GROS)</color> Manque de point");
+
                     if (tropVirgule) Debug.Log("<color=orange>(FEU)</color> Trop de virgules");
                     if (pasAssezVirgule) Debug.Log("<color=orange>(FADE)</color> Pas assez de virgules");
                     if (mauvaiseVirgule) Debug.Log("<color=orange>(CONFUS)</color> Mauvais placement de virgule");
@@ -297,7 +300,8 @@ public class scrTextManager : MonoBehaviour
                     {
                         // CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT
                         Debug.Log("<color=green>CORRECT!</color>");
-                        cursor.GetComponent<Animator>().SetBool("Reussite",true);
+                        
+                        
                         switch (Random.Range(1, 4))
                         {
                             case 1:
@@ -362,7 +366,17 @@ public class scrTextManager : MonoBehaviour
 
                         canTouchPonct = true;
                     }
-                    cursor.transform.SetAsFirstSibling();
+                    
+                    AnimationFondu();
+                    //curseur
+                    //cursor.transform.SetAsFirstSibling();
+
+                    //anim curseur reactions
+                    cursor.GetComponent<Animator>().SetBool("Reussite",!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule);
+                    cursor.GetComponent<Animator>().SetBool("Maigre",pointTropTot);
+                    cursor.GetComponent<Animator>().SetBool("Gros",manquePoint);
+
+                    
                 }
             }
 
@@ -372,9 +386,7 @@ public class scrTextManager : MonoBehaviour
             // counts frames (for the timer) when the cursor isn't moving, to be fair
             frames++;
         }
-        //curseur réactions
-        cursor.GetComponent<Animator>().SetBool("Maigre",pointTropTot);
-        cursor.GetComponent<Animator>().SetBool("Gros",manquePoint);
+        //anim curseur miam
         cursor.GetComponent<Animator>().SetBool("Validation",movingCursor);
     }
 
@@ -752,5 +764,13 @@ public class scrTextManager : MonoBehaviour
 
     public void GoToMap() {
         SceneManager.LoadScene("MapScene");
+    }
+
+    public void AnimationFondu()
+    {
+        fondu.transform.SetAsLastSibling();
+        cursor.transform.SetAsLastSibling();
+        fondu.SetActive(true);
+        fondu.GetComponent<Animator>().SetBool("Actif",true);
     }
 }

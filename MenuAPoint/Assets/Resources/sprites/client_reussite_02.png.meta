@@ -1,34 +1,7 @@
 fileFormatVersion: 2
-guid: 0c3100da5a8b5a54caffb21c555fc29f
+guid: ad7bb547d08be5f4daf0f5817d7813da
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -6937996373597628621
-    second: client_reussite_0
-  - first:
-      213: -4785524859359602614
-    second: client_reussite_1
-  - first:
-      213: -4674387102584255685
-    second: client_reussite_2
-  - first:
-      213: -2696604467786537584
-    second: client_reussite_3
-  - first:
-      213: -1373085645319837891
-    second: client_reussite_4
-  - first:
-      213: -8262465725533930045
-    second: client_reussite_5
-  - first:
-      213: -5122989583808836446
-    second: client_reussite_6
-  - first:
-      213: -6594180176023735490
-    second: client_reussite_7
-  - first:
-      213: -7596951433214903789
-    second: client_reussite_8
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -114,190 +87,190 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: client_reussite_0
+      name: client_reussite_02_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 3249
-        width: 479
-        height: 804
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 337d3caae0947bf90800000000000000
-      internalID: -6937996373597628621
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: client_reussite_1
-      rect:
-        serializedVersion: 2
-        x: 23
-        y: 2405
-        width: 424
+        x: 25
+        y: 3205
+        width: 480
         height: 848
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a48d116ce76669db0800000000000000
-      internalID: -4785524859359602614
+      spriteID: eda750d16ea917560800000000000000
+      internalID: 7309793983319079646
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: client_reussite_2
+      name: client_reussite_02_1
       rect:
         serializedVersion: 2
-        x: 493
-        y: 3249
-        width: 438
-        height: 814
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b3b4cc732bd312fb0800000000000000
-      internalID: -4674387102584255685
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: client_reussite_3
-      rect:
-        serializedVersion: 2
-        x: 501
-        y: 2405
-        width: 424
+        x: 571
+        y: 3205
+        width: 480
         height: 848
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0952ad5168cb39ad0800000000000000
-      internalID: -2696604467786537584
+      spriteID: 8312e5346d73082e0800000000000000
+      internalID: -2125637630726102728
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: client_reussite_4
+      name: client_reussite_02_2
       rect:
         serializedVersion: 2
-        x: 979
-        y: 2405
-        width: 424
+        x: 1109
+        y: 3205
+        width: 480
         height: 848
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d37e58861e1d1fce0800000000000000
-      internalID: -1373085645319837891
+      spriteID: 637e28cac3ab421f0800000000000000
+      internalID: -1070526041652271306
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: client_reussite_5
+      name: client_reussite_02_3
       rect:
         serializedVersion: 2
-        x: 979
-        y: 3249
-        width: 424
-        height: 847
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3cdb5b4f233d55d80800000000000000
-      internalID: -8262465725533930045
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: client_reussite_6
-      rect:
-        serializedVersion: 2
-        x: 1457
-        y: 2405
-        width: 424
+        x: 49
+        y: 2269
+        width: 480
         height: 848
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2ac4c05cd1c77e8b0800000000000000
-      internalID: -5122989583808836446
+      spriteID: 459b223b62b10cee0800000000000000
+      internalID: -1242963644126152364
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: client_reussite_7
+      name: client_reussite_02_4
       rect:
         serializedVersion: 2
-        x: 1457
-        y: 3249
-        width: 438
-        height: 847
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 579
+        y: 2269
+        width: 480
+        height: 848
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e33be2f3114cc74a0800000000000000
-      internalID: -6594180176023735490
+      spriteID: 9702a69b93f076c10800000000000000
+      internalID: 2046621296261472377
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: client_reussite_8
+      name: client_reussite_02_5
       rect:
         serializedVersion: 2
-        x: 23
-        y: 1523
-        width: 442
-        height: 884
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 1109
+        y: 2269
+        width: 480
+        height: 848
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 31ab45ffbe4329690800000000000000
-      internalID: -7596951433214903789
+      spriteID: 0154353f1ab9abaf0800000000000000
+      internalID: -379820098685025008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: client_reussite_02_6
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 1335
+        width: 480
+        height: 848
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e3784da7105a7790800000000000000
+      internalID: -7531619364202056731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: client_reussite_02_7
+      rect:
+        serializedVersion: 2
+        x: 579
+        y: 1335
+        width: 480
+        height: 848
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca85695080ffb29b0800000000000000
+      internalID: -5103705342775764820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: client_reussite_02_8
+      rect:
+        serializedVersion: 2
+        x: 1109
+        y: 1335
+        width: 480
+        height: 848
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cddb22726b24b090800000000000000
+      internalID: -8019737334617743935
       vertices: []
       indices: 
       edges: []

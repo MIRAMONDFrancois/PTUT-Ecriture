@@ -114,7 +114,7 @@ TextureImporter:
         x: 0
         y: 1204
         width: 478
-        height: 799
+        height: 844
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,9 +132,9 @@ TextureImporter:
       name: "client_trop_\xE9pic\xE9_1"
       rect:
         serializedVersion: 2
-        x: 504
+        x: 478
         y: 1204
-        width: 418
+        width: 478
         height: 844
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -153,10 +153,10 @@ TextureImporter:
       name: "client_trop_\xE9pic\xE9_2"
       rect:
         serializedVersion: 2
-        x: 982
+        x: 956
         y: 1204
-        width: 418
-        height: 832
+        width: 478
+        height: 844
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,10 +174,10 @@ TextureImporter:
       name: "client_trop_\xE9pic\xE9_3"
       rect:
         serializedVersion: 2
-        x: 1460
+        x: 1434
         y: 1204
-        width: 418
-        height: 832
+        width: 478
+        height: 844
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,10 +195,10 @@ TextureImporter:
       name: "client_trop_\xE9pic\xE9_4"
       rect:
         serializedVersion: 2
-        x: 26
-        y: 359
-        width: 418
-        height: 832
+        x: 0
+        y: 360
+        width: 478
+        height: 844
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -216,10 +216,10 @@ TextureImporter:
       name: "client_trop_\xE9pic\xE9_5"
       rect:
         serializedVersion: 2
-        x: 504
-        y: 359
-        width: 421
-        height: 832
+        x: 478
+        y: 360
+        width: 478
+        height: 844
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -237,10 +237,10 @@ TextureImporter:
       name: "client_trop_\xE9pic\xE9_6"
       rect:
         serializedVersion: 2
-        x: 972
-        y: 359
-        width: 438
-        height: 832
+        x: 956
+        y: 360
+        width: 478
+        height: 844
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

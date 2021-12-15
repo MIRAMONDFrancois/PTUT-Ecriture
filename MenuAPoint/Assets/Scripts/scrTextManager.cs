@@ -53,6 +53,10 @@ public class scrTextManager : MonoBehaviour
     private string correctText; // correct string
     private string currentText; // string composed of the words and separators
 
+    [Header("Limited Ponct (0 = infinite)")]
+    public int pointLimit;
+    public int virguleLimit;
+
     [Header("Dual Animation mode")]
     public bool dualAnim;
     public bool hideGen;

@@ -285,6 +285,7 @@ public class scrTextManager : MonoBehaviour
                     if (pasAssezVirgule) Debug.Log("<color=orange>(FADE)</color> Pas assez de virgules");
                     if (mauvaiseVirgule) Debug.Log("<color=orange>(CONFUS)</color> Mauvais placement de virgule");
 
+                    //prhase correcte
                     if (!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule)
                     {
                         Debug.Log("<color=green>CORRECT!</color>");
@@ -349,6 +350,9 @@ public class scrTextManager : MonoBehaviour
             frames++;
         }
 
+        //curseur réactions
+        cursor.GetComponent<Animator>().SetBool("Maigre",pointTropTot);
+        cursor.GetComponent<Animator>().SetBool("Gros",manquePoint);
         cursor.GetComponent<Animator>().SetBool("Validation",movingCursor);
     }
 

@@ -1,0 +1,20 @@
+Fichier de MICHEL sur le niveau 4.
+Le texte correct est:
+Aujourd'hui, j'ai mangé des pâtes au restaurant universitaire de Champollion. Ils ont refusé que je demande des légumes, je suis triste.
+
+----------------------------------------------
+
+Erreur à 1 secondes :
+- pas assez de virgule
+- point trop tôt
+Aujourd'hui. j'ai mangé des pâtes au restaurant universitaire de Champollion ils ont refusé que je demande des légumes je suis triste
+
+----------------------------------------------
+
+Erreur à 7 secondes :
+- pas assez de virgule
+Aujourd'hui j'ai mangé des pâtes au restaurant universitaire de Champollion. ils ont refusé que je demande des légumes je suis triste
+
+----------------------------------------------
+
+Terminé en 13 secondes avec 2 erreur(s).

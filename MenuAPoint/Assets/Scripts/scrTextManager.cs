@@ -78,6 +78,7 @@ public class scrTextManager : MonoBehaviour
     // Debug text obj
     [Header("DEBUG")]
     public Text debugText;
+    public bool imAmDebugging;
 
     // Colors
     [HideInInspector]
@@ -99,12 +100,15 @@ public class scrTextManager : MonoBehaviour
     {
         // DATA IMPORT
         scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
-        TextFile = globalScript.file;
-        useSpecial = globalScript.isSpecial;
-        SpecialFile = globalScript.specialFile;
-        // nivAntiOubli???
-        // pointLimit???
-        // virguleLimit???
+        if (!imAmDebugging) {
+            TextFile = globalScript.file;
+            useSpecial = globalScript.isSpecial;
+            SpecialFile = globalScript.specialFile;
+            // nivAntiOubli???
+            // pointLimit???
+            // virguleLimit???
+        }
+        
 
 
         // WILL PROBABLY MOVE WITH THE NEXT TYPE OF GAME

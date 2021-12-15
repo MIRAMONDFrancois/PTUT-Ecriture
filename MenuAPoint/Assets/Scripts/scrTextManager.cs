@@ -105,9 +105,9 @@ public class scrTextManager : MonoBehaviour
             TextFile = globalScript.file;
             useSpecial = globalScript.isSpecial;
             SpecialFile = globalScript.specialFile;
-            // nivAntiOubli???
-            // pointLimit???
-            // virguleLimit???
+            dualAnim = globalScript.nivAntiOubli;
+            pointLimit = globalScript.pointLimit;
+            virguleLimit = globalScript.virguleLimit;
         } else {
             globalScript.playerName = "MICHEL";
             globalScript.levelNum = 4;

@@ -37,28 +37,36 @@ public class scrMapManager : MonoBehaviour
 
     public void selectLevel()
     {
+        int levelActuel = 0;
         switch(EventSystem.current.currentSelectedGameObject.name)
         {
             case "Level01":
                 modifValue(1, false, false, Resources.Load("Texts/Level1") as TextAsset, null, 2, 0);
+                levelActuel = 1;
                 break;
             case "Level02":
-                modifValue(2, true, false, Resources.Load("Texts/dual_1A") as TextAsset, Resources.Load("Texts/dual_1B") as TextAsset, 0, 0);
+                modifValue(2, false, true, Resources.Load("Texts/Level2") as TextAsset, null, 1, 0);
+                levelActuel = 2;
                 break;
             case "Level03":
-                modifValue(3, false, true, Resources.Load("Texts/Level2") as TextAsset, null, 1, 0);
+                modifValue(3, true, false, Resources.Load("Texts/dual_1A") as TextAsset, Resources.Load("Texts/dual_1B") as TextAsset, 0, 0);
+                levelActuel = 3;
                 break;
             case "Level04":
                 modifValue(4, false, false, Resources.Load("Texts/Level3") as TextAsset, null, 1, 3);
+                levelActuel = 4;
                 break;
             case "Level05":
                 modifValue(5, false, false, Resources.Load("Texts/Level4") as TextAsset, null, 2, 3);
+                levelActuel = 5;
                 break;
             case "Level06":
                 modifValue(6, true, true, Resources.Load("Texts/dual_2A") as TextAsset, Resources.Load("Texts/dual_2B") as TextAsset,0,0);
+                levelActuel = 6;
                 break;
             case "Level07":
                 modifValue(7, false, false, Resources.Load("Texts/Level5") as TextAsset, null,1,1);
+                levelActuel = 7;
                 break;
             case "Level08":
                 modifValue(8, true, true, Resources.Load("Texts/dual_3A") as TextAsset, Resources.Load("Texts/dual_3B") as TextAsset, 0, 0);
@@ -67,10 +75,10 @@ public class scrMapManager : MonoBehaviour
                 modifValue(9, false, false, Resources.Load("Texts/Level6") as TextAsset, null, 2, 0);
                 break;
             case "Level10":
-                modifValue(10, true, false, Resources.Load("Texts/dual_4A") as TextAsset, Resources.Load("Texts/dual_4B") as TextAsset, 0, 0);
+                modifValue(10, false, true, Resources.Load("Texts/Level7") as TextAsset, null, 3, 5);
                 break;
             case "Level11":
-                modifValue(11, false, true, Resources.Load("Texts/Level7") as TextAsset, null, 3, 5);
+                modifValue(11, true, false, Resources.Load("Texts/dual_4A") as TextAsset, Resources.Load("Texts/dual_4B") as TextAsset, 0, 0);
                 break;
             case "Level12":
                 modifValue(12, false, false, Resources.Load("Texts/Level8") as TextAsset, null, 5, 4);
@@ -88,7 +96,13 @@ public class scrMapManager : MonoBehaviour
                 throw new ArgumentException("Element not found", nameof(EventSystem.current.currentSelectedGameObject.name));
         }
 
-        LoadNewScene();
+        if(checkUnlocked(levelActuel - 1))
+            LoadNewScene();
 
+    }
+
+    private bool checkUnlocked(int level)
+    {
+        return GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[level];
     }
 }

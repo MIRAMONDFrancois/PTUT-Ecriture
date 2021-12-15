@@ -620,6 +620,7 @@ MonoBehaviour:
   dualAnim: 0
   hideGen: 0
   debugText: {fileID: 124640225}
+  IAmDebugging: 0
   colorBasique: {r: 1, g: 1, b: 1, a: 1}
   colorVirgule: {r: 1, g: 0.6, b: 0, a: 1}
   colorPoint: {r: 0.9, g: 0.9, b: 0.5, a: 1}
@@ -670,6 +671,11 @@ MonoBehaviour:
   levelNum: 0
   level2unlocked: 0
   file: {fileID: 0}
+  specialFile: {fileID: 0}
+  isSpecial: 0
+  nivAntiOubli: 0
+  pointLimit: 0
+  virguleLimit: 0
 --- !u!4 &579154066
 Transform:
   m_ObjectHideFlags: 0

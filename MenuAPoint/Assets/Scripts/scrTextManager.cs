@@ -78,7 +78,7 @@ public class scrTextManager : MonoBehaviour
     // Debug text obj
     [Header("DEBUG")]
     public Text debugText;
-    public bool imAmDebugging;
+    public bool IAmDebugging;
 
     // Colors
     [HideInInspector]
@@ -100,7 +100,7 @@ public class scrTextManager : MonoBehaviour
     {
         // DATA IMPORT
         scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
-        if (!imAmDebugging) {
+        if (!IAmDebugging) {
             TextFile = globalScript.file;
             useSpecial = globalScript.isSpecial;
             SpecialFile = globalScript.specialFile;

@@ -42,69 +42,76 @@ public class scrMapManager : MonoBehaviour
         {
             case "Level01":
                 modifValue(1, false, false, Resources.Load("Texts/Level1") as TextAsset, null, 2, 0);
-                levelActuel = 1;
+                levelActuel = 0;
                 break;
             case "Level02":
                 modifValue(2, false, true, Resources.Load("Texts/Level2") as TextAsset, null, 2, 0);
-                levelActuel = 2;
+                levelActuel = 1;
                 break;
             case "Level03":
                 modifValue(3, true, false, Resources.Load("Texts/dual_1A") as TextAsset, Resources.Load("Texts/dual_1B") as TextAsset, 0, 0);
-                levelActuel = 3;
+                levelActuel = 2;
                 break;
             case "Level04":
                 modifValue(4, false, false, Resources.Load("Texts/Level3") as TextAsset, null, 1, 3);
-                levelActuel = 4;
+                levelActuel = 3;
                 break;
             case "Level05":
                 modifValue(5, false, false, Resources.Load("Texts/Level4") as TextAsset, null, 0, 3);
-                levelActuel = 5;
+                levelActuel = 4;
                 break;
             case "Level06":
                 modifValue(6, true, true, Resources.Load("Texts/dual_2A") as TextAsset, Resources.Load("Texts/dual_2B") as TextAsset,0,0);
-                levelActuel = 6;
+                levelActuel = 5;
                 break;
             case "Level07":
                 modifValue(7, false, false, Resources.Load("Texts/Level5") as TextAsset, null,1,0);
-                levelActuel = 7;
+                levelActuel = 6;
                 break;
             case "Level08":
                 modifValue(8, true, true, Resources.Load("Texts/dual_3A") as TextAsset, Resources.Load("Texts/dual_3B") as TextAsset, 0, 0);
-                levelActuel = 8;
+                levelActuel = 7;
                 break;
             case "Level09":
                 modifValue(9, false, false, Resources.Load("Texts/Level6") as TextAsset, null, 1, 0);
-                levelActuel = 9;
+                levelActuel = 8;
                 break;
             case "Level10":
-                levelActuel = 10;
+                levelActuel = 9;
                 modifValue(10, false, true, Resources.Load("Texts/Level7") as TextAsset, null, 2, 5);
                 break;
             case "Level11":
                 modifValue(11, true, false, Resources.Load("Texts/dual_4A") as TextAsset, Resources.Load("Texts/dual_4B") as TextAsset, 0, 0);
-                levelActuel = 11;
+                levelActuel = 10;
                 break;
             case "Level12":
                 modifValue(12, false, false, Resources.Load("Texts/Level8") as TextAsset, null, 5, 4);
-                levelActuel = 12;
+                levelActuel = 11;
                 break;
             case "Level13":
                 modifValue(13, false, false, Resources.Load("Texts/Level9") as TextAsset, null, 4, 4);
-                levelActuel = 13;
+                levelActuel = 12;
                 break;
             case "Level14":
                 modifValue(14, true, true, Resources.Load("Texts/dual_5A") as TextAsset, Resources.Load("Texts/dual_5B") as TextAsset, 0, 0);
-                levelActuel = 14;
+                levelActuel = 13;
                 break;
             case "Level15":
                 modifValue(15, false, false, Resources.Load("Texts/Level10") as TextAsset, null, 0, 0);
-                levelActuel = 15;
+                levelActuel = 14;
                 break;
             default:
                 throw new ArgumentException("Element not found", nameof(EventSystem.current.currentSelectedGameObject.name));
         }
 
-        if(checkUnlocked(levelActuel - 1) || checkUnlocked(levelActuel))
+        Debug.Log(levelActuel);
+
+        if (levelActuel != 0)
+        {
+            if (checkUnlocked(levelActuel - 1))
+                LoadNewScene();
+        }
+        else
             LoadNewScene();
 
     }

@@ -58,7 +58,7 @@ public class scrDragAndDrop : MonoBehaviour
 
     public void StartDragUI()
     {
-        if (canBeMoved)
+        if (canBeMoved && textManager.GetComponent<scrTextManager>().canTouchPonct)
         {
             //Debug.Log("pointer picked up");
             if (!dragging) dragging = true;

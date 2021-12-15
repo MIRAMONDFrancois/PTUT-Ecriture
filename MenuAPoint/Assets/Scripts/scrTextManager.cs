@@ -55,6 +55,10 @@ public class scrTextManager : MonoBehaviour
     private string correctText; // correct string
     private string currentText; // string composed of the words and separators
 
+    [Header("Limited Ponct (0 = infinite)")]
+    public int pointLimit;
+    public int virguleLimit;
+
     [Header("Dual Animation mode")]
     public bool dualAnim;
     public bool hideGen;
@@ -62,7 +66,7 @@ public class scrTextManager : MonoBehaviour
 
     // Text pos
     private float lineWidth = 1550f; // 
-    private float textFloor = 350f; // vertical position of the top of the text
+    private float textFloor = 350f; // (default: 350f; anim: 75f) vertical position of the top of the text
     private float spaceSize = 50f; // 
     private float lineJump = 80f;
 
@@ -76,6 +80,7 @@ public class scrTextManager : MonoBehaviour
     // Debug text obj
     [Header("DEBUG")]
     public Text debugText;
+    public bool IAmDebugging;
 
     // Colors
     [HideInInspector]
@@ -97,12 +102,18 @@ public class scrTextManager : MonoBehaviour
     {
         // DATA IMPORT
         scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
-        globalScript.playerName = "MICHEL"; // DEBUG
-        globalScript.levelNum = 4; // DEBUG
-        //TextFile = globalScript.file;
-        //useSpecial = globalScript.useSpecial;
-        //SpacialFile = globalScript.SpecialFile;
-        // ???
+        if (!IAmDebugging) {
+            TextFile = globalScript.file;
+            useSpecial = globalScript.isSpecial;
+            SpecialFile = globalScript.specialFile;
+            dualAnim = globalScript.nivAntiOubli;
+            pointLimit = globalScript.pointLimit;
+            virguleLimit = globalScript.virguleLimit;
+        } else {
+            globalScript.playerName = "MICHEL";
+            globalScript.levelNum = 4;
+        }
+        
 
 
         // WILL PROBABLY MOVE WITH THE NEXT TYPE OF GAME
@@ -126,6 +137,7 @@ public class scrTextManager : MonoBehaviour
         CutsWordsDual(TextFile, s, words);
 
         // animation log
+        animationLog.gameObject.SetActive(showLog);
         animationLog.text = "Les clients ont hâte de manger votre plat !";
 
 
@@ -281,7 +293,7 @@ public class scrTextManager : MonoBehaviour
             if (lineCursor >= lineToStop)
             {
                 // last line
-                if (trans.x > posToStop)
+                if (trans.x > posToStop - 40) // HARD FIX 
                 {
                     // play animations
                     trans.x = posToStop; // stop
@@ -316,7 +328,8 @@ public class scrTextManager : MonoBehaviour
                         }
                         // writes on the .txt
                         recapContent += "\nTerminé en " + frames/60 + " secondes avec " + errorNum + " erreur(s).";
-                        System.IO.File.WriteAllText(fullFolderName + "/NiveauX.txt", recapContent);
+                        scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
+                        System.IO.File.WriteAllText(fullFolderName + "/Niveau"+globalScript.levelNum+".txt", recapContent);
                         
                         // Updates level unlocked + 1
                         // ???
@@ -329,6 +342,9 @@ public class scrTextManager : MonoBehaviour
                         for (int i = 1; i < ButtonLayer.transform.childCount; i++) {
                             ButtonLayer.transform.GetChild(i).gameObject.SetActive(false);
                         }
+
+                        // Unlocks next level
+                        globalScript.levelunlocked[globalScript.levelNum] = true;
                     }
 
                     // recap phrase for the animation recall
@@ -379,7 +395,7 @@ public class scrTextManager : MonoBehaviour
                     
                 }
             }
-
+            // cursor gets back to original position
             cursor.transform.localPosition = trans;
 
         } else {
@@ -679,7 +695,7 @@ public class scrTextManager : MonoBehaviour
         }
         //Debug.Log("FIN DE LA VALIDATION (" + i + "/" + currentText.Length + ")");
 
-
+        //Debug.Log("lineToStop:"+lineToStop + " posToStop:" + posToStop);
 
         animationLog.text = "Les clients sont en train de tester votre plat...";
 

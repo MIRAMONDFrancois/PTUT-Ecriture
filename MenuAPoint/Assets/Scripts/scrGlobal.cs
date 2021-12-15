@@ -6,13 +6,24 @@ public class scrGlobal : MonoBehaviour
 {
     public string playerName;
     public int levelNum;
-    public bool level2unlocked = false;
+    public  List<bool> levelunlocked = new List<bool>();
+    
+    
     public TextAsset file;
+    
     public TextAsset specialFile;
     public bool isSpecial = false;
     public bool nivAntiOubli = false;
+    public int pointLimit = 0;
+    public int virguleLimit = 0;
 
-
+    public void Start(){
+        levelunlocked.Add(true);
+        for (int i = 1; i<= 14; i++){
+            levelunlocked.Add(false);
+        }
+        
+    }
     void Awake() {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Global");
 

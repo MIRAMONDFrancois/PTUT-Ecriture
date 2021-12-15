@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 3082302466577497575}
   m_Layer: 0
   m_Name: Block Virgule
-  m_TagString: Untagged
+  m_TagString: Virgule
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -224,6 +224,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ponct: ','
+  canBeMoved: 1
+  canBeDeleted: 1
+  dragging: 0
+  willSnap: 0
+  ogPos: {x: 0, y: 0, z: 0}
+  snapPos: {x: 0, y: 0, z: 0}
+  col: {fileID: 0}
+  prevcol: {fileID: 0}
+  offset: 8
   textManager: {fileID: 0}
 --- !u!114 &1046700973729256853
 MonoBehaviour:

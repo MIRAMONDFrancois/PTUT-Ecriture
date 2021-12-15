@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 using System.IO;
 
@@ -30,6 +31,8 @@ public class scrTextManager : MonoBehaviour
 
     // Cursor
     private bool movingCursor;
+    [HideInInspector]
+    public bool canTouchPonct;
     private int cursorSpeed = 9;
     private int lineCursor = 0;
     private float lineToStop = 0;
@@ -98,6 +101,10 @@ public class scrTextManager : MonoBehaviour
         //useSpecial = globalScript.useSpecial;
         //SpacialFile = globalScript.SpecialFile;
         // ???
+
+
+        // WILL PROBABLY MOVE WITH THE NEXT TYPE OF GAME
+        canTouchPonct = true;
 
 
         colorBasique = new Color(1f, 1f, 1f);
@@ -287,6 +294,7 @@ public class scrTextManager : MonoBehaviour
 
                     if (!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule)
                     {
+                        // CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT
                         Debug.Log("<color=green>CORRECT!</color>");
                         cursor.GetComponent<Animator>().SetBool("Reussite",true);
                         switch (Random.Range(1, 4))
@@ -304,12 +312,24 @@ public class scrTextManager : MonoBehaviour
                         // writes on the .txt
                         recapContent += "\nTerminé en " + frames/60 + " secondes avec " + errorNum + " erreur(s).";
                         System.IO.File.WriteAllText(fullFolderName + "/NiveauX.txt", recapContent);
+                        
+                        // Updates level unlocked + 1
+                        // ???
+                        // ???
+                        // ???
+
+                        // Hides all buttons and shows the "continue" one, which is the first child
+                        ButtonLayer.SetActive(true);
+                        ButtonLayer.transform.GetChild(0).gameObject.SetActive(true);
+                        for (int i = 1; i < ButtonLayer.transform.childCount; i++) {
+                            ButtonLayer.transform.GetChild(i).gameObject.SetActive(false);
+                        }
                     }
-                    ButtonLayer.SetActive(true);
 
                     // recap phrase for the animation recall
                     if (pointTropTot || manquePoint || tropVirgule || pasAssezVirgule || mauvaiseVirgule)
                     {
+                        // ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR
                         string recap = "";
                         switch (Random.Range(1, 4))
                         {
@@ -337,6 +357,9 @@ public class scrTextManager : MonoBehaviour
                         recapContent += currentText + "\n";
                         recapContent += "\n----------------------------------------------\n";
                         errorNum++;
+                        ButtonLayer.SetActive(true);
+
+                        canTouchPonct = true;
                     }
                     cursor.transform.SetAsFirstSibling();
                 }
@@ -645,6 +668,7 @@ public class scrTextManager : MonoBehaviour
         animationLog.text = "Les clients sont en train de tester votre plat...";
 
         movingCursor = true;
+        canTouchPonct = false;
         cursor.transform.localPosition = cursorStart;
         lineCursor = 0;
         cursor.transform.SetAsLastSibling();
@@ -720,5 +744,9 @@ public class scrTextManager : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public void GoToMap() {
+        SceneManager.LoadScene("MapScene");
     }
 }

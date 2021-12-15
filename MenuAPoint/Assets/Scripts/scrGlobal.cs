@@ -8,6 +8,9 @@ public class scrGlobal : MonoBehaviour
     public int levelNum;
     public bool level2unlocked = false;
     public TextAsset file;
+    public TextAsset specialFile;
+    public bool isSpecial = false;
+    public bool nivAntiOubli = false;
 
 
     void Awake() {

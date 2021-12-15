@@ -45,7 +45,7 @@ public class scrMapManager : MonoBehaviour
                 levelActuel = 1;
                 break;
             case "Level02":
-                modifValue(2, false, true, Resources.Load("Texts/Level2") as TextAsset, null, 1, 0);
+                modifValue(2, false, true, Resources.Load("Texts/Level2") as TextAsset, null, 2, 0);
                 levelActuel = 2;
                 break;
             case "Level03":
@@ -57,7 +57,7 @@ public class scrMapManager : MonoBehaviour
                 levelActuel = 4;
                 break;
             case "Level05":
-                modifValue(5, false, false, Resources.Load("Texts/Level4") as TextAsset, null, 2, 3);
+                modifValue(5, false, false, Resources.Load("Texts/Level4") as TextAsset, null, 0, 3);
                 levelActuel = 5;
                 break;
             case "Level06":
@@ -65,17 +65,17 @@ public class scrMapManager : MonoBehaviour
                 levelActuel = 6;
                 break;
             case "Level07":
-                modifValue(7, false, false, Resources.Load("Texts/Level5") as TextAsset, null,1,1);
+                modifValue(7, false, false, Resources.Load("Texts/Level5") as TextAsset, null,1,0);
                 levelActuel = 7;
                 break;
             case "Level08":
                 modifValue(8, true, true, Resources.Load("Texts/dual_3A") as TextAsset, Resources.Load("Texts/dual_3B") as TextAsset, 0, 0);
                 break;
             case "Level09":
-                modifValue(9, false, false, Resources.Load("Texts/Level6") as TextAsset, null, 2, 0);
+                modifValue(9, false, false, Resources.Load("Texts/Level6") as TextAsset, null, 1, 0);
                 break;
             case "Level10":
-                modifValue(10, false, true, Resources.Load("Texts/Level7") as TextAsset, null, 3, 5);
+                modifValue(10, false, true, Resources.Load("Texts/Level7") as TextAsset, null, 2, 5);
                 break;
             case "Level11":
                 modifValue(11, true, false, Resources.Load("Texts/dual_4A") as TextAsset, Resources.Load("Texts/dual_4B") as TextAsset, 0, 0);

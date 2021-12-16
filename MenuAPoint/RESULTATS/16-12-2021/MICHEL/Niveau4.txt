@@ -1,0 +1,14 @@
+Fichier de MICHEL sur le niveau 4.
+Le texte correct est:
+Le food truck de Tokki ne se détache pas comme prévu.
+
+----------------------------------------------
+
+Erreur à 2 secondes :
+- trop de virgule
+- point trop tôt
+Le, food. truck de Tokki ne se détache pas comme prévu
+
+----------------------------------------------
+
+Terminé en 9 secondes avec 1 erreur(s).

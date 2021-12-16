@@ -640,9 +640,9 @@ MonoBehaviour:
   slots: []
   separators: []
   wordsObj: []
-  pointLimit: 1
-  virguleLimit: 1
-  dualAnim: 1
+  pointLimit: 2
+  virguleLimit: 2
+  dualAnim: 0
   CorrectFile: {fileID: 4900000, guid: 01aee940f6d40a1488afbb418defa685, type: 3}
   canBeMoved: 0
   canBeDeleted: 0

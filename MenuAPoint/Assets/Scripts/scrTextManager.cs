@@ -21,6 +21,7 @@ public class scrTextManager : MonoBehaviour
     public GameObject cursor;
     public GameObject fondu;
     public GameObject client_virgule;
+    public bool showLog;
     public Text animationLog;
 
     [Header("Custom")]

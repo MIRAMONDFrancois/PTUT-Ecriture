@@ -628,28 +628,26 @@ MonoBehaviour:
   canvas: {fileID: 937505845}
   ButtonLayer: {fileID: 639069586}
   cursor: {fileID: 1916187030}
-
-  fondu: {fileID: 2007297972}
-  client_virgule: {fileID: 356984032}
+  fondu: {fileID: 0}
+  client_virgule: {fileID: 0}
   showLog: 1
-
-  animationLog: {fileID: 2065556285}
+  animationLog: {fileID: 0}
   addColors: 0
   useSpecial: 0
-  SpecialFile: {fileID: 4900000, guid: dd0be7d3e86165e4a928d01d29d1440e, type: 3}
+  SpecialFile: {fileID: 0}
   canTouchPonct: 0
   slots: []
   separators: []
   wordsObj: []
-  pointLimit: 2
+  pointLimit: 0
   virguleLimit: 0
   dualAnim: 0
   hideGen: 0
-  debugText: {fileID: 124640225}
+  debugText: {fileID: 0}
   IAmDebugging: 0
-  colorBasique: {r: 1, g: 1, b: 1, a: 1}
-  colorVirgule: {r: 1, g: 0.6, b: 0, a: 1}
-  colorPoint: {r: 0.9, g: 0.9, b: 0.5, a: 1}
+  colorBasique: {r: 0, g: 0, b: 0, a: 0}
+  colorVirgule: {r: 0, g: 0, b: 0, a: 0}
+  colorPoint: {r: 0, g: 0, b: 0, a: 0}
 --- !u!4 &450333189
 Transform:
   m_ObjectHideFlags: 0
@@ -700,10 +698,8 @@ MonoBehaviour:
   specialFile: {fileID: 0}
   isSpecial: 0
   nivAntiOubli: 0
-
   pointLimit: 0
   virguleLimit: 0
-
 --- !u!4 &579154066
 Transform:
   m_ObjectHideFlags: 0
@@ -1263,7 +1259,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 937505849}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

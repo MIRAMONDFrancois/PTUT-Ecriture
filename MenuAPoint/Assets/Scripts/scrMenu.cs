@@ -32,9 +32,13 @@ public class scrMenu : MonoBehaviour
     
     
     public void SetName(){
-        scrGlobal  truc = GameObject.Find("Global").GetComponent<scrGlobal>(); 
+        scrGlobal truc = GameObject.Find("Global").GetComponent<scrGlobal>(); 
         user_name.text = userInput_Field.text;
-        truc.playerName = user_name.text;
+        var leNom = user_name.text;
+        leNom = leNom.Replace(" ","");
+        leNom = leNom.Replace("\n","");
+        truc.playerName = leNom;
+        //Debug.Log("["+truc.playerName+"]"); // retour à la ligne de morts
     }
 
     public void Enterpwd(){

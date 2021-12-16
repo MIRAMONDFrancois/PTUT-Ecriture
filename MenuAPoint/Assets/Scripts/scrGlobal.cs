@@ -4,18 +4,29 @@ using UnityEngine;
 
 public class scrGlobal : MonoBehaviour
 {
+    [Header("General Informations")]
     public string playerName;
     public int levelNum;
+
+    [Header("Unlocked Levels")]
     public  List<bool> levelunlocked = new List<bool>();
     
-    
+    [Header("Base Text File")]
     public TextAsset file;
     
+    [Header("Fixed Separators")]
+    public bool isSpecial;
     public TextAsset specialFile;
-    public bool isSpecial = false;
-    public bool nivAntiOubli = false;
+
+    [Header("Limited Generators")]
     public int pointLimit = 0;
     public int virguleLimit = 0;
+
+    [Header("Animation Levels")]
+    public bool nivAntiOubli;
+    public TextAsset animTextFile;
+    public bool canBeMoved;
+    public bool canBeDeleted;
 
     public void Start(){
         levelunlocked.Add(true);

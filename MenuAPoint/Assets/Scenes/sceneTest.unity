@@ -648,7 +648,7 @@ MonoBehaviour:
   canBeDeleted: 0
   animationObj: {fileID: 1268975000}
   debugText: {fileID: 124640225}
-  IAmDebugging: 1
+  IAmDebugging: 0
   colorBasique: {r: 0, g: 0, b: 0, a: 0}
   colorVirgule: {r: 0, g: 0, b: 0, a: 0}
   colorPoint: {r: 0, g: 0, b: 0, a: 0}
@@ -699,11 +699,14 @@ MonoBehaviour:
   levelNum: 0
   levelunlocked: 
   file: {fileID: 0}
-  specialFile: {fileID: 0}
   isSpecial: 0
-  nivAntiOubli: 0
+  specialFile: {fileID: 0}
   pointLimit: 0
   virguleLimit: 0
+  nivAntiOubli: 0
+  animTextFile: {fileID: 0}
+  canBeMoved: 0
+  canBeDeleted: 0
 --- !u!4 &579154066
 Transform:
   m_ObjectHideFlags: 0

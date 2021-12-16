@@ -620,7 +620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df69341a50af6645bf5a230dcaa5dc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TextFile: {fileID: 4900000, guid: fed3d83418b3d90499a1c41bfc6eb695, type: 3}
+  TextFile: {fileID: 4900000, guid: 53dce84c04c69cb4ca43498f00f0a054, type: 3}
   WordPrefab: {fileID: 444234112903781605, guid: 5a745fb43e2e3054d98d19fb5722817c,
     type: 3}
   SlotPrefab: {fileID: 5352705183987625923, guid: 8fc8842219ac7b941b58f4e4cc605d0c,
@@ -640,10 +640,13 @@ MonoBehaviour:
   slots: []
   separators: []
   wordsObj: []
-  pointLimit: 0
-  virguleLimit: 0
-  dualAnim: 0
-  hideGen: 0
+  pointLimit: 1
+  virguleLimit: 1
+  dualAnim: 1
+  CorrectFile: {fileID: 4900000, guid: 01aee940f6d40a1488afbb418defa685, type: 3}
+  canBeMoved: 0
+  canBeDeleted: 0
+  animationObj: {fileID: 1268975000}
   debugText: {fileID: 124640225}
   IAmDebugging: 1
   colorBasique: {r: 0, g: 0, b: 0, a: 0}

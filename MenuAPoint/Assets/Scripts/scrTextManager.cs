@@ -64,7 +64,10 @@ public class scrTextManager : MonoBehaviour
     [Header("Dual Animation mode")]
     public bool dualAnim;
     public TextAsset CorrectFile;
-    public bool hideGen;
+    private bool hideGen; // may be irrelevant, like useSpecial and others
+    public bool canBeMoved;
+    public bool canBeDeleted;
+    public GameObject animationObj;
 
 
     // Text pos
@@ -135,6 +138,8 @@ public class scrTextManager : MonoBehaviour
         if (!dualAnim) {
             // Classic mode
 
+            textFloor = 350f;
+
             canTouchPonct = true;
 
             s = new List<string>();
@@ -172,7 +177,7 @@ public class scrTextManager : MonoBehaviour
 
             // reads potential special file and adds unmovable or undeletable separators
             // incroyablement brut, on n'en parlera pas
-            if (useSpecial)
+            if (useSpecial) // may be irrelevant?
             {
                 string st = SpecialFile.text;
                 sp = st.Split('|');
@@ -224,6 +229,9 @@ public class scrTextManager : MonoBehaviour
 
         } else {
             // Dual Mode --------------------------------------------------
+
+            textFloor = 75f;
+            animationObj.gameObject.SetActive(true);
 
             //hideGen = true; // dans le cas avec toutes les ponct placées?
             //canTouchPonct = false; // jusque la fin de l'animation jouée
@@ -283,8 +291,8 @@ public class scrTextManager : MonoBehaviour
                 if (block != null)
                 {
                     block.GetComponent<scrDragAndDrop>().dragging = false;
-                    block.GetComponent<scrDragAndDrop>().canBeMoved = true; // DEPENDS !!!
-                    block.GetComponent<scrDragAndDrop>().canBeDeleted = false; // DEPENDS !!!
+                    block.GetComponent<scrDragAndDrop>().canBeMoved = canBeMoved;
+                    block.GetComponent<scrDragAndDrop>().canBeDeleted = canBeDeleted;
                     slots[k].GetComponent<scrSlot>().isUsed = true;
                     block.GetComponent<scrDragAndDrop>().willSnap = true;
                     Vector3 vect = slots[k].transform.position;
@@ -300,35 +308,6 @@ public class scrTextManager : MonoBehaviour
 
             // END OF DUAL MODE
         } 
-        
-
-
-
-        /*
-        if (false) // COMMENT PLACER UN POINT FIXE
-        { 
-            // same as special, but to add unmovable points to the text
-            GameObject virguleGen = GameObject.Find("Virgule Gen");
-            GameObject pointGen = GameObject.Find("Point Gen");
-            GameObject block;
-
-            // point 1
-            block = pointGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-            slots[slots.Length - 1].GetComponent<scrSlot>().SendPonct(".");
-            block.GetComponent<scrDragAndDrop>().dragging = false;
-            block.GetComponent<scrDragAndDrop>().canBeMoved = false;
-            block.GetComponent<scrDragAndDrop>().canBeDeleted = false;
-            slots[slots.Length - 1].GetComponent<scrSlot>().isUsed = true;
-            block.GetComponent<scrDragAndDrop>().willSnap = true;
-            Vector3 vect = slots[slots.Length - 1].transform.position;
-            vect.y -= 25;
-            block.GetComponent<scrDragAndDrop>().ogPos = vect;
-            block.GetComponent<scrDragAndDrop>().snapPos = vect;
-            block.transform.position = vect;
-            block.GetComponent<scrDragAndDrop>().col = slots[slots.Length - 1].GetComponent<BoxCollider2D>();
-
-        }*/
-
 
         // DATA EXPORT
         string pn = globalScript.playerName;

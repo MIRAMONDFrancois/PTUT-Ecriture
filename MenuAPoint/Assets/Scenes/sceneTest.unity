@@ -628,10 +628,10 @@ MonoBehaviour:
   canvas: {fileID: 937505845}
   ButtonLayer: {fileID: 639069586}
   cursor: {fileID: 1916187030}
-  fondu: {fileID: 0}
-  client_virgule: {fileID: 0}
+  fondu: {fileID: 2007297972}
+  client_virgule: {fileID: 356984032}
   showLog: 1
-  animationLog: {fileID: 0}
+  animationLog: {fileID: 2065556285}
   addColors: 0
   useSpecial: 0
   SpecialFile: {fileID: 0}
@@ -643,8 +643,8 @@ MonoBehaviour:
   virguleLimit: 0
   dualAnim: 0
   hideGen: 0
-  debugText: {fileID: 0}
-  IAmDebugging: 0
+  debugText: {fileID: 124640225}
+  IAmDebugging: 1
   colorBasique: {r: 0, g: 0, b: 0, a: 0}
   colorVirgule: {r: 0, g: 0, b: 0, a: 0}
   colorPoint: {r: 0, g: 0, b: 0, a: 0}

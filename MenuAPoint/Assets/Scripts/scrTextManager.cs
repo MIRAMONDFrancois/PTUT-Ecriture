@@ -62,6 +62,7 @@ public class scrTextManager : MonoBehaviour
 
     [Header("Dual Animation mode")]
     public bool dualAnim;
+    public TextAsset CorrectFile;
     public bool hideGen;
 
 
@@ -114,11 +115,7 @@ public class scrTextManager : MonoBehaviour
             globalScript.playerName = "MICHEL";
             globalScript.levelNum = 4;
         }
-        
 
-
-        // WILL PROBABLY MOVE WITH THE NEXT TYPE OF GAME
-        canTouchPonct = true;
 
 
         colorBasique = new Color(1f, 1f, 1f);
@@ -128,96 +125,183 @@ public class scrTextManager : MonoBehaviour
         
         cursorStart = new Vector3(-(lineWidth/2) - spaceSize, textFloor, 0); //cursor.transform.localPosition;
         cursor.transform.localPosition = cursorStart;
-
-
-        s = new List<string>();
-        words = new List<string>();
-
-        correctText = TextFile.text;
-
-        CutsWordsDual(TextFile, s, words);
-
-        // animation log
-        animationLog.gameObject.SetActive(showLog);
-        animationLog.text = "Les clients ont hâte de manger votre plat !";
-
-
-
-        // creates separators list
-        separators = new string[words.Count];
-        for (int i = 0; i < separators.Length; i++) separators[i] = "";
-        wordsObj = new GameObject[words.Count];
-        slots = new GameObject[words.Count];
+        cursor.gameObject.SetActive(!dualAnim);
 
 
 
 
-        // Places the words
-        float W = 0f; // width cursor
-        float H = 0f; // height cursor
-        (float, float) thing = placesWords(words, slots, wordsObj, W, H, 1);
-        W = thing.Item1;
-        H = thing.Item2;
 
+        if (!dualAnim) {
+            // Classic mode
 
-        GameObject virguleGen = GameObject.Find("Virgule Gen");
-        GameObject pointGen = GameObject.Find("Point Gen");
+            canTouchPonct = true;
 
-        if (hideGen)
-        {
-            virguleGen.SetActive(false);
-            pointGen.SetActive(false);
-        }
+            s = new List<string>();
+            words = new List<string>();
 
-        // reads potential special file and adds unmovable or undeletable separators
-        // incroyablement brut, on n'en parlera pas
-        if (useSpecial)
-        {
-            string st = SpecialFile.text;
-            sp = st.Split('|');
+            correctText = TextFile.text;
 
-            bool canMoved = sp[0].Equals("true");
-            bool canDeleted = sp[1].Equals("true");
+            CutsWordsDual(TextFile, s, words);
 
-            
-            GameObject block;
+            // animation log
+            animationLog.gameObject.SetActive(showLog);
+            animationLog.text = "Les clients ont hâte de manger votre plat !";
 
+            // creates separators list
+            separators = new string[words.Count];
+            for (int i = 0; i < separators.Length; i++) separators[i] = "";
+            wordsObj = new GameObject[words.Count];
+            slots = new GameObject[words.Count];
 
-            string[] ss = sp[2].Split(';');
-            for (int i = 0; i < ss.Length; i++)
+            // Places the words
+            float W = 0f; // width cursor
+            float H = 0f; // height cursor
+            (float, float) thing = placesWords(words, slots, wordsObj, W, H, 1);
+            W = thing.Item1;
+            H = thing.Item2;
+
+            GameObject virguleGen = GameObject.Find("Virgule Gen");
+            GameObject pointGen = GameObject.Find("Point Gen");
+
+            if (hideGen) // irrelevant?
             {
-                //separators[i] = ss[i];
-                switch (ss[i])
+                virguleGen.SetActive(false);
+                pointGen.SetActive(false);
+            }
+
+            // reads potential special file and adds unmovable or undeletable separators
+            // incroyablement brut, on n'en parlera pas
+            if (useSpecial)
+            {
+                string st = SpecialFile.text;
+                sp = st.Split('|');
+
+                bool canMoved = sp[0].Equals("true");
+                bool canDeleted = sp[1].Equals("true");
+
+                
+                GameObject block;
+
+
+                string[] ss = sp[2].Split(';');
+                for (int i = 0; i < ss.Length; i++)
                 {
+                    //separators[i] = ss[i];
+                    switch (ss[i])
+                    {
+                        case ",":
+                            block = virguleGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
+                            slots[i].GetComponent<scrSlot>().SendPonct(",");
+                            break;
+                        case ".":
+                            block = pointGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
+                            slots[i].GetComponent<scrSlot>().SendPonct(".");
+                            break;
+                        default:
+                            block = null;
+                            break;
+                    }
+                    if (block != null)
+                    {
+                        block.GetComponent<scrDragAndDrop>().dragging = false;
+                        block.GetComponent<scrDragAndDrop>().canBeMoved = canMoved;
+                        block.GetComponent<scrDragAndDrop>().canBeDeleted = canDeleted;
+                        slots[i].GetComponent<scrSlot>().isUsed = true;
+                        block.GetComponent<scrDragAndDrop>().willSnap = true;
+                        Vector3 vect = slots[i].transform.position;
+                        vect.y -= 25;
+                        block.GetComponent<scrDragAndDrop>().ogPos = vect;
+                        block.GetComponent<scrDragAndDrop>().snapPos = vect;
+                        block.transform.position = vect;
+                        block.GetComponent<scrDragAndDrop>().col = slots[i].GetComponent<BoxCollider2D>();
+
+                    }
+                }
+            } // END OF SPECIAL
+            // END OF CLASSIC MODE
+
+
+        } else {
+            // Dual Mode --------------------------------------------------
+
+            //hideGen = true; // dans le cas avec toutes les ponct placées?
+            //canTouchPonct = false; // jusque la fin de l'animation jouée
+            //showLog = false;
+            canTouchPonct = true; // will move
+
+            s = new List<string>();
+            words = new List<string>();
+
+            correctText = CorrectFile.text;
+
+            CutsWordsDual(TextFile, s, words);
+
+            // animation log
+            animationLog.gameObject.SetActive(false); //??
+
+            // creates separators list
+            separators = new string[words.Count]; // ??
+            for (int i = 0; i < separators.Length; i++) separators[i] = ""; // ??
+            wordsObj = new GameObject[words.Count];
+            slots = new GameObject[words.Count];
+
+            // Places the words
+            float W = 0f; // width cursor
+            float H = 0f; // height cursor
+            (float, float) thing = placesWords(words, slots, wordsObj, W, H, 1);
+            W = thing.Item1;
+            H = thing.Item2;
+
+            GameObject virguleGen = GameObject.Find("Virgule Gen");
+            GameObject pointGen = GameObject.Find("Point Gen");
+
+            if (hideGen) // irrelevant?
+            {
+                virguleGen.SetActive(false);
+                pointGen.SetActive(false);
+            }
+
+            // special version dual
+            GameObject block;
+            int k = -1; // shh
+            for (int i = 0; i < s.Count; i++) {
+                switch (s[i]) {
                     case ",":
                         block = virguleGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                        slots[i].GetComponent<scrSlot>().SendPonct(",");
+                        slots[k].GetComponent<scrSlot>().SendPonct(",");
                         break;
                     case ".":
                         block = pointGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                        slots[i].GetComponent<scrSlot>().SendPonct(".");
+                        slots[k].GetComponent<scrSlot>().SendPonct(".");
                         break;
                     default:
                         block = null;
+                        k++;
                         break;
                 }
                 if (block != null)
                 {
                     block.GetComponent<scrDragAndDrop>().dragging = false;
-                    block.GetComponent<scrDragAndDrop>().canBeMoved = canMoved;
-                    block.GetComponent<scrDragAndDrop>().canBeDeleted = canDeleted;
-                    slots[i].GetComponent<scrSlot>().isUsed = true;
+                    block.GetComponent<scrDragAndDrop>().canBeMoved = true; // DEPENDS !!!
+                    block.GetComponent<scrDragAndDrop>().canBeDeleted = false; // DEPENDS !!!
+                    slots[k].GetComponent<scrSlot>().isUsed = true;
                     block.GetComponent<scrDragAndDrop>().willSnap = true;
-                    Vector3 vect = slots[i].transform.position;
+                    Vector3 vect = slots[k].transform.position;
                     vect.y -= 25;
                     block.GetComponent<scrDragAndDrop>().ogPos = vect;
                     block.GetComponent<scrDragAndDrop>().snapPos = vect;
                     block.transform.position = vect;
-                    block.GetComponent<scrDragAndDrop>().col = slots[i].GetComponent<BoxCollider2D>();
+                    block.GetComponent<scrDragAndDrop>().col = slots[k].GetComponent<BoxCollider2D>();
 
                 }
             }
-        } // END OF SPECIAL
+
+
+            // END OF DUAL MODE
+        } 
+        
+
+
 
         /*
         if (false) // COMMENT PLACER UN POINT FIXE
@@ -272,7 +356,6 @@ public class scrTextManager : MonoBehaviour
 
         RefreshText();
         HideSlots();
-
     }
 
     // Update is called once per frame
@@ -527,7 +610,13 @@ public class scrTextManager : MonoBehaviour
 
     public void ValiderClick()
     {
-        Valider();
+        if (!dualAnim) Valider();
+        else ValiderDual();
+    }
+
+    public void ValiderDual() {
+        Debug.Log(correctText == currentText);
+        // jouer les animations, tout ça tout ça
     }
 
     private void Valider()

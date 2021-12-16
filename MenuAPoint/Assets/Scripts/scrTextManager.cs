@@ -20,6 +20,7 @@ public class scrTextManager : MonoBehaviour
     public GameObject ButtonLayer;
     public GameObject cursor;
     public GameObject fondu;
+    public GameObject clients;
     public GameObject client_virgule;
     public bool showLog;
     public Text animationLog;
@@ -385,6 +386,7 @@ public class scrTextManager : MonoBehaviour
                     }
                     
                     AnimationFondu();
+                    AnimationVirgule(pointTropTot,manquePoint,tropVirgule,pasAssezVirgule,mauvaiseVirgule);
                     //curseur
                     //cursor.transform.SetAsFirstSibling();
 
@@ -789,5 +791,25 @@ public class scrTextManager : MonoBehaviour
         cursor.transform.SetAsLastSibling();
         fondu.SetActive(true);
         fondu.GetComponent<Animator>().SetBool("Actif",true);
+
+        //1sec de fade in, 1sec d'animation curseur/client -> 2sec
+        Invoke("animation_delai",2);
+    }
+    public void AnimationVirgule(bool pointTropTot,bool manquePoint,bool tropVirgule,bool pasAssezVirgule,bool mauvaiseVirgule)
+    {
+        clients.transform.SetAsLastSibling();
+        client_virgule.SetActive(true);        
+        client_virgule.GetComponent<Animator>().SetBool("Actif",true);
+        client_virgule.GetComponent<Animator>().SetBool("Feu",tropVirgule);
+        client_virgule.GetComponent<Animator>().SetBool("Berk",pasAssezVirgule);
+        client_virgule.GetComponent<Animator>().SetBool("Confu",mauvaiseVirgule);
+        client_virgule.GetComponent<Animator>().SetBool("Reussite",!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule);
+    }
+
+    public void animation_delai()
+    {
+        fondu.GetComponent<Animator>().SetBool("Actif",false);
+        client_virgule.GetComponent<Animator>().SetBool("Actif",false);
+        cursor.transform.SetAsFirstSibling();
     }
 }

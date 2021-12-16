@@ -514,7 +514,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &356984033
 RectTransform:
   m_ObjectHideFlags: 0
@@ -532,7 +532,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 480, y: 800}
+  m_SizeDelta: {x: 478, y: 844}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &356984034
 MonoBehaviour:
@@ -628,10 +628,11 @@ MonoBehaviour:
   canvas: {fileID: 937505845}
   ButtonLayer: {fileID: 639069586}
   cursor: {fileID: 1916187030}
-  fondu: {fileID: 0}
-  client_virgule: {fileID: 0}
+  fondu: {fileID: 2007297972}
+  clients: {fileID: 1254987851}
+  client_virgule: {fileID: 356984032}
   showLog: 1
-  animationLog: {fileID: 0}
+  animationLog: {fileID: 2065556285}
   addColors: 0
   useSpecial: 0
   SpecialFile: {fileID: 0}
@@ -643,8 +644,8 @@ MonoBehaviour:
   virguleLimit: 0
   dualAnim: 0
   hideGen: 0
-  debugText: {fileID: 0}
-  IAmDebugging: 0
+  debugText: {fileID: 124640225}
+  IAmDebugging: 1
   colorBasique: {r: 0, g: 0, b: 0, a: 0}
   colorVirgule: {r: 0, g: 0, b: 0, a: 0}
   colorPoint: {r: 0, g: 0, b: 0, a: 0}

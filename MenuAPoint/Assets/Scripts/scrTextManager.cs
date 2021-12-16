@@ -362,7 +362,8 @@ public class scrTextManager : MonoBehaviour
                     // play animations
                     trans.x = posToStop; // stop
                     movingCursor = false;
-                    trans = cursorStart; // reset
+                    
+                    //trans = cursorStart; // reset
 
                     if (pointTropTot) Debug.Log("<color=orange>(MAIGRE)</color> Point trop tôt");
                     if (manquePoint) Debug.Log("<color=orange>(GROS)</color> Manque de point");
@@ -447,16 +448,10 @@ public class scrTextManager : MonoBehaviour
                         canTouchPonct = true;
                     }
                     
+                    //Début animation après fin validation
                     AnimationFondu();
-                    AnimationVirgule(pointTropTot,manquePoint,tropVirgule,pasAssezVirgule,mauvaiseVirgule);
-                    //curseur
-                    //cursor.transform.SetAsFirstSibling();
 
-                    //anim curseur reactions
-                    cursor.GetComponent<Animator>().SetBool("Reussite",!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule);
-                    cursor.GetComponent<Animator>().SetBool("Maigre",pointTropTot);
-                    cursor.GetComponent<Animator>().SetBool("Gros",manquePoint);
-
+                    //animation curseur
                     
                 }
             }
@@ -855,29 +850,64 @@ public class scrTextManager : MonoBehaviour
 
     public void AnimationFondu()
     {
+        //affichage premier plan
         fondu.transform.SetAsLastSibling();
         cursor.transform.SetAsLastSibling();
+        clients.transform.SetAsLastSibling();
+
+        //début fond noir
         fondu.SetActive(true);
         fondu.GetComponent<Animator>().SetBool("Actif",true);
 
-        //1sec de fade in, 1sec d'animation curseur/client -> 2sec
-        Invoke("animation_delai",2);
+        //animation curseur ->  .2 sec
+        Invoke("animation_point",.2f);
     }
-    public void AnimationVirgule(bool pointTropTot,bool manquePoint,bool tropVirgule,bool pasAssezVirgule,bool mauvaiseVirgule)
+    
+    public void animation_point()
     {
-        clients.transform.SetAsLastSibling();
-        client_virgule.SetActive(true);        
+
+        cursor.GetComponent<Animator>().SetBool("Reussite",!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule);
+        cursor.GetComponent<Animator>().SetBool("Maigre",pointTropTot);
+        cursor.GetComponent<Animator>().SetBool("Gros",manquePoint);
+        
+        //delai avant passage en fond et suite de l'animation des clients
+        Invoke("animation_virgule",1);
+    }
+
+
+     public void animation_virgule()
+    {
+        
+        cursor.transform.SetAsFirstSibling();
+
+        client_virgule.SetActive(true);       
+
         client_virgule.GetComponent<Animator>().SetBool("Actif",true);
         client_virgule.GetComponent<Animator>().SetBool("Feu",tropVirgule);
         client_virgule.GetComponent<Animator>().SetBool("Berk",pasAssezVirgule);
         client_virgule.GetComponent<Animator>().SetBool("Confu",mauvaiseVirgule);
         client_virgule.GetComponent<Animator>().SetBool("Reussite",!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule);
+
+        
+        Invoke("fin_animation",2);
+        //Invoke("fondu_fin",1);
     }
 
-    public void animation_delai()
-    {
+    public void fondu_fin()
+    {  
         fondu.GetComponent<Animator>().SetBool("Actif",false);
-        client_virgule.GetComponent<Animator>().SetBool("Actif",false);
-        cursor.transform.SetAsFirstSibling();
+        Invoke("fin_animation",1);
+    }
+
+    public void fin_animation()
+    {   
+        cursor.GetComponent<Animator>().SetBool("Maigre",false);
+        cursor.GetComponent<Animator>().SetBool("Gros",false);
+        fondu.GetComponent<Animator>().SetBool("Actif",false);
+
+        cursor.transform.localPosition = cursorStart;
+        
+        client_virgule.SetActive(false);
+        fondu.SetActive(false); 
     }
 }

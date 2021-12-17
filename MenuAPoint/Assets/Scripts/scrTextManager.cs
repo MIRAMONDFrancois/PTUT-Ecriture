@@ -907,6 +907,7 @@ public class scrTextManager : MonoBehaviour
 
         cursor.transform.localPosition = cursorStart;
         
+        client_virgule.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0);
         client_virgule.SetActive(false);
         fondu.SetActive(false); 
     }

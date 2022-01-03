@@ -83,6 +83,10 @@ public class scrTextManager : MonoBehaviour
     private bool pasAssezVirgule = false;
     private bool mauvaiseVirgule = false;
 
+    private bool textreussite = false; //pour pas faire "!bool && !bool" à chaque fois
+    private bool point_reussite = false; 
+    private bool virgule_reussite = false;
+
     // Debug text obj
     [Header("DEBUG")]
     public Text debugText;
@@ -854,28 +858,53 @@ public class scrTextManager : MonoBehaviour
 
     public void AnimationFondu()
     {
+        //raccourci variable
+        point_reussite = !pointTropTot && !manquePoint;
+        virgule_reussite = !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule;
+        textreussite = point_reussite && virgule_reussite;
+
         //affichage premier plan
         fondu.transform.SetAsLastSibling();
-        cursor.transform.SetAsLastSibling();
-        clients.transform.SetAsLastSibling();
+        
 
         //début fond noir
         fondu.SetActive(true);
         fondu.GetComponent<Animator>().SetBool("Actif",true);
 
-        //animation curseur ->  .2 sec
-        Invoke("animation_point",.2f);
+        if(point_reussite && !virgule_reussite)
+        {
+            //saute l'animation curseur
+            clients.transform.SetAsLastSibling();
+            animation_virgule();
+        }
+        else
+        {
+            cursor.transform.SetAsLastSibling();
+            clients.transform.SetAsLastSibling();
+
+            //animation curseur ->  .2 sec
+            Invoke("animation_point",.2f);
+        }
+
+        
     }
     
     public void animation_point()
     {
 
-        cursor.GetComponent<Animator>().SetBool("Reussite",!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule);
+        cursor.GetComponent<Animator>().SetBool("Reussite",textreussite);
         cursor.GetComponent<Animator>().SetBool("Maigre",pointTropTot);
         cursor.GetComponent<Animator>().SetBool("Gros",manquePoint);
         
         //delai avant passage en fond et suite de l'animation des clients
-        Invoke("animation_virgule",1);
+        if(!point_reussite && virgule_reussite){
+             Invoke("fin_animation",1);
+        }
+        else
+        {
+             Invoke("animation_virgule",1);
+        }
+       
     }
 
 
@@ -890,11 +919,11 @@ public class scrTextManager : MonoBehaviour
         client_virgule.GetComponent<Animator>().SetBool("Feu",tropVirgule);
         client_virgule.GetComponent<Animator>().SetBool("Berk",pasAssezVirgule);
         client_virgule.GetComponent<Animator>().SetBool("Confu",mauvaiseVirgule);
-        client_virgule.GetComponent<Animator>().SetBool("Reussite",!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule);
+        client_virgule.GetComponent<Animator>().SetBool("Reussite",textreussite);
 
         
-        Invoke("fin_animation",2);
-        //Invoke("fondu_fin",1);
+        //Invoke("fin_animation",2);
+        Invoke("fondu_fin",1);
     }
 
     public void fondu_fin()

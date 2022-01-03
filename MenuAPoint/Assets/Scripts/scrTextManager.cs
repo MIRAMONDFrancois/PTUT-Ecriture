@@ -232,6 +232,7 @@ public class scrTextManager : MonoBehaviour
 
             textFloor = 75f;
             animationObj.gameObject.SetActive(true);
+            animationObj.GetComponent<Animator>().SetInteger("Niveau",globalScript.levelNum);
 
             //hideGen = true; // dans le cas avec toutes les ponct placées?
             //canTouchPonct = false; // jusque la fin de l'animation jouée
@@ -591,8 +592,11 @@ public class scrTextManager : MonoBehaviour
     }
 
     public void ValiderDual() {
-        Debug.Log(correctText == currentText);
-        // jouer les animations, tout ça tout ça
+        bool dual_reussite = correctText == currentText;
+        animationObj.GetComponent<Animator>().SetBool("Validation",true);
+        animationObj.GetComponent<Animator>().SetBool("Reussite",dual_reussite);
+        //Debug.Log(correctText == currentText);
+        Invoke("dual_anim_reset",1f);
     }
 
     private void Valider()
@@ -910,5 +914,11 @@ public class scrTextManager : MonoBehaviour
         client_virgule.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0);
         client_virgule.SetActive(false);
         fondu.SetActive(false); 
+    }
+
+    public void dual_anim_reset()
+    {
+        animationObj.GetComponent<Animator>().SetBool("Validation",false);
+        animationObj.GetComponent<Animator>().SetBool("Reussite",false);
     }
 }

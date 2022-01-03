@@ -620,7 +620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df69341a50af6645bf5a230dcaa5dc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TextFile: {fileID: 4900000, guid: 53dce84c04c69cb4ca43498f00f0a054, type: 3}
+  TextFile: {fileID: 4900000, guid: 01aee940f6d40a1488afbb418defa685, type: 3}
   WordPrefab: {fileID: 444234112903781605, guid: 5a745fb43e2e3054d98d19fb5722817c,
     type: 3}
   SlotPrefab: {fileID: 5352705183987625923, guid: 8fc8842219ac7b941b58f4e4cc605d0c,
@@ -642,10 +642,10 @@ MonoBehaviour:
   wordsObj: []
   pointLimit: 2
   virguleLimit: 2
-  dualAnim: 1
+  dualAnim: 0
   CorrectFile: {fileID: 4900000, guid: 01aee940f6d40a1488afbb418defa685, type: 3}
-  canBeMoved: 1
-  canBeDeleted: 1
+  canBeMoved: 0
+  canBeDeleted: 0
   animationObj: {fileID: 1268975000}
   debugText: {fileID: 124640225}
   IAmDebugging: 0
@@ -698,15 +698,15 @@ MonoBehaviour:
   playerName: 
   levelNum: 5
   levelunlocked: 
-  file: {fileID: 4900000, guid: 53dce84c04c69cb4ca43498f00f0a054, type: 3}
+  file: {fileID: 4900000, guid: 01aee940f6d40a1488afbb418defa685, type: 3}
   isSpecial: 0
   specialFile: {fileID: 0}
   pointLimit: 2
   virguleLimit: 2
-  nivAntiOubli: 1
+  nivAntiOubli: 0
   animTextFile: {fileID: 4900000, guid: 01aee940f6d40a1488afbb418defa685, type: 3}
-  canBeMoved: 1
-  canBeDeleted: 1
+  canBeMoved: 0
+  canBeDeleted: 0
 --- !u!4 &579154066
 Transform:
   m_ObjectHideFlags: 0
@@ -1254,7 +1254,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1268975001
 RectTransform:
   m_ObjectHideFlags: 0

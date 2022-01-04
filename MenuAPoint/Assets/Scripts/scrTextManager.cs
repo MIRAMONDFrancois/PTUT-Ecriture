@@ -455,9 +455,6 @@ public class scrTextManager : MonoBehaviour
                     
                     //Début animation après fin validation
                     AnimationFondu();
-
-                    //animation curseur
-                    
                 }
             }
             // cursor gets back to original position
@@ -524,10 +521,29 @@ public class scrTextManager : MonoBehaviour
             {
                 string mot = WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().text;
                 WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().text = mot.Substring(0, 1).ToUpper() + mot.Substring(1, mot.Length - 1);
+                
+                //bazar brayan
+                GameObject test3 = WOBJ[i].transform.GetChild(0).transform.GetChild(0).gameObject;
+                GameObject test4 = WOBJ[i].transform.GetChild(0).transform.GetChild(1).gameObject;
+
+                test3.GetComponentInChildren<TextMeshProUGUI>().text = mot.ToUpper()[0].ToString();
+                float test3w = test3.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
+                float test3h = test3.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
+
+                test4.GetComponentInChildren<RectTransform>().anchoredPosition = new Vector2(test3w/2,0);
+                test4.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(test3w, test3h);
+                test4.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(test3w, test3h);
+
+                test4.SetActive(true);
+                //fin bazar
             }
             else
             {
                 WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().text = W[i];
+                //bazar brayan
+                GameObject test4 = WOBJ[i].transform.GetChild(0).transform.GetChild(1).gameObject;
+                test4.SetActive(false);
+                //fin bazar
             }
 
             if (addColors)

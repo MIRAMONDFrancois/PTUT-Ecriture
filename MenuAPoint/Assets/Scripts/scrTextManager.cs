@@ -96,9 +96,9 @@ public class scrTextManager : MonoBehaviour
     [HideInInspector]
     public Color colorBasique;
     [HideInInspector]
-    public Color colorVirgule; // Color(1f, 0.6f, 0f);
+    public Color colorVirgule; // Color(1f, 0.6f, 0f); Color(80f / 255f, 138f / 255f, 50f / 255f);
     [HideInInspector]
-    public Color colorPoint; // Color(0.9f, 0.9f, 0.5f);
+    public Color colorPoint; // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
 
     // Data Export
     private string fullFolderName;
@@ -127,10 +127,10 @@ public class scrTextManager : MonoBehaviour
 
 
         colorBasique = new Color(1f, 1f, 1f);
-        colorVirgule = new Color(1f, 0.6f, 0f); // Color(1f, 0.6f, 0f);
-        colorPoint = new Color(0.9f, 0.9f, 0.5f); // Color(0.9f, 0.9f, 0.5f);
+        colorVirgule = new Color(80f / 255f, 138f / 255f, 50f / 255f); // Color(1f, 0.6f, 0f); Color(80f / 255f, 138f / 255f, 50f / 255f);
+        colorPoint = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
 
-        
+
         cursorStart = new Vector3(-(lineWidth/2) - spaceSize, textFloor, 0); //cursor.transform.localPosition;
         cursor.transform.localPosition = cursorStart;
         cursor.gameObject.SetActive(!dualAnim);

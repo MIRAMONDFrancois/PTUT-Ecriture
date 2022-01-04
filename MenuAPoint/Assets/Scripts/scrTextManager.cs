@@ -126,7 +126,7 @@ public class scrTextManager : MonoBehaviour
 
 
 
-        colorBasique = new Color(1f, 1f, 1f);
+        colorBasique = new Color(0f, 0f, 0f);
         colorVirgule = new Color(80f / 255f, 138f / 255f, 50f / 255f); // Color(1f, 0.6f, 0f); Color(80f / 255f, 138f / 255f, 50f / 255f);
         colorPoint = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
 

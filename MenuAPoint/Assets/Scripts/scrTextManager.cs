@@ -24,6 +24,7 @@ public class scrTextManager : MonoBehaviour
     public GameObject client_virgule;
     public bool showLog;
     public Text animationLog;
+    public Sprite machin;
 
     [Header("Custom")]
     public bool addColors = false; // if the blocks color the words or not
@@ -523,26 +524,29 @@ public class scrTextManager : MonoBehaviour
                 WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().text = mot.Substring(0, 1).ToUpper() + mot.Substring(1, mot.Length - 1);
                 
                 //bazar brayan
-                GameObject test3 = WOBJ[i].transform.GetChild(0).transform.GetChild(0).gameObject;
-                GameObject test4 = WOBJ[i].transform.GetChild(0).transform.GetChild(1).gameObject;
+                GameObject test3 = WOBJ[i].transform.GetChild(0).transform.GetChild(1).gameObject;
+                GameObject test4 = WOBJ[i].transform.GetChild(0).transform.GetChild(0).gameObject;
 
                 test3.GetComponentInChildren<TextMeshProUGUI>().text = mot.ToUpper()[0].ToString();
                 float test3w = test3.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
                 float test3h = test3.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
+                float test3size = Mathf.Max(test3w,test3h);
 
+                //position
                 test4.GetComponentInChildren<RectTransform>().anchoredPosition = new Vector2(test3w/2,0);
-                test4.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(test3w, test3h);
-                test4.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(test3w, test3h);
-
+                //taille
+                test4.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(test3size, test3size);
+                
                 test4.SetActive(true);
+                test3.SetActive(true);
                 //fin bazar
             }
             else
             {
                 WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().text = W[i];
                 //bazar brayan
-                GameObject test4 = WOBJ[i].transform.GetChild(0).transform.GetChild(1).gameObject;
-                test4.SetActive(false);
+                WOBJ[i].transform.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
+                WOBJ[i].transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                 //fin bazar
             }
 
@@ -914,7 +918,7 @@ public class scrTextManager : MonoBehaviour
         
         //delai avant passage en fond et suite de l'animation des clients
         if(!point_reussite && virgule_reussite){
-             Invoke("fin_animation",1);
+             Invoke("fondu_fin",1);
         }
         else
         {
@@ -956,7 +960,9 @@ public class scrTextManager : MonoBehaviour
 
         cursor.transform.localPosition = cursorStart;
         
+        //reset
         client_virgule.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0);
+        client_virgule.GetComponent<RectTransform>().sizeDelta = new Vector2(478,844);
         client_virgule.SetActive(false);
         fondu.SetActive(false); 
     }

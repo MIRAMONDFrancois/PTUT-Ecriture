@@ -26,14 +26,14 @@ public class scrBlockGenerator : MonoBehaviour
         
         switch (ponct) {
             case ".":
-                if (textManager.GetComponent<scrTextManager>().pointLimit != 0) {
+                if (textManager.GetComponent<scrTextManager>().pointLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
                     numberLeft = textManager.GetComponent<scrTextManager>().pointLimit - GameObject.FindGameObjectsWithTag("Point").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
                 }
                 break;
             case ",":
-                if (textManager.GetComponent<scrTextManager>().virguleLimit != 0) {
+                if (textManager.GetComponent<scrTextManager>().virguleLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
                     numberLeft = textManager.GetComponent<scrTextManager>().virguleLimit - GameObject.FindGameObjectsWithTag("Virgule").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
@@ -49,7 +49,7 @@ public class scrBlockGenerator : MonoBehaviour
         // CE CODE EST IMMONDE ET EST EXECUTED A CHAQUE FRAME, il faudrait le placer aux moments de créations ou suppression de ponctuation, mais c'est trop relou
         switch (ponct) {
             case ".":
-                if (textManager.GetComponent<scrTextManager>().pointLimit != 0) { // if limit isn't infinite
+                if (textManager.GetComponent<scrTextManager>().pointLimit != -1) { // if limit isn't infinite
                     if (GameObject.FindGameObjectsWithTag("Point").Length < textManager.GetComponent<scrTextManager>().pointLimit) {
                         // still visible
                         gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 1);
@@ -65,7 +65,7 @@ public class scrBlockGenerator : MonoBehaviour
                 }
                 break;
             case ",":
-                if (textManager.GetComponent<scrTextManager>().virguleLimit != 0) { // if limit isn't infinite
+                if (textManager.GetComponent<scrTextManager>().virguleLimit != -1) { // if limit isn't infinite
                     if (GameObject.FindGameObjectsWithTag("Virgule").Length < textManager.GetComponent<scrTextManager>().virguleLimit) {
                         // still visible
                         gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 1);
@@ -115,6 +115,6 @@ public class scrBlockGenerator : MonoBehaviour
 
     public void DouillePointerUp()
     {
-        obj.GetComponent<scrDragAndDrop>().StopDragUI();
+        if (obj != null) obj.GetComponent<scrDragAndDrop>().StopDragUI();
     }
 }

@@ -58,7 +58,7 @@ public class scrTextManager : MonoBehaviour
     private string correctText; // correct string
     private string currentText; // string composed of the words and separators
 
-    [Header("Limited Ponct (0 = infinite)")]
+    [Header("Limited Ponct (-1 = infinite)")]
     public int pointLimit;
     public int virguleLimit;
 

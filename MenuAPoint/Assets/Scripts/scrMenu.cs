@@ -21,7 +21,7 @@ public class scrMenu : MonoBehaviour
     public GameObject opt;
     
     //le mot de passe 
-    private string mdp = "a";
+    private string mdp = "genieponct";
 
     //les variable privates
     private string bidule;

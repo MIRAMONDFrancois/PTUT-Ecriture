@@ -894,14 +894,12 @@ public class scrTextManager : MonoBehaviour
         if(point_reussite && !virgule_reussite)
         {
             //saute l'animation curseur
-            clients.transform.SetAsLastSibling();
+            
             animation_virgule();
         }
         else
         {
-            cursor.transform.SetAsLastSibling();
-            clients.transform.SetAsLastSibling();
-
+            
             //animation curseur ->  .2 sec
             Invoke("animation_point",.2f);
         }
@@ -911,6 +909,7 @@ public class scrTextManager : MonoBehaviour
     
     public void animation_point()
     {
+        cursor.transform.SetAsLastSibling();
 
         cursor.GetComponent<Animator>().SetBool("Reussite",textreussite);
         cursor.GetComponent<Animator>().SetBool("Maigre",pointTropTot);
@@ -928,10 +927,11 @@ public class scrTextManager : MonoBehaviour
     }
 
 
-     public void animation_virgule()
+    public void animation_virgule()
     {
         
-        cursor.transform.SetAsFirstSibling();
+        fondu.transform.SetAsLastSibling();
+        clients.transform.SetAsLastSibling();
 
         client_virgule.SetActive(true);       
 

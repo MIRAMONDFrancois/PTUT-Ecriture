@@ -1,7 +1,9 @@
 Fichier de nomdujoueur sur le niveau 2.
 Le texte correct est:
-Je suis un placeholder.
+- Depuis quand le chien est-il parti ?
+- Il est parti après le déjeuner.
+- Cherchons-le ensemble et appelle-le.
 
 ----------------------------------------------
 
-Terminé en 2 secondes avec 0 erreur(s).
+Terminé en 6 secondes avec 0 erreur(s).

@@ -6,4 +6,4 @@ Le texte correct est:
 
 ----------------------------------------------
 
-Terminé en 11 secondes avec 0 erreur(s).
+Terminé en 5 secondes avec 0 erreur(s).

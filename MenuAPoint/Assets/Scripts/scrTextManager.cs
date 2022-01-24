@@ -1088,14 +1088,14 @@ public class scrTextManager : MonoBehaviour
                     S.Add(";");
                     skipNext = true; // we skip the next char because it is a ' '
                     break;
-                case '«':
+                /*case '«':
                     word += TF.text[i]+" ";
                     skipNext = true;
                     break;
                 case '»':
                     word += TF.text[i]+" ";
                     skipNext = true;
-                    break;
+                    break;*/
                 case ' ':
                     // ESPACE
                     if (!skipNext)

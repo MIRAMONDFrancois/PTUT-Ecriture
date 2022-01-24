@@ -226,7 +226,7 @@ public class scrTextManager : MonoBehaviour
 
                 
                 GameObject block;
-
+                Vector3 vect = new Vector3();
 
                 string[] ss = sp[2].Split(';');
                 for (int i = 0; i < ss.Length; i++)
@@ -237,26 +237,38 @@ public class scrTextManager : MonoBehaviour
                         case ",":
                             block = virguleGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
                             slots[i].GetComponent<scrSlot>().SendPonct(",");
+
+                            vect = slots[i].transform.position + quelle_ponct("Virgule");
                             break;
                         case ".":
                             block = pointGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
                             slots[i].GetComponent<scrSlot>().SendPonct(".");
+
+                            vect = slots[i].transform.position + quelle_ponct("Point");
                             break;
                         case "!":
                             block = exclamationGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
                             slots[i].GetComponent<scrSlot>().SendPonct("!");
+
+                            vect = slots[i].transform.position + quelle_ponct("Exclamation");
                             break;
                         case "?":
                             block = interrogationGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
                             slots[i].GetComponent<scrSlot>().SendPonct("?");
+
+                            vect = slots[i].transform.position + quelle_ponct("Interrogation");
                             break;
                         case ";":
                             block = pointvirguleGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
                             slots[i].GetComponent<scrSlot>().SendPonct(";");
+
+                            vect = slots[i].transform.position + quelle_ponct("Point Virgule");
                             break;
                         case ":":
                             block = deuxpointsGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
                             slots[i].GetComponent<scrSlot>().SendPonct(":");
+
+                            vect = slots[i].transform.position + quelle_ponct("Deux Points");
                             break;
                         default:
                             block = null;
@@ -269,8 +281,8 @@ public class scrTextManager : MonoBehaviour
                         block.GetComponent<scrDragAndDrop>().canBeDeleted = canDeleted;
                         slots[i].GetComponent<scrSlot>().isUsed = true;
                         block.GetComponent<scrDragAndDrop>().willSnap = true;
-                        Vector3 vect = slots[i].transform.position;
-                        vect.y -= 25;
+                        //Vector3 vect = slots[i].transform.position;
+                        //vect.y -= 25;
                         block.GetComponent<scrDragAndDrop>().ogPos = vect;
                         block.GetComponent<scrDragAndDrop>().snapPos = vect;
                         block.transform.position = vect;
@@ -792,7 +804,8 @@ public class scrTextManager : MonoBehaviour
     private void Valider()
     {
         //Debug.Log("Validation...");
-
+        Debug.Log(correctText);
+        Debug.Log(currentText);
         bool willStop = false;
         bool forceStop = false;
         int vN = 0; // nombre de virgule
@@ -1075,6 +1088,14 @@ public class scrTextManager : MonoBehaviour
                     S.Add(";");
                     skipNext = true; // we skip the next char because it is a ' '
                     break;
+                case '«':
+                    word += TF.text[i]+" ";
+                    skipNext = true;
+                    break;
+                case '»':
+                    word += TF.text[i]+" ";
+                    skipNext = true;
+                    break;
                 case ' ':
                     // ESPACE
                     if (!skipNext)
@@ -1254,8 +1275,8 @@ public class scrTextManager : MonoBehaviour
         float ratio = textFloor/lg_text;
         if(lg_text>textFloor)
         {
-            Debug.Log(ratio*taillePolice);
-            spaceSize=spaceSize*ratio;
+            lineJump = lineJump*ratio;
+            spaceSize = spaceSize*ratio;
             return ratio*taillePolice;
         }
         return taillePolice;

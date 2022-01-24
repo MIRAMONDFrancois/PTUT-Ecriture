@@ -1,0 +1,7 @@
+Fichier de nomdujoueur sur le niveau 4.
+Le texte correct est:
+Les piétons traversaient tranquillement la rue, lorsque, soudain, une moto a surgi.
+
+----------------------------------------------
+
+Terminé en 6 secondes avec 0 erreur(s).

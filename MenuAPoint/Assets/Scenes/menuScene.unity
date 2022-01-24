@@ -208,11 +208,15 @@ MonoBehaviour:
   playerName: 
   levelNum: 0
   levelunlocked: 
-  file: {fileID: 0}
+  file: {fileID: 4900000, guid: b3307c36e54e1cd419403a75fe92816e, type: 3}
   isSpecial: 0
   specialFile: {fileID: 0}
   pointLimit: 0
   virguleLimit: 0
+  exclamationLimit: 0
+  interrogationLimit: 0
+  deuxpointsLimit: 0
+  pointvirguleLimit: 0
   nivAntiOubli: 0
   animTextFile: {fileID: 0}
   canBeMoved: 0

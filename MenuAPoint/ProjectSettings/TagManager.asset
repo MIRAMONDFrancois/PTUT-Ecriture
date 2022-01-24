@@ -8,6 +8,10 @@ TagManager:
   - Global
   - Virgule
   - Point
+  - Exclamation
+  - Interrogation
+  - Deux Points
+  - Point Virgule
   layers:
   - Default
   - TransparentFX

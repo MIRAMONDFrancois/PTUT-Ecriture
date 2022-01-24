@@ -1,0 +1,7 @@
+Fichier de  sur le niveau 2.
+Le texte correct est:
+Je suis un placeholder.
+
+----------------------------------------------
+
+Terminé en 3 secondes avec 0 erreur(s).

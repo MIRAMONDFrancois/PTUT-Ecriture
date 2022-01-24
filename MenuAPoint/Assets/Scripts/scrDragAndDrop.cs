@@ -70,7 +70,8 @@ public class scrDragAndDrop : MonoBehaviour
                 col.GetComponent<scrSlot>().SendPonct("");
                 col.GetComponent<scrSlot>().isUsed = false;
             }
-            textManager.GetComponent<scrTextManager>().ShowSlots();
+            Vector2 taillePot = this.GetComponent<RectTransform>().sizeDelta;
+            textManager.GetComponent<scrTextManager>().ShowSlots(taillePot,this.tag);
         }
     }
 
@@ -105,7 +106,9 @@ public class scrDragAndDrop : MonoBehaviour
             }
 
             transform.position = snapPos;
-            textManager.GetComponent<scrTextManager>().HideSlots();
+            
+            Vector2 taillePot = this.GetComponent<RectTransform>().sizeDelta;
+            textManager.GetComponent<scrTextManager>().HideSlots(taillePot,this.tag);
             ogPos = snapPos; // this becomes the "last viable position"
 
 

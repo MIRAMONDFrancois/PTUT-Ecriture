@@ -21,6 +21,10 @@ public class scrGlobal : MonoBehaviour
     [Header("Limited Generators")]
     public int pointLimit = 0;
     public int virguleLimit = 0;
+    public int exclamationLimit = 0;
+    public int interrogationLimit = 0;
+    public int deuxpointsLimit = 0;
+    public int pointvirguleLimit = 0;
 
     [Header("Animation Levels")]
     public bool nivAntiOubli;

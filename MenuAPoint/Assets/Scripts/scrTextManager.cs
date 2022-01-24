@@ -38,7 +38,7 @@ public class scrTextManager : MonoBehaviour
     private bool movingCursor;
     [HideInInspector]
     public bool canTouchPonct;
-    private int cursorSpeed = 9;
+    private int cursorSpeed = 20;
     private int lineCursor = 0;
     private float lineToStop = 0;
     private float lineNumber = 0;
@@ -61,9 +61,14 @@ public class scrTextManager : MonoBehaviour
     [Header("Limited Ponct (-1 = infinite)")]
     public int pointLimit;
     public int virguleLimit;
+    public int exclamationLimit;
+    public int interrogationLimit;
+    public int deuxpointsLimit;
+    public int pointvirguleLimit;
 
     [Header("Dual Animation mode")]
     public bool dualAnim;
+    private bool init_anim;
     public TextAsset CorrectFile;
     private bool hideGen; // may be irrelevant, like useSpecial and others
     public bool canBeMoved;
@@ -73,16 +78,20 @@ public class scrTextManager : MonoBehaviour
 
     // Text pos
     private float lineWidth = 1550f; // 
-    private float textFloor = 350f; // (default: 350f; anim: 75f) vertical position of the top of the text
+    private float textFloor = 450f; // (default: 450f; anim: 75f) vertical position of the top of the text
     private float spaceSize = 50f; // 
     private float lineJump = 80f;
+    private float taillePolice = 72f;
 
     // Text errors
+    //fin de phrase
     private bool pointTropTot = false;
     private bool manquePoint = false;
+
+    //mileu de phrase
     private bool tropVirgule = false;
     private bool pasAssezVirgule = false;
-    private bool mauvaiseVirgule = false;
+    private bool mauvaiseVirgule = false;//mauvaise position
 
     private bool textreussite = false; //pour pas faire "!bool && !bool" à chaque fois
     private bool point_reussite = false; 
@@ -100,6 +109,14 @@ public class scrTextManager : MonoBehaviour
     public Color colorVirgule; // Color(1f, 0.6f, 0f); Color(80f / 255f, 138f / 255f, 50f / 255f);
     [HideInInspector]
     public Color colorPoint; // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
+    [HideInInspector]
+    public Color colorExclamation; // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
+    [HideInInspector]
+    public Color colorInterrogation; // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
+    [HideInInspector]
+    public Color colorDeuxPoints; // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
+    [HideInInspector]
+    public Color colorPointVirgule; // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
 
     // Data Export
     private string fullFolderName;
@@ -115,11 +132,16 @@ public class scrTextManager : MonoBehaviour
         scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
         if (!IAmDebugging) {
             TextFile = globalScript.file;
+            CorrectFile = globalScript.animTextFile;
             useSpecial = globalScript.isSpecial;
             SpecialFile = globalScript.specialFile;
             dualAnim = globalScript.nivAntiOubli;
             pointLimit = globalScript.pointLimit;
             virguleLimit = globalScript.virguleLimit;
+            exclamationLimit = globalScript.exclamationLimit;
+            interrogationLimit = globalScript.interrogationLimit;
+            deuxpointsLimit = globalScript.deuxpointsLimit;
+            pointvirguleLimit = globalScript.pointvirguleLimit;
         } else {
             globalScript.playerName = "MICHEL";
             globalScript.levelNum = 4;
@@ -130,6 +152,11 @@ public class scrTextManager : MonoBehaviour
         colorBasique = new Color(0f, 0f, 0f);
         colorVirgule = new Color(80f / 255f, 138f / 255f, 50f / 255f); // Color(1f, 0.6f, 0f); Color(80f / 255f, 138f / 255f, 50f / 255f);
         colorPoint = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
+        //à modifier
+        colorExclamation = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
+        colorInterrogation = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
+        colorPointVirgule = new Color(80f / 255f, 138f / 255f, 50f / 255f); // Color(1f, 0.6f, 0f); Color(80f / 255f, 138f / 255f, 50f / 255f);
+        colorDeuxPoints = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
 
 
         cursorStart = new Vector3(-(lineWidth/2) - spaceSize, textFloor, 0); //cursor.transform.localPosition;
@@ -139,11 +166,11 @@ public class scrTextManager : MonoBehaviour
 
 
 
-
+        init_anim = dualAnim;
         if (!dualAnim) {
             // Classic mode
 
-            textFloor = 350f;
+            textFloor = 450f;
 
             canTouchPonct = true;
 
@@ -151,9 +178,9 @@ public class scrTextManager : MonoBehaviour
             words = new List<string>();
 
             correctText = TextFile.text;
-
+            
             CutsWordsDual(TextFile, s, words);
-
+            
             // animation log
             animationLog.gameObject.SetActive(showLog);
             animationLog.text = "Les clients ont hâte de manger votre plat !";
@@ -163,7 +190,6 @@ public class scrTextManager : MonoBehaviour
             for (int i = 0; i < separators.Length; i++) separators[i] = "";
             wordsObj = new GameObject[words.Count];
             slots = new GameObject[words.Count];
-
             // Places the words
             float W = 0f; // width cursor
             float H = 0f; // height cursor
@@ -173,11 +199,19 @@ public class scrTextManager : MonoBehaviour
 
             GameObject virguleGen = GameObject.Find("Virgule Gen");
             GameObject pointGen = GameObject.Find("Point Gen");
+            GameObject exclamationGen = GameObject.Find("Exclamation Gen");
+            GameObject interrogationGen = GameObject.Find("Interrogation Gen");
+            GameObject pointvirguleGen = GameObject.Find("point Virgule Gen");
+            GameObject deuxpointsGen = GameObject.Find("Deux Points Gen");
 
             if (hideGen) // irrelevant?
             {
                 virguleGen.SetActive(false);
                 pointGen.SetActive(false);
+                exclamationGen.SetActive(false);
+                interrogationGen.SetActive(false);
+                pointvirguleGen.SetActive(false);
+                deuxpointsGen.SetActive(false);
             }
 
             // reads potential special file and adds unmovable or undeletable separators
@@ -207,6 +241,22 @@ public class scrTextManager : MonoBehaviour
                         case ".":
                             block = pointGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
                             slots[i].GetComponent<scrSlot>().SendPonct(".");
+                            break;
+                        case "!":
+                            block = exclamationGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
+                            slots[i].GetComponent<scrSlot>().SendPonct("!");
+                            break;
+                        case "?":
+                            block = interrogationGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
+                            slots[i].GetComponent<scrSlot>().SendPonct("?");
+                            break;
+                        case ";":
+                            block = pointvirguleGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
+                            slots[i].GetComponent<scrSlot>().SendPonct(";");
+                            break;
+                        case ":":
+                            block = deuxpointsGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
+                            slots[i].GetComponent<scrSlot>().SendPonct(":");
                             break;
                         default:
                             block = null;
@@ -269,25 +319,62 @@ public class scrTextManager : MonoBehaviour
 
             GameObject virguleGen = GameObject.Find("Virgule Gen");
             GameObject pointGen = GameObject.Find("Point Gen");
+            GameObject exclamationGen = GameObject.Find("Exclamation Gen");
+            GameObject interrogationGen = GameObject.Find("Interrogation Gen");
+            GameObject pointvirguleGen = GameObject.Find("Point Virgule Gen");
+            GameObject deuxpointsGen = GameObject.Find("Deux Points Gen");
 
             if (hideGen) // irrelevant?
             {
                 virguleGen.SetActive(false);
                 pointGen.SetActive(false);
+                exclamationGen.SetActive(false);
+                interrogationGen.SetActive(false);
+                pointvirguleGen.SetActive(false);
+                deuxpointsGen.SetActive(false);
             }
 
             // special version dual
             GameObject block;
+            Vector3 vect = new Vector3();
             int k = -1; // shh
             for (int i = 0; i < s.Count; i++) {
                 switch (s[i]) {
                     case ",":
                         block = virguleGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
                         slots[k].GetComponent<scrSlot>().SendPonct(",");
+
+                        vect = slots[k].transform.position + quelle_ponct("Virgule");
                         break;
                     case ".":
                         block = pointGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
                         slots[k].GetComponent<scrSlot>().SendPonct(".");
+
+                        vect = slots[k].transform.position + quelle_ponct("Point");
+                        break;
+                    case "!":
+                        block = exclamationGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
+                        slots[k].GetComponent<scrSlot>().SendPonct("!");
+
+                        vect = slots[k].transform.position + quelle_ponct("Exclamation");
+                        break;
+                    case "?":
+                        block = interrogationGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
+                        slots[k].GetComponent<scrSlot>().SendPonct("?");
+
+                        vect = slots[k].transform.position + quelle_ponct("Interrogation");
+                        break;
+                    case ":":
+                        block = deuxpointsGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
+                        slots[k].GetComponent<scrSlot>().SendPonct(":");
+
+                        vect = slots[k].transform.position + quelle_ponct("Deux Points");
+                        break;
+                    case ";":
+                        block = pointvirguleGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
+                        slots[k].GetComponent<scrSlot>().SendPonct(";");
+
+                        vect = slots[k].transform.position + quelle_ponct("Point Virgule");
                         break;
                     default:
                         block = null;
@@ -301,13 +388,13 @@ public class scrTextManager : MonoBehaviour
                     block.GetComponent<scrDragAndDrop>().canBeDeleted = canBeDeleted;
                     slots[k].GetComponent<scrSlot>().isUsed = true;
                     block.GetComponent<scrDragAndDrop>().willSnap = true;
-                    Vector3 vect = slots[k].transform.position;
-                    vect.y -= 25;
+                    block.GetComponent<scrDragAndDrop>().col = slots[k].GetComponent<BoxCollider2D>();
+
+                    //Vector3 vect = slots[k].transform.position;
+                    //vect.y -= 25;
                     block.GetComponent<scrDragAndDrop>().ogPos = vect;
                     block.GetComponent<scrDragAndDrop>().snapPos = vect;
                     block.transform.position = vect;
-                    block.GetComponent<scrDragAndDrop>().col = slots[k].GetComponent<BoxCollider2D>();
-
                 }
             }
 
@@ -341,7 +428,7 @@ public class scrTextManager : MonoBehaviour
 
 
         RefreshText();
-        HideSlots();
+        HideSlots(new Vector2(0,0),"init");
     }
 
     // Update is called once per frame
@@ -353,7 +440,7 @@ public class scrTextManager : MonoBehaviour
             Vector3 trans = cursor.transform.localPosition;
             trans.x += cursorSpeed;
 
-            if ( trans.x > (lineWidth/2) - spaceSize )
+            if ( trans.x > (lineWidth/2) )
             {
                 trans.x = -(lineWidth / 2f);
                 trans.y -= lineJump;
@@ -371,18 +458,18 @@ public class scrTextManager : MonoBehaviour
                     
                     //trans = cursorStart; // reset
 
-                    if (pointTropTot) Debug.Log("<color=orange>(MAIGRE)</color> Point trop tôt");
+                    /*if (pointTropTot) Debug.Log("<color=orange>(MAIGRE)</color> Point trop tôt");
                     if (manquePoint) Debug.Log("<color=orange>(GROS)</color> Manque de point");
 
                     if (tropVirgule) Debug.Log("<color=orange>(FEU)</color> Trop de virgules");
                     if (pasAssezVirgule) Debug.Log("<color=orange>(FADE)</color> Pas assez de virgules");
                     if (mauvaiseVirgule) Debug.Log("<color=orange>(CONFUS)</color> Mauvais placement de virgule");
-
+*/
                     //prhase correcte
                     if (!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule)
                     {
                         // CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT
-                        Debug.Log("<color=green>CORRECT!</color>");
+                        //Debug.Log("<color=green>CORRECT!</color>");
                         
                         
                         switch (Random.Range(1, 4))
@@ -471,10 +558,15 @@ public class scrTextManager : MonoBehaviour
 
     private (float, float) placesWords(List<string> words_e, GameObject[] slots_e, GameObject[] wordsObj_e, float W, float H, int INDEX)
     {
+        taillePolice = taille_Police(correctText.Length);
+        WordPrefab.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
+        WordPrefab.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().fontSize=taillePolice;
+        
         for (int i = 0; i < words_e.Count; i++) // NEEDS: words, slots, wordsObj
         {
             GameObject wordObj = Instantiate(WordPrefab);
             wordObj.GetComponentInChildren<TextMeshProUGUI>().text = words_e[i];
+
             float pw = wordObj.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
 
             if (W + pw > lineWidth) // if the word is too long for the line size
@@ -513,12 +605,19 @@ public class scrTextManager : MonoBehaviour
     {
         debugText.text = "";
         curr = "";
+
         for (int i = 0; i < W.Count; i++)
         {
-            curr += W[i] + SEP[i] + " ";
-
+            
+            if(SEP[i].Equals("!") || SEP[i].Equals("?") || SEP[i].Equals(":") || SEP[i].Equals(";"))
+            {
+                curr += W[i] + " " + SEP[i] + " ";
+            }else
+            {
+                curr += W[i] + SEP[i] + " ";
+            }
             // adds an UPPERCASE letter to the next word
-            if (i > 0 && SEP[i - 1].Equals(".")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
+            if (i > 0 && (SEP[i - 1].Equals(".") || SEP[i - 1].Equals("!") || SEP[i - 1].Equals("?"))) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
             {
                 string mot = WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().text;
                 WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().text = mot.Substring(0, 1).ToUpper() + mot.Substring(1, mot.Length - 1);
@@ -526,16 +625,20 @@ public class scrTextManager : MonoBehaviour
                 //bazar brayan
                 GameObject test3 = WOBJ[i].transform.GetChild(0).transform.GetChild(1).gameObject;
                 GameObject test4 = WOBJ[i].transform.GetChild(0).transform.GetChild(0).gameObject;
-
+                
+                
                 test3.GetComponentInChildren<TextMeshProUGUI>().text = mot.ToUpper()[0].ToString();
                 float test3w = test3.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
                 float test3h = test3.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
                 float test3size = Mathf.Max(test3w,test3h);
+                
 
                 //position
                 test4.GetComponentInChildren<RectTransform>().anchoredPosition = new Vector2(test3w/2,0);
+                test3.GetComponentInChildren<RectTransform>().anchoredPosition = new Vector2(test3w/2,0);
                 //taille
                 test4.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(test3size, test3size);
+                test3.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(test3w,test3h);
                 
                 test4.SetActive(true);
                 test3.SetActive(true);
@@ -584,6 +687,56 @@ public class scrTextManager : MonoBehaviour
                             k--;
                         }
                         break;
+                    case "!":
+                        // find the first (0;i-1) and last word (i), and make something
+                        // if i+1 exists, uppercase the letter (what will lowercase it?)
+                        int l = i - 1;
+                        WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().color = colorExclamation;
+                        WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
+                        while (l >= 0 && !SEP[l].Equals("!")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
+                        {
+                            if (WOBJ[l].GetComponentInChildren<TextMeshProUGUI>().color == colorBasique)
+                            {
+                                WOBJ[l].GetComponentInChildren<TextMeshProUGUI>().color = colorExclamation;
+                            }
+                            WOBJ[l].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
+                            l--;
+                        }
+                        break;
+                    case "?":
+                        // find the first (0;i-1) and last word (i), and make something
+                        // if i+1 exists, uppercase the letter (what will lowercase it?)
+                        int m = i - 1;
+                        WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().color = colorInterrogation;
+                        WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
+                        while (m >= 0 && !SEP[m].Equals("?")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
+                        {
+                            if (WOBJ[m].GetComponentInChildren<TextMeshProUGUI>().color == colorBasique)
+                            {
+                                WOBJ[m].GetComponentInChildren<TextMeshProUGUI>().color = colorInterrogation;
+                            }
+                            WOBJ[m].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
+                            m--;
+                        }
+                        break;
+                    case ":":
+                        int n = i - 1;
+                        WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().color = colorDeuxPoints;
+                        while (n >= 0 && SEP[n].Equals("")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
+                        {
+                            WOBJ[n].GetComponentInChildren<TextMeshProUGUI>().color = colorDeuxPoints;
+                            n--;
+                        }
+                        break;
+                    case ";":
+                        int o = i - 1;
+                        WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().color = colorPointVirgule;
+                        while (o >= 0 && SEP[o].Equals("")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
+                        {
+                            WOBJ[o].GetComponentInChildren<TextMeshProUGUI>().color = colorPointVirgule;
+                            o--;
+                        }
+                        break;
                     default:
                         //nothing
                         break;
@@ -617,17 +770,28 @@ public class scrTextManager : MonoBehaviour
 
     public void ValiderDual() {
         bool dual_reussite = correctText == currentText;
+        Debug.Log(correctText);
+        Debug.Log(currentText);
         animationObj.GetComponent<Animator>().SetBool("Validation",true);
         animationObj.GetComponent<Animator>().SetBool("Reussite",dual_reussite);
         //Debug.Log(correctText == currentText);
+        
+        if(dual_reussite)
+        {
+            ButtonLayer.SetActive(true);
+            ButtonLayer.transform.GetChild(0).gameObject.SetActive(true);
+            for (int i = 1; i < ButtonLayer.transform.childCount; i++) {
+                ButtonLayer.transform.GetChild(i).gameObject.SetActive(false);
+            }
+
+            GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[GameObject.Find("Global").GetComponent<scrGlobal>().levelNum] = true;
+        }
         Invoke("dual_anim_reset",1f);
     }
 
     private void Valider()
     {
-        Debug.Log("Validation...");
-
-        
+        //Debug.Log("Validation...");
 
         bool willStop = false;
         bool forceStop = false;
@@ -646,8 +810,8 @@ public class scrTextManager : MonoBehaviour
         int i = 0; // indice current
         int j = 0; // indice correct
 
-
-        while ( (i < currentText.Length) && (! (willStop && currentText[i].Equals('.')) ) && !forceStop)
+        //parcours
+        while ( (i < currentText.Length) && !forceStop && (!((willStop && (currentText[i].Equals('.') || currentText[i].Equals('!') || currentText[i].Equals('?'))))) )
         {
             vN += currentText[i].Equals(',') ? 1 : 0;
             vNBP += (currentText[i].Equals(',') && correctText[j].Equals(',')) ? 1 : 0;
@@ -656,9 +820,9 @@ public class scrTextManager : MonoBehaviour
                 vNC += correctText[j].Equals(',') ? 1 : 0;
             }
 
-            if (currentText[i].Equals('.'))
+            if (currentText[i].Equals('.') || currentText[i].Equals('!') || currentText[i].Equals('?') )
             {
-                if (!correctText[j].Equals('.'))
+                if (!correctText[j].Equals(currentText[i]))
                 {
                     // point trop tôt
                     forceStop = true;
@@ -682,6 +846,8 @@ public class scrTextManager : MonoBehaviour
                     }
                 }
             }
+
+            //absence
             if (correctText[j].Equals(',') && !currentText[i].Equals(','))
             {
                 willStop = true;
@@ -692,9 +858,20 @@ public class scrTextManager : MonoBehaviour
                 willStop = true;
                 manquePoint = true;
             }
+            if (correctText[j].Equals('!') && !currentText[i].Equals('!'))
+            {
+                willStop = true;
+                manquePoint = true;
+            }
+            if (correctText[j].Equals('?') && !currentText[i].Equals('?'))
+            {
+                willStop = true;
+                manquePoint = true;
+            }
 
-            bool currPonct = (currentText[i].Equals(',') || currentText[i].Equals('.'));
-            bool corrPonct = (correctText[j].Equals(',') || correctText[j].Equals('.'));
+            bool currPonct = (currentText[i].Equals(',') || currentText[i].Equals('.') || currentText[i].Equals('!') || currentText[i].Equals('?'));
+            bool corrPonct = (correctText[j].Equals(',') || correctText[j].Equals('.') || correctText[j].Equals('!') || correctText[j].Equals('?'));
+
             if (currPonct && !corrPonct)
             {
                 i++;
@@ -715,16 +892,24 @@ public class scrTextManager : MonoBehaviour
             }
         }
         // post search error check
-        if (willStop || !currentText[currentText.Length - 1].Equals('.'))
+        if (willStop || !currentText[currentText.Length - 1].Equals(correctText[correctText.Length - 1]))
         {
-            if ( (i == currentText.Length) && !currentText[currentText.Length - 1].Equals('.'))
+            if ( (i == currentText.Length) && !currentText[currentText.Length - 1].Equals(correctText[correctText.Length - 1]))
             {
                 manquePoint = true;
             }
 
             if (i < currentText.Length && !manquePoint) //  && !willStop ------ bruteforce, i know
             {
-                if (currentText[i].Equals('.') && !correctText[j].Equals('.'))
+                if ((currentText[i].Equals('.') && !correctText[j].Equals('.')))
+                {
+                    pointTropTot = true;
+                }
+                if ((currentText[i].Equals('!') && !correctText[j].Equals('!')))
+                {
+                    pointTropTot = true;
+                }
+                if ((currentText[i].Equals('?') && !correctText[j].Equals('?')))
                 {
                     pointTropTot = true;
                 }
@@ -752,10 +937,11 @@ public class scrTextManager : MonoBehaviour
             int cCount = 0;
 
             string t = currentText.Substring(0, i);
-            char[] a = { ',', '.' };
+            char[] a = { ',', '.', '!', '?',';',':' };
             int l = t.Split(a).Length;
-
+            
             int cIndex = i - 1 - l; // char sur lequel s'arrêter
+
             //Debug.Log("char de fin : " + cIndex);
             //Debug.Log("char de fin : " + cIndex);
             //Debug.Log("" + currentText[i]);
@@ -777,6 +963,7 @@ public class scrTextManager : MonoBehaviour
             //Debug.Log("-> " + k);
             //Debug.Log("->" + wordsObj[k].GetComponentInChildren<TextMeshProUGUI>().text);
             //Debug.Log("->" + wordsObj[k].transform.localPosition.y);
+            
             lineToStop = (Mathf.Abs( (int) wordsObj[k].transform.localPosition.y - textFloor) ) / lineJump;
 
             posToStop = slots[k].transform.localPosition.x;
@@ -802,20 +989,40 @@ public class scrTextManager : MonoBehaviour
     }
 
 
-    public void ShowSlots()
+    public void ShowSlots(Vector2 taillePot, string pot)
     {
+        Vector2 slot_pos = quel_pot(pot);
+
+        if(dualAnim && init_anim)HideSlots(taillePot, pot);
+
         for (int i = 0; i < slots.Length; i++)
         {
-            slots[i].GetComponentInChildren<Image>().enabled = true;
+            if(!slots[i].GetComponentInChildren<scrSlot>().isUsed)slots[i].GetComponentInChildren<Image>().enabled = true;
+
+            slots[i].GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = taillePot;
+            
+            Vector3 V3_slot = slots[i].GetComponentInChildren<RectTransform>().position;
+            slots[i].GetComponentInChildren<RectTransform>().position = new Vector3(V3_slot.x+slot_pos.x,V3_slot.y+slot_pos.y,V3_slot.z);
+            
         }
+
+        
     }
 
-    public void HideSlots()
+    public void HideSlots(Vector2 taillePot, string pot)
     {
+        Vector2 slot_pos = quel_pot(pot);
+        
         for (int i = 0; i < slots.Length; i++)
         {
             slots[i].GetComponentInChildren<Image>().enabled = false;
+
+            Vector3 V3_slot = slots[i].GetComponentInChildren<RectTransform>().position;
+            slots[i].GetComponentInChildren<RectTransform>().position = new Vector3(V3_slot.x-slot_pos.x,V3_slot.y-slot_pos.y,V3_slot.z);
+
         }
+
+        if(pot.Equals("init"))init_anim = false;
     }
 
 
@@ -824,6 +1031,7 @@ public class scrTextManager : MonoBehaviour
         string word = "";
         bool skipNext = false;
         bool lowerNext = false;
+        
         for (int i = 0; i < TF.text.Length; i++)
         {
             switch (TF.text[i])
@@ -845,6 +1053,28 @@ public class scrTextManager : MonoBehaviour
                     skipNext = true; // we skip the next char because it is a ' '
                     lowerNext = true; // we lower the next upper case (this is to avoid lowering any first name or the first letter of the text)
                     break;
+                case '!':
+                    // EXCLAMATION
+                    S.Add("!");
+                    skipNext = true; // we skip the next char because it is a ' '
+                    lowerNext = true; // we lower the next upper case (this is to avoid lowering any first name or the first letter of the text)
+                    break;
+                case '?':
+                    // INTERROGATION
+                    S.Add("?");
+                    skipNext = true; // we skip the next char because it is a ' '
+                    lowerNext = true; // we lower the next upper case (this is to avoid lowering any first name or the first letter of the text)
+                    break;
+                case ':':
+                    // DEUX POINTS
+                    S.Add(":");
+                    skipNext = true; // we skip the next char because it is a ' '
+                    break;
+                case ';':
+                    // POINT VIRGULE
+                    S.Add(";");
+                    skipNext = true; // we skip the next char because it is a ' '
+                    break;
                 case ' ':
                     // ESPACE
                     if (!skipNext)
@@ -853,13 +1083,12 @@ public class scrTextManager : MonoBehaviour
                         W.Add(word);
                         word = "";
                     }
-                    else
+                    else        
                     {
                         skipNext = false;
                     }
                     break;
-                default:
-                    // LETTER (ou point final)
+                default://Lettre
                     word += TF.text[i];
                     if (lowerNext)
                     {
@@ -971,5 +1200,65 @@ public class scrTextManager : MonoBehaviour
     {
         animationObj.GetComponent<Animator>().SetBool("Validation",false);
         animationObj.GetComponent<Animator>().SetBool("Reussite",false);
+    }
+
+    private Vector2 quel_pot(string pot)
+    {
+        if(pot == "init"){
+            return new Vector2 (0,0);
+        }
+        else if(pot == "Deux Points"){
+            return new Vector2 (0,20);
+        }
+        else if(pot == "Point Virgule"){
+            return new Vector2 (-5,10);
+        }
+        else if(pot == "Exclamation"){
+            return new Vector2 (-5,25);
+        }
+        else if(pot == "Interrogation"){
+            return new Vector2 (-5,25);
+        }
+        else{
+            return new Vector2 (-5,0);
+        }
+    }
+
+    private Vector3 quelle_ponct(string ponct)
+    {
+        if(ponct == "Point"){
+            return new Vector3 (-5,-25,0);
+        }
+        else if(ponct == "Virgule"){
+            return new Vector3 (-5,-25,0);
+        }
+        else if(ponct == "Deux Points"){
+            return new Vector3 (0,-5,0);
+        }
+        else if(ponct == "Point Virgule"){
+            return new Vector3 (-5,-15,0);
+        }
+        else if(ponct == "Exclamation"){
+            return new Vector3 (-5,0,0);
+        }
+        else if(ponct == "Interrogation"){
+            return new Vector3 (-5,0,0);
+        }
+        else{
+            return new Vector3 (0,0,0);
+        }
+    }
+
+    public float taille_Police(int lg_text)
+    {
+        float ratio = textFloor/lg_text;
+        if(lg_text>textFloor)
+        {
+            Debug.Log(ratio*taillePolice);
+            spaceSize=spaceSize*ratio;
+            return ratio*taillePolice;
+        }
+        return taillePolice;
+        
     }
 }

@@ -577,26 +577,33 @@ public class scrTextManager : MonoBehaviour
         for (int i = 0; i < words_e.Count; i++) // NEEDS: words, slots, wordsObj
         {
             GameObject wordObj = Instantiate(WordPrefab);
+            
             wordObj.GetComponentInChildren<TextMeshProUGUI>().text = words_e[i];
 
+            bool alaligne = false;
+            if(words_e[i].Length > 1)
+            {
+                alaligne = words_e[i][1].Equals('\n');
+            }
+            
             float pw = wordObj.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
 
-            if (W + pw > lineWidth) // if the word is too long for the line size
+            if (W + pw > lineWidth || alaligne) // if the word is too long for the line size
             {
                 W = 0f; // moves cursors to the next line
-                H -= lineJump;
+                if(alaligne)
+                {  
+                    H-= 0;
+                }else
+                {
+                    H -= lineJump;
+                }
+                
                 lineToStop++;
                 lineNumber++;
             }
             W += (pw) + spaceSize;
 
-            GameObject slot = Instantiate(SlotPrefab);
-            slot.transform.SetParent(canvas.transform);
-            slot.transform.localPosition = new Vector3(W - (spaceSize / 2) - (lineWidth / 2), textFloor + H, 0); // test
-
-            slot.GetComponent<scrSlot>().INDEX = i;
-            slot.GetComponent<scrSlot>().txtManager = gameObject;
-            slots_e[i] = slot;
 
             //wordObj.transform.parent = Canvas.transform;
             wordObj.transform.SetParent(canvas.transform);
@@ -605,10 +612,20 @@ public class scrTextManager : MonoBehaviour
             wordObj.GetComponent<Image>().enabled = false;
             //wordObj.GetComponent<Image>().enabled = true; //trust me, it works
 
+            if(alaligne)H+=0-lineJump;
+            GameObject slot = Instantiate(SlotPrefab);
+            slot.transform.SetParent(canvas.transform);
+            slot.transform.localPosition = new Vector3(W - (spaceSize / 2) - (lineWidth / 2), textFloor + H, 0); // test
+
+            slot.GetComponent<scrSlot>().INDEX = i;
+            slot.GetComponent<scrSlot>().txtManager = gameObject;
+            slots_e[i] = slot;
+
             wordsObj_e[i] = wordObj;
 
             posToStop = W - (lineWidth / 2) - 10f;
 
+            
         } // end of word placement
         return (W, H);
     }

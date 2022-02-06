@@ -2,22 +2,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 
 public class scrMapManager : MonoBehaviour
 {
+    
 
     [Header("Scene")]
     public Scene maScene;
     public string sceneName;
+    public GameObject boutons;
     //public string selectText;
     public TextAsset text;
     //public scrTextManager test;
     //public scrGlobal globalScript;
     //public TextAsset filename;
     public GameObject[] levelTab;
+
+    void Start()
+    {
+        Invoke("activerBouttons",.1f);
+    }
 
     public void LoadNewScene()
     {
@@ -52,6 +60,7 @@ public class scrMapManager : MonoBehaviour
 
     public void selectLevel()
     {
+        Debug.Log(GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked.Count);
         int levelActuel = 0;
         switch(EventSystem.current.currentSelectedGameObject.name)
         {
@@ -194,5 +203,33 @@ public class scrMapManager : MonoBehaviour
     private bool checkUnlocked(int level)
     {
         return GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[level];
+    }
+
+    void activerBouttons()
+    {
+        //le script global contient 1 élément en plus
+        for(int a=0;a<boutons.transform.childCount;a++)
+        {
+            bool niv_next = GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[a+1];
+            bool niv_now = GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[a];
+
+            boutons.transform.GetChild(a).GetComponent<Button>().interactable=niv_now;
+            
+            if(niv_now)
+            {
+                ColorBlock cb = boutons.transform.GetChild(a).GetComponent<Button>().colors;
+                if(niv_next)
+                {
+                    cb.normalColor = Color.blue;
+                    
+                }else
+                {
+                    cb.normalColor = Color.red;
+                }
+                boutons.transform.GetChild(a).GetComponent<Button>().colors = cb;
+            }
+            
+            
+        }
     }
 }

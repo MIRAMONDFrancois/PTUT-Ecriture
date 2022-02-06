@@ -34,7 +34,7 @@ public class scrGlobal : MonoBehaviour
 
     public void Start(){
         levelunlocked.Add(true);
-        for (int i = 1; i<= 14; i++){
+        for (int i = 1; i<= 15; i++){
             levelunlocked.Add(false);
         }
         

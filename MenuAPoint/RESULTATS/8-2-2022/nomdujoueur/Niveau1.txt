@@ -1,0 +1,7 @@
+Fichier de nomdujoueur sur le niveau 1.
+Le texte correct est:
+Le tigre tourne en rond. Il fait des va-et-vient incessants derrière les grilles de sa cage.
+
+----------------------------------------------
+
+Terminé en 3 secondes avec 0 erreur(s).

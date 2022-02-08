@@ -1270,7 +1270,7 @@ MonoBehaviour:
   playerName: 
   levelNum: 0
   levelunlocked: 
-  file: {fileID: 4900000, guid: 42825b26c90271242b9fd4aa5a171dd1, type: 3}
+  file: {fileID: 4900000, guid: 53dce84c04c69cb4ca43498f00f0a054, type: 3}
   isSpecial: 0
   specialFile: {fileID: 0}
   pointLimit: -1
@@ -1279,8 +1279,8 @@ MonoBehaviour:
   interrogationLimit: -1
   deuxpointsLimit: -1
   pointvirguleLimit: -1
-  nivAntiOubli: 0
-  animTextFile: {fileID: 4900000, guid: a474118759ab81f4cabe1875eddd18ac, type: 3}
+  nivAntiOubli: 1
+  animTextFile: {fileID: 4900000, guid: 01aee940f6d40a1488afbb418defa685, type: 3}
   canBeMoved: 1
   canBeDeleted: 1
 --- !u!4 &579154066

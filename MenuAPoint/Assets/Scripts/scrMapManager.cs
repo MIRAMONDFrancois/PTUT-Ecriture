@@ -32,6 +32,11 @@ public class scrMapManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
+    public void backToMenu()
+    {
+        SceneManager.LoadScene("menuScene");
+    }
+
     private void LevelSetBaseValues(int levelNum, TextAsset TextFile) {
         GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = levelNum;
         GameObject.Find("Global").GetComponent<scrGlobal>().file = TextFile;

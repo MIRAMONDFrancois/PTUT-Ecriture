@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro; 
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class scrMenu : MonoBehaviour 
 {   
@@ -70,6 +71,11 @@ public class scrMenu : MonoBehaviour
         
 
 
+    }
+
+    public void LoadMenu()
+    {
+        SceneManager.LoadScene("menuScene");
     }
 
 }

@@ -77,21 +77,24 @@ public class scrTextManager : MonoBehaviour
 
 
     // Text pos
-    private float lineWidth = 1550f; // 
-    private float textFloor = 450f; // (default: 450f; anim: 75f) vertical position of the top of the text
-    private float spaceSize = 50f; // 
+    private float lineWidth = 1550f; // ~80%
+    private float textFloor = 450f; // ~42% (default: 450f; anim: 75f) vertical position of the top of the text
+    private float spaceSize = 50f;
     private float lineJump = 80f;
     private float taillePolice = 72f;
 
     // Text errors
+    private List<string> vrai_separators;
     //fin de phrase
     private bool pointTropTot = false;
     private bool manquePoint = false;
+    private List<int> pos_finPonct = new List<int>();
 
     //mileu de phrase
     private bool tropVirgule = false;
     private bool pasAssezVirgule = false;
     private bool mauvaiseVirgule = false;//mauvaise position
+    private List<int> pos_midPonct = new List<int>();
 
     private bool textreussite = false; //pour pas faire "!bool && !bool" à chaque fois
     private bool point_reussite = false; 
@@ -128,6 +131,7 @@ public class scrTextManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         // DATA IMPORT
         scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
         if (!IAmDebugging) {
@@ -169,7 +173,7 @@ public class scrTextManager : MonoBehaviour
         init_anim = dualAnim;
         if (!dualAnim) {
             // Classic mode
-
+            
             textFloor = 450f;
 
             canTouchPonct = true;
@@ -180,6 +184,20 @@ public class scrTextManager : MonoBehaviour
             correctText = TextFile.text;
             
             CutsWordsDual(TextFile, s, words);
+            //ICI init pos mid fin ponctuation
+            for(int a=0;a<vrai_separators.Count;a++)
+            {
+                if(vrai_separators[a].Equals(".") || vrai_separators[a].Equals("!") || vrai_separators[a].Equals("?"))
+                {
+                    pos_finPonct.Add(a);
+                }
+                if(vrai_separators[a].Equals(",") || vrai_separators[a].Equals(":") || vrai_separators[a].Equals(";"))
+                {
+                    pos_midPonct.Add(a);
+                }
+                
+                
+            }
             
             // animation log
             animationLog.gameObject.SetActive(showLog);
@@ -216,7 +234,7 @@ public class scrTextManager : MonoBehaviour
 
             // reads potential special file and adds unmovable or undeletable separators
             // incroyablement brut, on n'en parlera pas
-            if (useSpecial) // may be irrelevant?
+            /*if (useSpecial) // may be irrelevant?
             {
                 string st = SpecialFile.text;
                 sp = st.Split('|');
@@ -290,7 +308,7 @@ public class scrTextManager : MonoBehaviour
 
                     }
                 }
-            } // END OF SPECIAL
+            }*/ // END OF SPECIAL
             // END OF CLASSIC MODE
 
 
@@ -799,8 +817,6 @@ public class scrTextManager : MonoBehaviour
 
     public void ValiderDual() {
         bool dual_reussite = correctText == currentText;
-        Debug.Log(correctText);
-        Debug.Log(currentText);
         animationObj.GetComponent<Animator>().SetBool("Validation",true);
         animationObj.GetComponent<Animator>().SetBool("Reussite",dual_reussite);
         //Debug.Log(correctText == currentText);
@@ -820,9 +836,37 @@ public class scrTextManager : MonoBehaviour
 
     private void Valider()
     {
+        //validation Brayan ICI
+        /*for(int a=0;a<pos_midPonct.Count;a++)
+        {
+            Debug.Log(pos_midPonct[a]);
+        }
+        for(int a=0;a<pos_finPonct.Count;a++)
+        {
+            Debug.Log(pos_finPonct[a]);
+        }*/
+
+        //Parcours ponctuations
+        for(int a=0;a<separators.Length;a++)
+        {
+            //Différence entre ponctuation
+            if(!separators[a].Equals(vrai_separators[a]))
+            {
+                //Test de Vide
+                if(separators[a].Equals(""))
+                {
+                    Debug.Log("Manque quelque chose");
+                }
+
+                if(vrai_separators[a].Equals(""))
+                {
+                    Debug.Log("Trop de ponct");
+                }
+                
+            }
+        }
+
         //Debug.Log("Validation...");
-        Debug.Log(correctText);
-        Debug.Log(currentText);
         bool willStop = false;
         bool forceStop = false;
         int vN = 0; // nombre de virgule
@@ -839,6 +883,8 @@ public class scrTextManager : MonoBehaviour
 
         int i = 0; // indice current
         int j = 0; // indice correct
+
+        
 
         //parcours
         while ( (i < currentText.Length) && !forceStop && (!((willStop && (currentText[i].Equals('.') || currentText[i].Equals('!') || currentText[i].Equals('?'))))) )
@@ -1061,13 +1107,15 @@ public class scrTextManager : MonoBehaviour
         string word = "";
         bool skipNext = false;
         bool lowerNext = false;
-        
+        vrai_separators = new List<string>();
+
         for (int i = 0; i < TF.text.Length; i++)
         {
             switch (TF.text[i])
             {
                 case ',':
                     // VIRGULE
+                    vrai_separators.Add(",");
                     S.Add(word);
                     W.Add(word);
                     S.Add(",");
@@ -1076,6 +1124,7 @@ public class scrTextManager : MonoBehaviour
                     break;
                 case '.':
                     // POINT
+                    vrai_separators.Add(".");
                     S.Add(word);
                     W.Add(word);
                     S.Add(".");
@@ -1085,23 +1134,27 @@ public class scrTextManager : MonoBehaviour
                     break;
                 case '!':
                     // EXCLAMATION
+                    vrai_separators.Add("!");
                     S.Add("!");
                     skipNext = true; // we skip the next char because it is a ' '
                     lowerNext = true; // we lower the next upper case (this is to avoid lowering any first name or the first letter of the text)
                     break;
                 case '?':
                     // INTERROGATION
+                    vrai_separators.Add("?");
                     S.Add("?");
                     skipNext = true; // we skip the next char because it is a ' '
                     lowerNext = true; // we lower the next upper case (this is to avoid lowering any first name or the first letter of the text)
                     break;
                 case ':':
                     // DEUX POINTS
+                    vrai_separators.Add(":");
                     S.Add(":");
                     skipNext = true; // we skip the next char because it is a ' '
                     break;
                 case ';':
                     // POINT VIRGULE
+                    vrai_separators.Add(";");
                     S.Add(";");
                     skipNext = true; // we skip the next char because it is a ' '
                     break;
@@ -1115,8 +1168,10 @@ public class scrTextManager : MonoBehaviour
                     break;*/
                 case ' ':
                     // ESPACE
+                    
                     if (!skipNext)
                     {
+                        vrai_separators.Add("");
                         S.Add(word);
                         W.Add(word);
                         word = "";
@@ -1289,7 +1344,16 @@ public class scrTextManager : MonoBehaviour
 
     public float taille_Police(int lg_text)
     {
+        
+
+        //Adaptation Screen
+        //lineWidth = (lineWidth/1920)*Screen.width;
+        //textFloor = (textFloor/1080)*Screen.height;
         float ratio = textFloor/lg_text;
+        Debug.Log(Screen.width+ " "+ lineWidth);
+        Debug.Log(Screen.height+" "+textFloor);
+        Debug.Log(ratio + " " + lg_text);
+
         if(lg_text>textFloor)
         {
             lineJump = lineJump*ratio;

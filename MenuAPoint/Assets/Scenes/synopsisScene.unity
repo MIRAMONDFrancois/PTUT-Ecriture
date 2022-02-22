@@ -362,8 +362,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.6, y: -136.7}
-  m_SizeDelta: {x: 1861.9354, y: 806.546}
+  m_AnchoredPosition: {x: 4.9, y: -2.5}
+  m_SizeDelta: {x: 1863.9535, y: 352.2229}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &802598009
 MonoBehaviour:
@@ -384,15 +384,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Vous allez incarner Tokki la lapine cuisini\xE8re. Cette lapine r\xEAve
-    de devenir une excellente cheffe cuisini\xE8re. Pour cela, vous allez donc la
-    suivre dans ses aventures fabuleuses dans lesquelles Tokki tentera d\u2019am\xE9liorer
-    ses comp\xE9tences. Vous l\u2019aiderez \xE0 assaisonner ses plats par le biais
-    de mini-jeu o\xF9 votre but sera de ponctuer des phrases. Car la cuisine et la
-    ponctuation sont proches. Ponctuer une phrase revient \xE0 assaisonner un plat\_;
-    si votre phrase est mal ponctu\xE9e, elle sera fade, comme un plat mal assaisonn\xE9,
-    et pourra donc mal \xEAtre comprise.\r\nLancez-vous dans l\u2019aventure\_! Aidez
-    Tokki \xE0 accomplir son r\xEAve\_!"
+  m_text: "Vous allez incarner Tokki la lapine cuisini\xE8re. Tokki r\xEAve de devenir
+    une excellente cheffe cuisini\xE8re.\n\nAccompagnez-la dans ses aventures ! Aidez-la
+    \xE0 r\xE9aliser son r\xEAve !"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e7e278b79a605b845b30dbbb1cfebcfc, type: 2}
   m_sharedMaterial: {fileID: 3176864746252412033, guid: e7e278b79a605b845b30dbbb1cfebcfc,
@@ -420,7 +414,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 67.95
+  m_fontSize: 69.35
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1

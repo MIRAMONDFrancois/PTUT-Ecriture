@@ -77,8 +77,8 @@ public class scrTextManager : MonoBehaviour
 
 
     // Text pos
-    private float lineWidth = 1550f; // ~80%
-    private float textFloor = 450f; // ~42% (default: 450f; anim: 75f) vertical position of the top of the text
+    private float lineWidth = 1550f; //
+    private float textFloor = 450f; // (default: 450f; anim: 75f) vertical position of the top of the text
     private float spaceSize = 50f;
     private float lineJump = 80f;
     private float taillePolice = 72f;
@@ -131,7 +131,7 @@ public class scrTextManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        init_taille_texte();
         // DATA IMPORT
         scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
         if (!IAmDebugging) {
@@ -187,10 +187,12 @@ public class scrTextManager : MonoBehaviour
             //ICI init pos mid fin ponctuation
             for(int a=0;a<vrai_separators.Count;a++)
             {
+                //ponct final
                 if(vrai_separators[a].Equals(".") || vrai_separators[a].Equals("!") || vrai_separators[a].Equals("?"))
                 {
                     pos_finPonct.Add(a);
                 }
+                //ponct milieu
                 if(vrai_separators[a].Equals(",") || vrai_separators[a].Equals(":") || vrai_separators[a].Equals(";"))
                 {
                     pos_midPonct.Add(a);
@@ -588,24 +590,31 @@ public class scrTextManager : MonoBehaviour
 
     private (float, float) placesWords(List<string> words_e, GameObject[] slots_e, GameObject[] wordsObj_e, float W, float H, int INDEX)
     {
+        //Taille police
         taillePolice = taille_Police(correctText.Length);
         WordPrefab.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
         WordPrefab.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().fontSize=taillePolice;
-        
+ 
         for (int i = 0; i < words_e.Count; i++) // NEEDS: words, slots, wordsObj
         {
+            //instantiate mot prefab
             GameObject wordObj = Instantiate(WordPrefab);
-            
+            //associe le prefab au texte
             wordObj.GetComponentInChildren<TextMeshProUGUI>().text = words_e[i];
 
+            //test nulle
             bool alaligne = false;
             if(words_e[i].Length > 1)
             {
                 alaligne = words_e[i][1].Equals('\n');
             }
-            
+            //fin
+            //longueur mot
             float pw = wordObj.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
-
+            W+=(pw/2);
+            wordObj.transform.position = new Vector3(Screen.width*.1f+W, Screen.height*.95f + H, 0);
+            W+=spaceSize;
+            //W -> longueur total
             if (W + pw > lineWidth || alaligne) // if the word is too long for the line size
             {
                 W = 0f; // moves cursors to the next line
@@ -620,30 +629,33 @@ public class scrTextManager : MonoBehaviour
                 lineToStop++;
                 lineNumber++;
             }
-            W += (pw) + spaceSize;
+            //spaceSize -> espace slots
+            //W += (pw) + spaceSize;
 
-
-            //wordObj.transform.parent = Canvas.transform;
+            //afficher sur le canvas
             wordObj.transform.SetParent(canvas.transform);
-            wordObj.transform.localPosition = new Vector3(W - (pw / 2) - spaceSize - (lineWidth / 2), textFloor + H, 0);
-
+            //positions mots                             total - (taillemot/2) - espace - (TailleAutoriséeTotal / 2) , Debut Hauteur + 0 ou Linejump , osef
+            //wordObj.transform.localPosition = new Vector3(W - (pw / 2) - spaceSize - (lineWidth / 2), textFloor + H, 0);
+            
+            Debug.Log(W);
+            //un peu utile ?
             wordObj.GetComponent<Image>().enabled = false;
-            //wordObj.GetComponent<Image>().enabled = true; //trust me, it works
-
+            //revoir alaligne    
             if(alaligne)H+=0-lineJump;
+
+            //instantiate slot prefab
             GameObject slot = Instantiate(SlotPrefab);
             slot.transform.SetParent(canvas.transform);
-            slot.transform.localPosition = new Vector3(W - (spaceSize / 2) - (lineWidth / 2), textFloor + H, 0); // test
+            //positions slots                         total - (espace/2)  - (TailleAutoriséeTotal / 2) , Debut Hauteur + 0 ou Linejump , osef   
+            slot.transform.localPosition = new Vector3(W - (spaceSize / 2) - (lineWidth / 2), textFloor + H, 0);
 
+
+            //definition attribut slots
             slot.GetComponent<scrSlot>().INDEX = i;
             slot.GetComponent<scrSlot>().txtManager = gameObject;
             slots_e[i] = slot;
 
             wordsObj_e[i] = wordObj;
-
-            posToStop = W - (lineWidth / 2) - 10f;
-
-            
         } // end of word placement
         return (W, H);
     }
@@ -1350,9 +1362,6 @@ public class scrTextManager : MonoBehaviour
         //lineWidth = (lineWidth/1920)*Screen.width;
         //textFloor = (textFloor/1080)*Screen.height;
         float ratio = textFloor/lg_text;
-        Debug.Log(Screen.width+ " "+ lineWidth);
-        Debug.Log(Screen.height+" "+textFloor);
-        Debug.Log(ratio + " " + lg_text);
 
         if(lg_text>textFloor)
         {
@@ -1362,5 +1371,15 @@ public class scrTextManager : MonoBehaviour
         }
         return taillePolice;
         
+    }
+
+    public void init_taille_texte()
+    {
+        //lineWidth = Screen.width*.8f;
+        Debug.Log(Screen.width +" " +lineWidth);
+        Debug.Log(Screen.height +" "+textFloor);
+        Debug.Log(spaceSize);
+        Debug.Log(lineJump);
+        Debug.Log(taillePolice);
     }
 }

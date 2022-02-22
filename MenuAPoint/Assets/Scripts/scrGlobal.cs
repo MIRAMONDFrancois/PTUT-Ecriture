@@ -31,6 +31,7 @@ public class scrGlobal : MonoBehaviour
     public TextAsset animTextFile;
     public bool canBeMoved;
     public bool canBeDeleted;
+    public bool tutoChecked;
 
     public void Start(){
         levelunlocked.Add(true);

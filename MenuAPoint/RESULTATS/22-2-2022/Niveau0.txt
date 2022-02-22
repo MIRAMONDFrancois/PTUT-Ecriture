@@ -4,10 +4,4 @@ Le tigre tourne en rond. Il fait des va-et-vient incessants derrière les grille
 
 ----------------------------------------------
 
-Erreur à 1 secondes :
-- point trop tôt
-Le tigre. tourne en rond il fait des va-et-vient incessants derrière les grilles de sa cage
-
-----------------------------------------------
-
-Terminé en 6 secondes avec 1 erreur(s).
+Terminé en 12 secondes avec 0 erreur(s).

@@ -77,11 +77,12 @@ public class scrTextManager : MonoBehaviour
 
 
     // Text pos
-    private float lineWidth = 1550f; //
-    private float textFloor = 450f; // (default: 450f; anim: 75f) vertical position of the top of the text
-    private float spaceSize = 50f;
-    private float lineJump = 80f;
-    private float taillePolice = 72f;
+    public GameObject text_scaler;
+    private float lineWidth; //= 1550f; 
+    private float textFloor; //= 450f; // (default: 450f; anim: 75f) vertical position of the top of the text
+    private float spaceSize; //= 50f;
+    private float lineJump; //= 80f;
+    private float taillePolice; //= 72f;
 
     // Text errors
     private List<string> vrai_separators;
@@ -173,9 +174,6 @@ public class scrTextManager : MonoBehaviour
         init_anim = dualAnim;
         if (!dualAnim) {
             // Classic mode
-            
-            textFloor = 450f;
-
             canTouchPonct = true;
 
             s = new List<string>();
@@ -599,6 +597,7 @@ public class scrTextManager : MonoBehaviour
         {
             //instantiate mot prefab
             GameObject wordObj = Instantiate(WordPrefab);
+            GameObject slot = Instantiate(SlotPrefab);
             //associe le prefab au texte
             wordObj.GetComponentInChildren<TextMeshProUGUI>().text = words_e[i];
 
@@ -609,13 +608,11 @@ public class scrTextManager : MonoBehaviour
                 alaligne = words_e[i][1].Equals('\n');
             }
             //fin
+            
             //longueur mot
             float pw = wordObj.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
-            W+=(pw/2);
-            wordObj.transform.position = new Vector3(Screen.width*.1f+W, Screen.height*.95f + H, 0);
-            W+=spaceSize + pw/2;
-            //W -> longueur total
-            if (W + pw/2 > lineWidth || alaligne) // if the word is too long for the line size
+            
+            if (W + pw > lineWidth || alaligne) // if the word is too long for the line size
             {
                 W = 0f; // moves cursors to the next line
                 if(alaligne)
@@ -629,25 +626,28 @@ public class scrTextManager : MonoBehaviour
                 lineToStop++;
                 lineNumber++;
             }
-            //spaceSize -> espace slots
-            //W += (pw) + spaceSize;
+
+            W+=pw/2;
+            wordObj.transform.position = new Vector3(Screen.width*.1f+W, Screen.height*.95f + H, 0);
+            W+=spaceSize/2+pw/2;
+            slot.transform.position = new Vector3(Screen.width*.1f+W, Screen.height*.95f + H, 0);
+            W+=spaceSize/2;
 
             //afficher sur le canvas
             wordObj.transform.SetParent(canvas.transform);
-            //positions mots                             total - (taillemot/2) - espace - (TailleAutoriséeTotal / 2) , Debut Hauteur + 0 ou Linejump , osef
             //wordObj.transform.localPosition = new Vector3(W - (pw / 2) - spaceSize - (lineWidth / 2), textFloor + H, 0);
             
-            Debug.Log(W);
-            //un peu utile ?
+            //plus utile ?
             wordObj.GetComponent<Image>().enabled = false;
             //revoir alaligne    
             if(alaligne)H+=0-lineJump;
 
             //instantiate slot prefab
-            GameObject slot = Instantiate(SlotPrefab);
+            
             slot.transform.SetParent(canvas.transform);
             //positions slots                         total - (espace/2)  - (TailleAutoriséeTotal / 2) , Debut Hauteur + 0 ou Linejump , osef   
-            slot.transform.localPosition = new Vector3(W - (spaceSize / 2) - (lineWidth / 2), textFloor + H, 0);
+            //slot.transform.localPosition = new Vector3(W - (spaceSize / 2) - (lineWidth / 2), textFloor + H, 0);
+            
 
 
             //definition attribut slots
@@ -1357,12 +1357,8 @@ public class scrTextManager : MonoBehaviour
     public float taille_Police(int lg_text)
     {
         
-
-        //Adaptation Screen
-        //lineWidth = (lineWidth/1920)*Screen.width;
-        //textFloor = (textFloor/1080)*Screen.height;
         float ratio = textFloor/lg_text;
-
+        Debug.Log(textFloor +" "+lg_text+" "+ratio);
         if(lg_text>textFloor)
         {
             lineJump = lineJump*ratio;
@@ -1375,11 +1371,21 @@ public class scrTextManager : MonoBehaviour
 
     public void init_taille_texte()
     {
-        lineWidth = Screen.width*.8f;
+        taillePolice = Screen.width*.04f;
+
+        text_scaler.SetActive(true);
+        text_scaler.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
         
-        Debug.Log(Screen.height +" "+textFloor);
-        Debug.Log(spaceSize);
-        Debug.Log(lineJump);
-        Debug.Log(taillePolice);
+
+        lineWidth = Screen.width*.8f;
+
+        textFloor = Screen.height*.6f;
+        
+        
+        spaceSize = 1.5f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
+
+        lineJump = 1.1f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
+
+        text_scaler.SetActive(false);
     }
 }

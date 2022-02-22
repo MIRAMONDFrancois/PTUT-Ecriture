@@ -175,7 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level:
     m_Handle: 0
-  nameLevel: MapScene
+  nameLevel: sceneTutorielBase
 --- !u!1 &51599184
 GameObject:
   m_ObjectHideFlags: 0

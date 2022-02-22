@@ -613,9 +613,9 @@ public class scrTextManager : MonoBehaviour
             float pw = wordObj.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
             W+=(pw/2);
             wordObj.transform.position = new Vector3(Screen.width*.1f+W, Screen.height*.95f + H, 0);
-            W+=spaceSize;
+            W+=spaceSize + pw/2;
             //W -> longueur total
-            if (W + pw > lineWidth || alaligne) // if the word is too long for the line size
+            if (W + pw/2 > lineWidth || alaligne) // if the word is too long for the line size
             {
                 W = 0f; // moves cursors to the next line
                 if(alaligne)
@@ -1375,8 +1375,8 @@ public class scrTextManager : MonoBehaviour
 
     public void init_taille_texte()
     {
-        //lineWidth = Screen.width*.8f;
-        Debug.Log(Screen.width +" " +lineWidth);
+        lineWidth = Screen.width*.8f;
+        
         Debug.Log(Screen.height +" "+textFloor);
         Debug.Log(spaceSize);
         Debug.Log(lineJump);

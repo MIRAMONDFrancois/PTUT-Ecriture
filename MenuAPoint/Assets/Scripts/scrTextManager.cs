@@ -586,6 +586,7 @@ public class scrTextManager : MonoBehaviour
         cursor.GetComponent<Animator>().SetBool("Validation",movingCursor);
     }
 
+    //reste à fixe alaligne
     private (float, float) placesWords(List<string> words_e, GameObject[] slots_e, GameObject[] wordsObj_e, float W, float H, int INDEX)
     {
         //Taille police
@@ -635,20 +636,14 @@ public class scrTextManager : MonoBehaviour
 
             //afficher sur le canvas
             wordObj.transform.SetParent(canvas.transform);
+            slot.transform.SetParent(canvas.transform);
             //wordObj.transform.localPosition = new Vector3(W - (pw / 2) - spaceSize - (lineWidth / 2), textFloor + H, 0);
+            //slot.transform.localPosition = new Vector3(W - (spaceSize / 2) - (lineWidth / 2), textFloor + H, 0);
             
             //plus utile ?
             wordObj.GetComponent<Image>().enabled = false;
             //revoir alaligne    
             if(alaligne)H+=0-lineJump;
-
-            //instantiate slot prefab
-            
-            slot.transform.SetParent(canvas.transform);
-            //positions slots                         total - (espace/2)  - (TailleAutoriséeTotal / 2) , Debut Hauteur + 0 ou Linejump , osef   
-            //slot.transform.localPosition = new Vector3(W - (spaceSize / 2) - (lineWidth / 2), textFloor + H, 0);
-            
-
 
             //definition attribut slots
             slot.GetComponent<scrSlot>().INDEX = i;
@@ -1079,7 +1074,7 @@ public class scrTextManager : MonoBehaviour
 
     public void ShowSlots(Vector2 taillePot, string pot)
     {
-        Vector2 slot_pos = quel_pot(pot);
+        Vector2 slot_pos = quel_pot(pot);//valeur fixe
 
         if(dualAnim && init_anim)HideSlots(taillePot, pot);
 
@@ -1088,6 +1083,7 @@ public class scrTextManager : MonoBehaviour
             if(!slots[i].GetComponentInChildren<scrSlot>().isUsed)slots[i].GetComponentInChildren<Image>().enabled = true;
 
             slots[i].GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = taillePot;
+            slots[i].GetComponentInChildren<BoxCollider2D>().size = taillePot;
             
             Vector3 V3_slot = slots[i].GetComponentInChildren<RectTransform>().position;
             slots[i].GetComponentInChildren<RectTransform>().position = new Vector3(V3_slot.x+slot_pos.x,V3_slot.y+slot_pos.y,V3_slot.z);
@@ -1358,7 +1354,7 @@ public class scrTextManager : MonoBehaviour
     {
         
         float ratio = textFloor/lg_text;
-        Debug.Log(textFloor +" "+lg_text+" "+ratio);
+
         if(lg_text>textFloor)
         {
             lineJump = lineJump*ratio;

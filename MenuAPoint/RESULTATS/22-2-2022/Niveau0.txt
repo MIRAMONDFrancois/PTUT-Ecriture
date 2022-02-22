@@ -4,4 +4,4 @@ Le tigre tourne en rond. Il fait des va-et-vient incessants derrière les grille
 
 ----------------------------------------------
 
-Terminé en 12 secondes avec 0 erreur(s).
+Terminé en 3 secondes avec 0 erreur(s).

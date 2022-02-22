@@ -34,7 +34,14 @@ public class scrDragAndDrop : MonoBehaviour
         ogPos = transform.position;
         snapPos = ogPos;
         willSnap = false;
+        
+        Vector2 tailleponct = this.GetComponent<RectTransform>().sizeDelta;
 
+        float potx = tailleponct[0]*Screen.width/1920;
+        float poty = tailleponct[1]*Screen.height/1080;
+
+        this.GetComponent<RectTransform>().sizeDelta=new Vector2(potx,poty);
+        this.GetComponent<BoxCollider2D>().size=new Vector2(potx,poty);
     }
 
 
@@ -70,6 +77,7 @@ public class scrDragAndDrop : MonoBehaviour
                 col.GetComponent<scrSlot>().SendPonct("");
                 col.GetComponent<scrSlot>().isUsed = false;
             }
+
             Vector2 taillePot = this.GetComponent<RectTransform>().sizeDelta;
             textManager.GetComponent<scrTextManager>().ShowSlots(taillePot,this.tag);
         }

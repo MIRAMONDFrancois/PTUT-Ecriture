@@ -86,6 +86,7 @@ public class scrTextManager : MonoBehaviour
 
     // Text errors
     private List<string> vrai_separators;
+    private List<string> vrai_mots;
     //fin de phrase
     private bool pointTropTot = false;
     private bool manquePoint = false;
@@ -153,216 +154,84 @@ public class scrTextManager : MonoBehaviour
         }
 
 
-
+        /*
         colorBasique = new Color(0f, 0f, 0f);
         colorVirgule = new Color(80f / 255f, 138f / 255f, 50f / 255f); // Color(1f, 0.6f, 0f); Color(80f / 255f, 138f / 255f, 50f / 255f);
         colorPoint = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
-        //à modifier
         colorExclamation = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
         colorInterrogation = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
         colorPointVirgule = new Color(80f / 255f, 138f / 255f, 50f / 255f); // Color(1f, 0.6f, 0f); Color(80f / 255f, 138f / 255f, 50f / 255f);
         colorDeuxPoints = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
-
-        cursorStart = new Vector3(Screen.width*.05f,Screen.height*.93f,0);
+        */
+        cursorStart = new Vector3(Screen.width*.05f,textFloor,0);
         cursor.transform.position = cursorStart;
-
         cursor.gameObject.SetActive(!dualAnim);
 
-
-
-
         init_anim = dualAnim;
-        if (!dualAnim) {
-            // Classic mode
-            canTouchPonct = true;
+        
 
-            s = new List<string>();
-            words = new List<string>();
+        canTouchPonct = true;
 
-            correctText = TextFile.text;
-            
-            CutsWordsDual(TextFile, s, words);
-            //ICI init pos mid fin ponctuation
-            for(int a=0;a<vrai_separators.Count;a++)
+        s = new List<string>();
+        words = new List<string>();
+
+        correctText = TextFile.text;
+
+        CutsWordsDual(TextFile, s, words);
+        //test
+        Debug.Log("mot: "+vrai_mots.Count+" sep : "+vrai_separators.Count);
+        for(int a=0;a<vrai_mots.Count;a++)
+        {
+            Debug.Log(vrai_mots[a]);
+            Debug.Log(vrai_separators[a]);
+        }
+        // creates separators list
+        separators = new string[words.Count];
+        for (int i = 0; i < separators.Length; i++) separators[i] = "";
+        wordsObj = new GameObject[words.Count];
+        slots = new GameObject[words.Count];
+        // Places the words
+        float W = 0f; // width cursor
+        float H = 0f; // height cursor
+        (float, float) thing = placesWords(words, slots, wordsObj, W, H, 1);
+        W = thing.Item1;
+        H = thing.Item2;
+
+        GameObject virguleGen = GameObject.Find("Virgule Gen");
+        GameObject pointGen = GameObject.Find("Point Gen");
+        GameObject exclamationGen = GameObject.Find("Exclamation Gen");
+        GameObject interrogationGen = GameObject.Find("Interrogation Gen");
+        GameObject pointvirguleGen = GameObject.Find("point Virgule Gen");
+        GameObject deuxpointsGen = GameObject.Find("Deux Points Gen");
+
+        //test brayan
+        for(int a=0;a<vrai_separators.Count;a++)
+        {
+            //ponct final
+            if(vrai_separators[a].Equals(".") || vrai_separators[a].Equals("!") || vrai_separators[a].Equals("?"))
             {
-                //ponct final
-                if(vrai_separators[a].Equals(".") || vrai_separators[a].Equals("!") || vrai_separators[a].Equals("?"))
-                {
-                    pos_finPonct.Add(a);
-                }
-                //ponct milieu
-                if(vrai_separators[a].Equals(",") || vrai_separators[a].Equals(":") || vrai_separators[a].Equals(";"))
-                {
-                    pos_midPonct.Add(a);
-                }
-                
-                
+                pos_finPonct.Add(a);
             }
-            
-            // animation log
+            //ponct milieu
+            if(vrai_separators[a].Equals(",") || vrai_separators[a].Equals(":") || vrai_separators[a].Equals(";"))
+            {
+                pos_midPonct.Add(a);
+            }
+                
+                
+        }
+
+        if (!dualAnim) {
+
             animationLog.gameObject.SetActive(showLog);
             animationLog.text = "Les clients ont hâte de manger votre plat !";
-
-            // creates separators list
-            separators = new string[words.Count];
-            for (int i = 0; i < separators.Length; i++) separators[i] = "";
-            wordsObj = new GameObject[words.Count];
-            slots = new GameObject[words.Count];
-            // Places the words
-            float W = 0f; // width cursor
-            float H = 0f; // height cursor
-            (float, float) thing = placesWords(words, slots, wordsObj, W, H, 1);
-            W = thing.Item1;
-            H = thing.Item2;
-
-            GameObject virguleGen = GameObject.Find("Virgule Gen");
-            GameObject pointGen = GameObject.Find("Point Gen");
-            GameObject exclamationGen = GameObject.Find("Exclamation Gen");
-            GameObject interrogationGen = GameObject.Find("Interrogation Gen");
-            GameObject pointvirguleGen = GameObject.Find("point Virgule Gen");
-            GameObject deuxpointsGen = GameObject.Find("Deux Points Gen");
-
-            if (hideGen) // irrelevant?
-            {
-                virguleGen.SetActive(false);
-                pointGen.SetActive(false);
-                exclamationGen.SetActive(false);
-                interrogationGen.SetActive(false);
-                pointvirguleGen.SetActive(false);
-                deuxpointsGen.SetActive(false);
-            }
-
-            // reads potential special file and adds unmovable or undeletable separators
-            // incroyablement brut, on n'en parlera pas
-            /*if (useSpecial) // may be irrelevant?
-            {
-                string st = SpecialFile.text;
-                sp = st.Split('|');
-
-                bool canMoved = sp[0].Equals("true");
-                bool canDeleted = sp[1].Equals("true");
-
-                
-                GameObject block;
-                Vector3 vect = new Vector3();
-
-                string[] ss = sp[2].Split(';');
-                for (int i = 0; i < ss.Length; i++)
-                {
-                    //separators[i] = ss[i];
-                    switch (ss[i])
-                    {
-                        case ",":
-                            block = virguleGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                            slots[i].GetComponent<scrSlot>().SendPonct(",");
-
-                            vect = slots[i].transform.position + quelle_ponct("Virgule");
-                            break;
-                        case ".":
-                            block = pointGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                            slots[i].GetComponent<scrSlot>().SendPonct(".");
-
-                            vect = slots[i].transform.position + quelle_ponct("Point");
-                            break;
-                        case "!":
-                            block = exclamationGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                            slots[i].GetComponent<scrSlot>().SendPonct("!");
-
-                            vect = slots[i].transform.position + quelle_ponct("Exclamation");
-                            break;
-                        case "?":
-                            block = interrogationGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                            slots[i].GetComponent<scrSlot>().SendPonct("?");
-
-                            vect = slots[i].transform.position + quelle_ponct("Interrogation");
-                            break;
-                        case ";":
-                            block = pointvirguleGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                            slots[i].GetComponent<scrSlot>().SendPonct(";");
-
-                            vect = slots[i].transform.position + quelle_ponct("Point Virgule");
-                            break;
-                        case ":":
-                            block = deuxpointsGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                            slots[i].GetComponent<scrSlot>().SendPonct(":");
-
-                            vect = slots[i].transform.position + quelle_ponct("Deux Points");
-                            break;
-                        default:
-                            block = null;
-                            break;
-                    }
-                    if (block != null)
-                    {
-                        block.GetComponent<scrDragAndDrop>().dragging = false;
-                        block.GetComponent<scrDragAndDrop>().canBeMoved = canMoved;
-                        block.GetComponent<scrDragAndDrop>().canBeDeleted = canDeleted;
-                        slots[i].GetComponent<scrSlot>().isUsed = true;
-                        block.GetComponent<scrDragAndDrop>().willSnap = true;
-                        //Vector3 vect = slots[i].transform.position;
-                        //vect.y -= 25;
-                        block.GetComponent<scrDragAndDrop>().ogPos = vect;
-                        block.GetComponent<scrDragAndDrop>().snapPos = vect;
-                        block.transform.position = vect;
-                        block.GetComponent<scrDragAndDrop>().col = slots[i].GetComponent<BoxCollider2D>();
-
-                    }
-                }
-            }*/ // END OF SPECIAL
-            // END OF CLASSIC MODE
-
 
         } else {
             // Dual Mode --------------------------------------------------
 
-            textFloor = 75f;
             animationObj.gameObject.SetActive(true);
             animationObj.GetComponent<Animator>().SetInteger("Niveau",globalScript.levelNum);
-
-            //hideGen = true; // dans le cas avec toutes les ponct placées?
-            //canTouchPonct = false; // jusque la fin de l'animation jouée
-            //showLog = false;
-            canTouchPonct = true; // will move
-
-            s = new List<string>();
-            words = new List<string>();
-
-            correctText = CorrectFile.text;
-
-            CutsWordsDual(TextFile, s, words);
-
-            // animation log
-            animationLog.gameObject.SetActive(false); //??
-
-            // creates separators list
-            separators = new string[words.Count]; // ??
-            for (int i = 0; i < separators.Length; i++) separators[i] = ""; // ??
-            wordsObj = new GameObject[words.Count];
-            slots = new GameObject[words.Count];
-
-            // Places the words
-            float W = 0f; // width cursor
-            float H = 0f; // height cursor
-            (float, float) thing = placesWords(words, slots, wordsObj, W, H, 1);
-            W = thing.Item1;
-            H = thing.Item2;
-
-            GameObject virguleGen = GameObject.Find("Virgule Gen");
-            GameObject pointGen = GameObject.Find("Point Gen");
-            GameObject exclamationGen = GameObject.Find("Exclamation Gen");
-            GameObject interrogationGen = GameObject.Find("Interrogation Gen");
-            GameObject pointvirguleGen = GameObject.Find("Point Virgule Gen");
-            GameObject deuxpointsGen = GameObject.Find("Deux Points Gen");
-
-            if (hideGen) // irrelevant?
-            {
-                virguleGen.SetActive(false);
-                pointGen.SetActive(false);
-                exclamationGen.SetActive(false);
-                interrogationGen.SetActive(false);
-                pointvirguleGen.SetActive(false);
-                deuxpointsGen.SetActive(false);
-            }
+            animationLog.gameObject.SetActive(false);
 
             // special version dual
             GameObject block;
@@ -574,7 +443,6 @@ public class scrTextManager : MonoBehaviour
             }
             // cursor gets back to original position
             cursor.transform.position = trans;
-            Debug.Log(trans);
 
         } else {
             // counts frames (for the timer) when the cursor isn't moving, to be fair
@@ -587,8 +455,7 @@ public class scrTextManager : MonoBehaviour
     //reste à fixe alaligne
     private (float, float) placesWords(List<string> words_e, GameObject[] slots_e, GameObject[] wordsObj_e, float W, float H, int INDEX)
     {
-        //Taille police
-        taillePolice = taille_Police(correctText.Length);
+        //taillePolice = taille_Police(correctText.Length);
         WordPrefab.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
         WordPrefab.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().fontSize=taillePolice;
  
@@ -598,7 +465,7 @@ public class scrTextManager : MonoBehaviour
             GameObject wordObj = Instantiate(WordPrefab);
             GameObject slot = Instantiate(SlotPrefab);
             //associe le prefab au texte
-            wordObj.GetComponentInChildren<TextMeshProUGUI>().text = words_e[i];
+            wordObj.GetComponentInChildren<TextMeshProUGUI>().text = words_e[i];//mot coupé
 
             //test nulle
             bool alaligne = false;
@@ -611,38 +478,29 @@ public class scrTextManager : MonoBehaviour
             //longueur mot
             float pw = wordObj.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
             
-            if (W + pw > lineWidth || alaligne) // if the word is too long for the line size
+            if (W + pw > lineWidth) // if the word is too long for the line size
             {
                 W = 0f; // moves cursors to the next line
-                if(alaligne)
-                {  
-                    H-= 0;
-                }else
-                {
-                    H -= lineJump;
-                }
+                H -= lineJump;
                 
                 lineToStop++;
                 lineNumber++;
             }
 
+            //positions des mots et slots
             W+=pw/2;
-            wordObj.transform.position = new Vector3(Screen.width*.1f+W, Screen.height*.93f + H, 0);
+            wordObj.transform.position = new Vector3(Screen.width*.1f+W, textFloor + H, 0);
             W+=spaceSize/2+pw/2;
-            slot.transform.position = new Vector3(Screen.width*.1f+W, Screen.height*.93f + H, 0);
+            slot.transform.position = new Vector3(Screen.width*.1f+W, textFloor + H, 0);
             slot.transform.GetComponent<scrSlot>().ligne=lineNumber;
             W+=spaceSize/2;
 
             //afficher sur le canvas
             wordObj.transform.SetParent(canvas.transform);
             slot.transform.SetParent(canvas.transform);
-            //wordObj.transform.localPosition = new Vector3(W - (pw / 2) - spaceSize - (lineWidth / 2), textFloor + H, 0);
-            //slot.transform.localPosition = new Vector3(W - (spaceSize / 2) - (lineWidth / 2), textFloor + H, 0);
             
             //plus utile ?
             wordObj.GetComponent<Image>().enabled = false;
-            //revoir alaligne    
-            if(alaligne)H+=0-lineJump;
 
             //definition attribut slots
             slot.GetComponent<scrSlot>().INDEX = i;
@@ -1041,14 +899,11 @@ public class scrTextManager : MonoBehaviour
             //
             lineToStop = slots[k].GetComponent<scrSlot>().ligne;
             posToStop = slots[k].transform.position.x-(cursor.transform.GetComponent<RectTransform>().sizeDelta.x/4);
-            Debug.Log("if: "+posToStop);
-
 
         } else
         {
             lineToStop = lineNumber;
             posToStop = slots[slots.Length-1].transform.position.x-(cursor.transform.GetComponent<RectTransform>().sizeDelta.x/4);
-            Debug.Log("else: "+posToStop);
         }
         //Debug.Log("FIN DE LA VALIDATION (" + i + "/" + currentText.Length + ")");
 
@@ -1108,7 +963,6 @@ public class scrTextManager : MonoBehaviour
         string word = "";
         bool skipNext = false;
         bool lowerNext = false;
-        vrai_separators = new List<string>();
 
         for (int i = 0; i < TF.text.Length; i++)
         {
@@ -1116,7 +970,6 @@ public class scrTextManager : MonoBehaviour
             {
                 case ',':
                     // VIRGULE
-                    vrai_separators.Add(",");
                     S.Add(word);
                     W.Add(word);
                     S.Add(",");
@@ -1125,7 +978,6 @@ public class scrTextManager : MonoBehaviour
                     break;
                 case '.':
                     // POINT
-                    vrai_separators.Add(".");
                     S.Add(word);
                     W.Add(word);
                     S.Add(".");
@@ -1135,27 +987,23 @@ public class scrTextManager : MonoBehaviour
                     break;
                 case '!':
                     // EXCLAMATION
-                    vrai_separators.Add("!");
                     S.Add("!");
                     skipNext = true; // we skip the next char because it is a ' '
                     lowerNext = true; // we lower the next upper case (this is to avoid lowering any first name or the first letter of the text)
                     break;
                 case '?':
                     // INTERROGATION
-                    vrai_separators.Add("?");
                     S.Add("?");
                     skipNext = true; // we skip the next char because it is a ' '
                     lowerNext = true; // we lower the next upper case (this is to avoid lowering any first name or the first letter of the text)
                     break;
                 case ':':
                     // DEUX POINTS
-                    vrai_separators.Add(":");
                     S.Add(":");
                     skipNext = true; // we skip the next char because it is a ' '
                     break;
                 case ';':
                     // POINT VIRGULE
-                    vrai_separators.Add(";");
                     S.Add(";");
                     skipNext = true; // we skip the next char because it is a ' '
                     break;
@@ -1169,10 +1017,8 @@ public class scrTextManager : MonoBehaviour
                     break;*/
                 case ' ':
                     // ESPACE
-                    
                     if (!skipNext)
                     {
-                        vrai_separators.Add("");
                         S.Add(word);
                         W.Add(word);
                         word = "";
@@ -1183,6 +1029,7 @@ public class scrTextManager : MonoBehaviour
                     }
                     break;
                 default://Lettre
+
                     word += TF.text[i];
                     if (lowerNext)
                     {
@@ -1190,6 +1037,67 @@ public class scrTextManager : MonoBehaviour
                         word = word.ToLower();
                         lowerNext = false;
                     }
+                    break;
+            }
+        }
+        //test brayan
+        vrai_separators = new List<string>();
+        vrai_mots = new List<string>();
+        string v_mots = "";
+        bool v_skip = false;
+
+        for (int i = 0; i < TF.text.Length; i++)
+        {
+            switch (TF.text[i])
+            {
+                
+                case ','://lettre_ponct_espace
+                    vrai_separators.Add(",");
+                    vrai_mots.Add(v_mots);
+                    v_skip = true;
+                    break;
+                case '.'://lettre_ponct_espace ou lettre_ponct_retourligne
+                    vrai_separators.Add(".");
+                    vrai_mots.Add(v_mots);
+                    v_skip = true;
+                    break;
+                case '!'://espace_ponct_espace ou espace_ponct_retourligne
+                    vrai_separators[vrai_separators.Count-1]="!";
+                    v_skip = true;
+                    break;
+                case '?'://espace_ponct_espace ou espace_ponct_retourligne
+                    vrai_separators[vrai_separators.Count-1]="?";
+                    v_skip = true;
+                    break;
+                case ':'://espace_ponct_espace ou espace_ponct_retourligne
+                    vrai_separators[vrai_separators.Count-1]=":";
+                    v_skip = true;
+                    break;
+                case ';'://espace_ponct_espace
+                    vrai_separators[vrai_separators.Count-1]=";";
+                    v_skip = true;
+                    break;
+                case '-':
+                    
+                    break;
+                case '\n'://ponct_retourligne
+                    v_skip = false;
+                    v_mots="";
+                    break;
+                case ' '://espace_ponct_espace ou lettre_espace ou ponct_espace
+                    if(v_skip)
+                    {
+                        v_skip=false;
+                    }else
+                    {
+                        vrai_separators.Add("");
+                        vrai_mots.Add(v_mots);
+                        
+                    }
+                    v_mots = "";
+                    break;
+                default://lettre
+                    v_mots += TF.text[i];
                     break;
             }
         }
@@ -1364,11 +1272,17 @@ public class scrTextManager : MonoBehaviour
 
         text_scaler.SetActive(true);
         text_scaler.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
-        
-
+    
         lineWidth = Screen.width*.8f;
 
-        textFloor = Screen.height*.6f;
+        if(dualAnim)
+        {
+            textFloor = Screen.height*.55f;
+        }else
+        {
+            textFloor = Screen.height*.93f;
+        }
+        
         
         
         spaceSize = 1.5f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;

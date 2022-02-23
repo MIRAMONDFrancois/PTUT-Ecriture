@@ -163,9 +163,9 @@ public class scrTextManager : MonoBehaviour
         colorPointVirgule = new Color(80f / 255f, 138f / 255f, 50f / 255f); // Color(1f, 0.6f, 0f); Color(80f / 255f, 138f / 255f, 50f / 255f);
         colorDeuxPoints = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
 
+        cursorStart = new Vector3(Screen.width*.05f,Screen.height*.93f,0);
+        cursor.transform.position = cursorStart;
 
-        cursorStart = new Vector3(-(lineWidth/2) - spaceSize, textFloor, 0); //cursor.transform.localPosition;
-        cursor.transform.localPosition = cursorStart;
         cursor.gameObject.SetActive(!dualAnim);
 
 
@@ -463,38 +463,35 @@ public class scrTextManager : MonoBehaviour
 
     // Update is called once per frame
     void FixedUpdate()
-    {
-        
+    {   
         if (movingCursor)
         {
-            Vector3 trans = cursor.transform.localPosition;
+            
+            Vector3 trans = cursor.transform.position;
             trans.x += cursorSpeed;
-
-            if ( trans.x > (lineWidth/2) )
+            //OK
+            if ( trans.x > lineWidth+(lineWidth*.05f) )
             {
-                trans.x = -(lineWidth / 2f);
+                trans.x = cursorStart.x;
                 trans.y -= lineJump;
                 lineCursor++;
-                //Debug.Log(lineCursor);
             }
+
             if (lineCursor >= lineToStop)
             {
                 // last line
-                if (trans.x > posToStop - 40) // HARD FIX 
+                if (trans.x > posToStop)
                 {
                     // play animations
-                    trans.x = posToStop; // stop
                     movingCursor = false;
-                    
-                    //trans = cursorStart; // reset
 
                     /*if (pointTropTot) Debug.Log("<color=orange>(MAIGRE)</color> Point trop tôt");
                     if (manquePoint) Debug.Log("<color=orange>(GROS)</color> Manque de point");
 
                     if (tropVirgule) Debug.Log("<color=orange>(FEU)</color> Trop de virgules");
                     if (pasAssezVirgule) Debug.Log("<color=orange>(FADE)</color> Pas assez de virgules");
-                    if (mauvaiseVirgule) Debug.Log("<color=orange>(CONFUS)</color> Mauvais placement de virgule");
-*/
+                    if (mauvaiseVirgule) Debug.Log("<color=orange>(CONFUS)</color> Mauvais placement de virgule");*/
+                    
                     //prhase correcte
                     if (!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule)
                     {
@@ -554,18 +551,18 @@ public class scrTextManager : MonoBehaviour
                         }
                         recapContent += "\nErreur à " + frames/60 + " secondes :\n";
 
-                        if (tropVirgule) { recap += " trop épicé"; recapContent += "- trop de virgule\n"; }
+                        /*if (tropVirgule) { recap += " trop épicé"; recapContent += "- trop de virgule\n"; }
                         if (pasAssezVirgule) { recap += " un peu fade"; recapContent += "- pas assez de virgule\n"; }
                         if (mauvaiseVirgule) { recap += " bizarrement épicé"; recapContent += "- mauvais placement de virgule\n"; }
                         if ((tropVirgule || pasAssezVirgule || mauvaiseVirgule) && (pointTropTot || manquePoint)) { recap += " et"; }
                         if (pointTropTot) { recap += " trop léger."; recapContent += "- point trop tôt\n"; }
-                        if (manquePoint) { recap += " trop lourd."; recapContent += "- manque d'un point\n"; }
+                        if (manquePoint) { recap += " trop lourd."; recapContent += "- manque d'un point\n"; }*
                         animationLog.text = recap;
 
                         // data recap
                         recapContent += currentText + "\n";
                         recapContent += "\n----------------------------------------------\n";
-                        errorNum++;
+                        errorNum++;*/
                         ButtonLayer.SetActive(true);
 
                         canTouchPonct = true;
@@ -576,7 +573,8 @@ public class scrTextManager : MonoBehaviour
                 }
             }
             // cursor gets back to original position
-            cursor.transform.localPosition = trans;
+            cursor.transform.position = trans;
+            Debug.Log(trans);
 
         } else {
             // counts frames (for the timer) when the cursor isn't moving, to be fair
@@ -629,9 +627,10 @@ public class scrTextManager : MonoBehaviour
             }
 
             W+=pw/2;
-            wordObj.transform.position = new Vector3(Screen.width*.1f+W, Screen.height*.95f + H, 0);
+            wordObj.transform.position = new Vector3(Screen.width*.1f+W, Screen.height*.93f + H, 0);
             W+=spaceSize/2+pw/2;
-            slot.transform.position = new Vector3(Screen.width*.1f+W, Screen.height*.95f + H, 0);
+            slot.transform.position = new Vector3(Screen.width*.1f+W, Screen.height*.93f + H, 0);
+            slot.transform.GetComponent<scrSlot>().ligne=lineNumber;
             W+=spaceSize/2;
 
             //afficher sur le canvas
@@ -1025,10 +1024,6 @@ public class scrTextManager : MonoBehaviour
             
             int cIndex = i - 1 - l; // char sur lequel s'arrêter
 
-            //Debug.Log("char de fin : " + cIndex);
-            //Debug.Log("char de fin : " + cIndex);
-            //Debug.Log("" + currentText[i]);
-            //Debug.Log("i : " + currentText[cIndex]);
             bool found = false;
             int k = 0;
             while ( (!found) && (k < words.Count) )
@@ -1043,19 +1038,17 @@ public class scrTextManager : MonoBehaviour
                     cCount++; // espace
                 }
             }
-            //Debug.Log("-> " + k);
-            //Debug.Log("->" + wordsObj[k].GetComponentInChildren<TextMeshProUGUI>().text);
-            //Debug.Log("->" + wordsObj[k].transform.localPosition.y);
-            
-            lineToStop = (Mathf.Abs( (int) wordsObj[k].transform.localPosition.y - textFloor) ) / lineJump;
-
-            posToStop = slots[k].transform.localPosition.x;
+            //
+            lineToStop = slots[k].GetComponent<scrSlot>().ligne;
+            posToStop = slots[k].transform.position.x-(cursor.transform.GetComponent<RectTransform>().sizeDelta.x/4);
+            Debug.Log("if: "+posToStop);
 
 
         } else
         {
             lineToStop = lineNumber;
-            posToStop = slots[slots.Length-1].transform.localPosition.x;
+            posToStop = slots[slots.Length-1].transform.position.x-(cursor.transform.GetComponent<RectTransform>().sizeDelta.x/4);
+            Debug.Log("else: "+posToStop);
         }
         //Debug.Log("FIN DE LA VALIDATION (" + i + "/" + currentText.Length + ")");
 
@@ -1065,7 +1058,7 @@ public class scrTextManager : MonoBehaviour
 
         movingCursor = true;
         canTouchPonct = false;
-        cursor.transform.localPosition = cursorStart;
+        cursor.transform.position = cursorStart;
         lineCursor = 0;
         cursor.transform.SetAsLastSibling();
         ButtonLayer.SetActive(false);
@@ -1288,7 +1281,7 @@ public class scrTextManager : MonoBehaviour
         cursor.GetComponent<Animator>().SetBool("Gros",false);
         fondu.GetComponent<Animator>().SetBool("Actif",false);
 
-        cursor.transform.localPosition = cursorStart;
+        cursor.transform.position = cursorStart;
         
         //reset
         client_virgule.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0);

@@ -7,6 +7,7 @@ public class scrSlot : MonoBehaviour
     public GameObject txtManager;
     public int INDEX;
     public bool isUsed = false;
+    public float ligne;
     //public bool fromSlotsOne = true;
 
     public void SendPonct(string ponct)

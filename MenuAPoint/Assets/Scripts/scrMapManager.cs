@@ -80,7 +80,7 @@ public class scrMapManager : MonoBehaviour
             case "Level02":
                 LevelSetBaseValues(2, Resources.Load("Texts/Level2") as TextAsset);
                 LevelSetSpecial(false, null);
-                LevelSetLimitedGen(2, 0, 0, 1, 0, 0);
+                LevelSetLimitedGen(1, 1, 0, 0, 0, 0);
                 LevelSetAnim(false, null, false, false);
                 levelActuel = 1;
                 break;
@@ -96,7 +96,7 @@ public class scrMapManager : MonoBehaviour
             case "Level04":
                 LevelSetBaseValues(4, Resources.Load("Texts/Level3") as TextAsset);
                 LevelSetSpecial(false, null);
-                LevelSetLimitedGen(1, 3, 0, 0, 0, 0);
+                LevelSetLimitedGen(2, 0, 1, 0, 0, 0);
                 LevelSetAnim(false, null, false, false);
                 levelActuel = 3;
                 break;
@@ -104,7 +104,7 @@ public class scrMapManager : MonoBehaviour
             case "Level05":
                 LevelSetBaseValues(5, Resources.Load("Texts/Level4") as TextAsset);
                 LevelSetSpecial(false, null);
-                LevelSetLimitedGen(0, 3, 2, 0, 0, 0);
+                LevelSetLimitedGen(1, 1, 1, 0, 0, 0);
                 LevelSetAnim(false, null, false, false);
                 levelActuel = 4;
                 break;
@@ -120,7 +120,7 @@ public class scrMapManager : MonoBehaviour
             case "Level07":
                 LevelSetBaseValues(7, Resources.Load("Texts/Level5") as TextAsset);
                 LevelSetSpecial(false, null);
-                LevelSetLimitedGen(2, 1, 0, 0, 0, 0);
+                LevelSetLimitedGen(1, 1, 0, 0, 0, 1);
                 LevelSetAnim(false, null, false, false);
                 levelActuel = 6;
                 break;
@@ -136,7 +136,7 @@ public class scrMapManager : MonoBehaviour
             case "Level09":
                 LevelSetBaseValues(9, Resources.Load("Texts/Level6") as TextAsset);
                 LevelSetSpecial(false, null);
-                LevelSetLimitedGen(2, 1, 0, 0, 1, 0);
+                LevelSetLimitedGen(3, 2, 0, 0, 0, 0);
                 LevelSetAnim(false, null, false, false);
                 levelActuel = 8;
                 break;
@@ -144,7 +144,7 @@ public class scrMapManager : MonoBehaviour
             case "Level10":
                 LevelSetBaseValues(10, Resources.Load("Texts/Level7") as TextAsset);
                 LevelSetSpecial(false, null);
-                LevelSetLimitedGen(2, 5, 0, 0, 1, 0);
+                LevelSetLimitedGen(2, 2, 1, 1, 0, 0);
                 LevelSetAnim(false, null, false, false);
                 levelActuel = 9;
                 break;
@@ -160,7 +160,7 @@ public class scrMapManager : MonoBehaviour
             case "Level12":
                 LevelSetBaseValues(12, Resources.Load("Texts/Level8") as TextAsset);
                 LevelSetSpecial(false, null);
-                LevelSetLimitedGen(5, 4, 0, 2, 0, 0);
+                LevelSetLimitedGen(4, 1, 1, 0, 0, 0);
                 LevelSetAnim(false, null, false, false);
                 levelActuel = 11;
                 break;
@@ -168,7 +168,7 @@ public class scrMapManager : MonoBehaviour
             case "Level13":
                 LevelSetBaseValues(13, Resources.Load("Texts/Level9") as TextAsset);
                 LevelSetSpecial(false, null);
-                LevelSetLimitedGen(4, 4, 0, 0, 0, 0);
+                LevelSetLimitedGen(1, 3, 0, 1, 1, 0);
                 LevelSetAnim(false, null, false, false);
                 levelActuel = 12;
                 break;
@@ -184,7 +184,7 @@ public class scrMapManager : MonoBehaviour
             case "Level15":
                 LevelSetBaseValues(15, Resources.Load("Texts/Level10") as TextAsset);
                 LevelSetSpecial(false, null);
-                LevelSetLimitedGen(13, 12, 3, 0, 1, 0);
+                LevelSetLimitedGen(2, 7, 1, 2, 0, 0);
                 LevelSetAnim(false, null, false, false);
                 levelActuel = 14;
                 break;
@@ -198,7 +198,7 @@ public class scrMapManager : MonoBehaviour
         if (levelActuel != 0)
         {
             if (checkUnlocked(levelActuel))
-                if(levelActuel == 2 && GameObject.Find("Global").GetComponent<scrGlobal>().tutoChecked == false)
+                if(levelActuel == 2 && !(GameObject.Find("Global").GetComponent<scrGlobal>().tutoChecked))
                 {
                     SceneManager.LoadScene("sceneTutorielDouble");
                     GameObject.Find("Global").GetComponent<scrGlobal>().tutoChecked = true;

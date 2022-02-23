@@ -221,6 +221,7 @@ MonoBehaviour:
   animTextFile: {fileID: 0}
   canBeMoved: 0
   canBeDeleted: 0
+  tutoChecked: 0
 --- !u!4 &51599186
 Transform:
   m_ObjectHideFlags: 0
@@ -1108,7 +1109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level:
     m_Handle: 0
-  nameLevel: sceneTest
+  nameLevel: connexionScene
 --- !u!1 &335588231
 GameObject:
   m_ObjectHideFlags: 0
@@ -1958,9 +1959,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 317807825}
+        m_MethodName: LoadThisLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

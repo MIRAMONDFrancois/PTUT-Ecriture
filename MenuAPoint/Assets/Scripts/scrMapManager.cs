@@ -195,19 +195,15 @@ public class scrMapManager : MonoBehaviour
 
         //Debug.Log(levelActuel);
 
-        if (levelActuel != 0)
-        {
-            if (checkUnlocked(levelActuel))
-                if(levelActuel == 2 && !(GameObject.Find("Global").GetComponent<scrGlobal>().tutoChecked))
-                {
-                    SceneManager.LoadScene("sceneTutorielDouble");
-                    GameObject.Find("Global").GetComponent<scrGlobal>().tutoChecked = true;
-                }
-                else
-                    LoadNewScene();
-        }
-        else
-            LoadNewScene();
+
+        if (checkUnlocked(levelActuel))
+            if(levelActuel == 2 && !(GameObject.Find("Global").GetComponent<scrGlobal>().tutoChecked))
+            {
+                SceneManager.LoadScene("sceneTutorielDouble");
+                GameObject.Find("Global").GetComponent<scrGlobal>().tutoChecked = true;
+            }
+            else
+                LoadNewScene();
             
 
     }

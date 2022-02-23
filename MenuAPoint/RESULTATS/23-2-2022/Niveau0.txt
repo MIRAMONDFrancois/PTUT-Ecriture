@@ -1,0 +1,13 @@
+Fichier de  sur le niveau 0.
+Le texte correct est:
+- Depuis quand le chien est-il parti ?
+- Il est parti après le déjeuner.
+- Cherchons-le ensemble et appelle-le.
+
+----------------------------------------------
+
+Erreur à 4 secondes :
+
+Erreur à 8 secondes :
+
+Terminé en 16 secondes avec 0 erreur(s).

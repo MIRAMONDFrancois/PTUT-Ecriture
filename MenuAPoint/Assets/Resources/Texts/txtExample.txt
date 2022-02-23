@@ -1,3 +1,3 @@
-Ceci est une phrase de test :
-Elle sert de test !
-Vous pouvez la modifier.
+- Ceci est une phrase de test :
+- Elle sert de test !
+- Vous pouvez la modifier.

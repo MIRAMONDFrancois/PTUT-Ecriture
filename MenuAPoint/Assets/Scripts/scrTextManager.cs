@@ -133,7 +133,7 @@ public class scrTextManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        init_taille_texte();
+        
         // DATA IMPORT
         scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
         if (!IAmDebugging) {
@@ -152,6 +152,7 @@ public class scrTextManager : MonoBehaviour
             globalScript.playerName = "MICHEL";
             globalScript.levelNum = 4;
         }
+        init_taille_texte();
 
 
         /*
@@ -175,7 +176,14 @@ public class scrTextManager : MonoBehaviour
         s = new List<string>();
         words = new List<string>();
 
-        correctText = TextFile.text;
+        if(dualAnim)
+        {
+            correctText = CorrectFile.text;
+        }else
+        {
+            correctText = TextFile.text;
+        }
+        
 
         CutsWordsDual(TextFile, s, words);
         //test
@@ -683,7 +691,7 @@ public class scrTextManager : MonoBehaviour
         bool dual_reussite = correctText == currentText;
         animationObj.GetComponent<Animator>().SetBool("Validation",true);
         animationObj.GetComponent<Animator>().SetBool("Reussite",dual_reussite);
-        //Debug.Log(correctText == currentText);
+        Debug.Log(correctText+" "+ currentText);
         
         if(dual_reussite)
         {
@@ -1045,12 +1053,12 @@ public class scrTextManager : MonoBehaviour
         vrai_mots = new List<string>();
         string v_mots = "";
         bool v_skip = false;
+        bool v_tiret = false;
 
         for (int i = 0; i < TF.text.Length; i++)
         {
             switch (TF.text[i])
             {
-                
                 case ','://lettre_ponct_espace
                     vrai_separators.Add(",");
                     vrai_mots.Add(v_mots);
@@ -1077,27 +1085,35 @@ public class scrTextManager : MonoBehaviour
                     vrai_separators[vrai_separators.Count-1]=";";
                     v_skip = true;
                     break;
-                case '-':
-                    
+                case '-'://lettre_tiret_lettre ou tiret_espace_lettre
+                    v_mots += TF.text[i];
+                    v_tiret = true;
                     break;
                 case '\n'://ponct_retourligne
                     v_skip = false;
                     v_mots="";
                     break;
                 case ' '://espace_ponct_espace ou lettre_espace ou ponct_espace
-                    if(v_skip)
+                    if(v_tiret)
+                    {
+                        v_tiret = false ;
+                        v_mots = "";
+                    }
+                    else if(v_skip)
                     {
                         v_skip=false;
-                    }else
+                    }
+                    else
                     {
                         vrai_separators.Add("");
                         vrai_mots.Add(v_mots);
-                        
+                        v_mots = "";  
                     }
-                    v_mots = "";
+                    
                     break;
                 default://lettre
                     v_mots += TF.text[i];
+                    v_tiret = false;
                     break;
             }
         }
@@ -1283,8 +1299,7 @@ public class scrTextManager : MonoBehaviour
             textFloor = Screen.height*.93f;
         }
         
-        
-        
+            
         spaceSize = 1.5f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
 
         lineJump = 1.1f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;

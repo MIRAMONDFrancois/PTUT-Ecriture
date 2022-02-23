@@ -187,7 +187,6 @@ public class scrTextManager : MonoBehaviour
 
         CutsWordsDual(TextFile, s, words);
         //test
-        Debug.Log("mot: "+vrai_mots.Count+" sep : "+vrai_separators.Count);
         for(int a=0;a<vrai_mots.Count;a++)
         {
             Debug.Log(vrai_mots[a]);
@@ -1086,7 +1085,7 @@ public class scrTextManager : MonoBehaviour
                     v_skip = true;
                     break;
                 case '-'://lettre_tiret_lettre ou tiret_espace_lettre
-                    v_mots += TF.text[i];
+                    v_mots += "-";
                     v_tiret = true;
                     break;
                 case '\n'://ponct_retourligne
@@ -1096,8 +1095,8 @@ public class scrTextManager : MonoBehaviour
                 case ' '://espace_ponct_espace ou lettre_espace ou ponct_espace
                     if(v_tiret)
                     {
-                        v_tiret = false ;
-                        v_mots = "";
+                        v_tiret = false;
+                        v_mots += " ";
                     }
                     else if(v_skip)
                     {

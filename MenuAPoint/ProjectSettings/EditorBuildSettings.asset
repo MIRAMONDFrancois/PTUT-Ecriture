@@ -14,4 +14,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/sceneTest.unity
     guid: f49a9e7e4287d3744922b71a291a4324
+  - enabled: 1
+    path: Assets/Scenes/synopsisScene.unity
+    guid: 40e82cb20c1a5f74395bfbd0d656175f
+  - enabled: 1
+    path: Assets/Scenes/connexionScene.unity
+    guid: 71da167692fdee5408d296b22e9a26eb
+  - enabled: 1
+    path: Assets/Scenes/sceneTutorielBase.unity
+    guid: c4fc076089106a749a85b3e2f349438f
+  - enabled: 1
+    path: Assets/Scenes/sceneTutorielDouble.unity
+    guid: b5686b455fdb4c944b488ae94207fe36
   m_configObjects: {}

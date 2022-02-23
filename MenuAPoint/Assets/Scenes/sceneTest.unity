@@ -1199,7 +1199,7 @@ MonoBehaviour:
   machin: {fileID: 6067125441503156299, guid: 7e7926d6278cbff4a9a21ed863192c57, type: 3}
   addColors: 0
   useSpecial: 0
-  SpecialFile: {fileID: 4900000, guid: fed3d83418b3d90499a1c41bfc6eb695, type: 3}
+  SpecialFile: {fileID: 4900000, guid: 53dce84c04c69cb4ca43498f00f0a054, type: 3}
   canTouchPonct: 0
   slots: []
   separators: []
@@ -1211,7 +1211,7 @@ MonoBehaviour:
   deuxpointsLimit: -1
   pointvirguleLimit: -1
   dualAnim: 0
-  CorrectFile: {fileID: 4900000, guid: fb722aac0096bdd44a5d4f0433a0869e, type: 3}
+  CorrectFile: {fileID: 4900000, guid: 01aee940f6d40a1488afbb418defa685, type: 3}
   canBeMoved: 1
   canBeDeleted: 1
   animationObj: {fileID: 1268975000}
@@ -1271,7 +1271,7 @@ MonoBehaviour:
   playerName: 
   levelNum: 0
   levelunlocked: 
-  file: {fileID: 4900000, guid: b3307c36e54e1cd419403a75fe92816e, type: 3}
+  file: {fileID: 4900000, guid: fed3d83418b3d90499a1c41bfc6eb695, type: 3}
   isSpecial: 0
   specialFile: {fileID: 0}
   pointLimit: -1

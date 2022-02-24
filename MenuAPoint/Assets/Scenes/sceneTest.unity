@@ -344,6 +344,7 @@ GameObject:
   - component: {fileID: 151188502}
   - component: {fileID: 151188501}
   - component: {fileID: 151188500}
+  - component: {fileID: 151188503}
   m_Layer: 0
   m_Name: Indice
   m_TagString: Untagged
@@ -368,8 +369,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -808, y: 165}
-  m_SizeDelta: {x: 238.72375, y: 62.086914}
+  m_AnchoredPosition: {x: 860.5, y: 403}
+  m_SizeDelta: {x: 90.02342, y: 403.37494}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &151188500
 MonoBehaviour:
@@ -414,8 +415,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 450333188}
-        m_MethodName: pickIndice
+      - m_Target: {fileID: 151188503}
+        m_MethodName: decrementIndice
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -462,6 +463,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 151188498}
   m_CullTransparentMesh: 0
+--- !u!114 &151188503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151188498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08d412d3d86e28843b5828547c4152fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &232300287
 GameObject:
   m_ObjectHideFlags: 0
@@ -1346,6 +1359,15 @@ MonoBehaviour:
   canBeDeleted: 1
   animationObj: {fileID: 1268975000}
   text_scaler: {fileID: 1431182919}
+  debugText: {fileID: 0}
+  IAmDebugging: 0
+  colorBasique: {r: 0, g: 0, b: 0, a: 0}
+  colorVirgule: {r: 0, g: 0, b: 0, a: 0}
+  colorPoint: {r: 0, g: 0, b: 0, a: 0}
+  colorExclamation: {r: 0, g: 0, b: 0, a: 0}
+  colorInterrogation: {r: 0, g: 0, b: 0, a: 0}
+  colorDeuxPoints: {r: 0, g: 0, b: 0, a: 0}
+  colorPointVirgule: {r: 0, g: 0, b: 0, a: 0}
 --- !u!4 &450333189
 Transform:
   m_ObjectHideFlags: 0

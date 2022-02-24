@@ -80,7 +80,7 @@ public class scrMapManager : MonoBehaviour
             case "Level02":
                 LevelSetBaseValues(2, Resources.Load("Texts/Level2") as TextAsset);
                 LevelSetSpecial(false, null);
-                LevelSetLimitedGen(1, 1, 0, 0, 0, 0);
+                LevelSetLimitedGen(1, 3, 0, 0, 0, 0);
                 LevelSetAnim(false, null, false, false);
                 levelActuel = 1;
                 break;

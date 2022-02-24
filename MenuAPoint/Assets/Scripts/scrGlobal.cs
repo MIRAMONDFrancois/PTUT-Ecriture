@@ -31,7 +31,10 @@ public class scrGlobal : MonoBehaviour
     public TextAsset animTextFile;
     public bool canBeMoved;
     public bool canBeDeleted;
+
+    [Header("Phases de tuto et fin de jeu")]
     public bool tutoChecked;
+    public int nbIndices = 5;
 
     public void Start(){
         levelunlocked.Add(true);

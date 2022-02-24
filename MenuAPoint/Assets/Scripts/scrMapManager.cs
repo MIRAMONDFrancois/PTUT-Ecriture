@@ -25,6 +25,7 @@ public class scrMapManager : MonoBehaviour
     void Start()
     {
         Invoke("activerBouttons",.1f);
+        checkLevelActuel();
     }
 
     public void LoadNewScene()
@@ -238,6 +239,14 @@ public class scrMapManager : MonoBehaviour
             }
             
             
+        }
+    }
+
+    void checkLevelActuel()
+    {
+        if (GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[15])
+        {
+            SceneManager.LoadScene("endScene");
         }
     }
 }

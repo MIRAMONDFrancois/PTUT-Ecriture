@@ -21,8 +21,6 @@ public class scrBlockGenerator : MonoBehaviour
 
 
     public void Start() {
-        //gameObject.transform.GetChild(1).gameObject.SetActive(true);
-        //gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "∞";
         
         switch (ponct) {
             case ".":

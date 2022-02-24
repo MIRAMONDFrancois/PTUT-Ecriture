@@ -53,13 +53,6 @@ public class scrDragAndDrop : MonoBehaviour
             vect.x = vect.x - offset;
             vect.y = vect.y + offset;
             transform.position = vect;
-            //gameObject.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
-            //gameObject.GetComponentInChildren<TextMeshProUGUI>().color = new Color(0, 0, 0, 1);
-        }
-        else
-        {
-            //gameObject.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
-            //gameObject.GetComponentInChildren<TextMeshProUGUI>().color = new Color(1, 1, 1, 1);
         }
     }
 
@@ -67,7 +60,6 @@ public class scrDragAndDrop : MonoBehaviour
     {
         if (canBeMoved && textManager.GetComponent<scrTextManager>().canTouchPonct)
         {
-            //Debug.Log("pointer picked up");
             if (!dragging) dragging = true;
             // might help for "depth" collision
             transform.SetAsLastSibling();
@@ -87,7 +79,6 @@ public class scrDragAndDrop : MonoBehaviour
     {
         if (canBeMoved)
         {
-            //Debug.Log("pointer dropped");
             if (dragging) dragging = false;
             if (willSnap)
             {

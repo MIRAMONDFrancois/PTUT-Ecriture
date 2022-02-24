@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using System.IO;
 
-public class scrTextManager : MonoBehaviour
+public class BackUp : MonoBehaviour
 {
     [Header("Text File")]
     public TextAsset TextFile;
@@ -78,19 +78,15 @@ public class scrTextManager : MonoBehaviour
 
     // Text pos
     public GameObject text_scaler;
-    private float lineWidth;
-    private float textFloor;
-    private float spaceSize;
-    private float lineJump;
-    private float taillePolice;
+    private float lineWidth; //= 1550f; 
+    private float textFloor; //= 450f; // (default: 450f; anim: 75f) vertical position of the top of the text
+    private float spaceSize; //= 50f;
+    private float lineJump; //= 80f;
+    private float taillePolice; //= 72f;
 
-    //list mots et ponctuations
+    // Text errors
     private List<string> vrai_separators;
     private List<string> vrai_mots;
-    //liste gameobject
-    private List<GameObject> vrai_slots;
-    private List<GameObject> vrai_mots_GO;
-
     //fin de phrase
     private bool pointTropTot = false;
     private bool manquePoint = false;
@@ -189,22 +185,48 @@ public class scrTextManager : MonoBehaviour
         }
         
 
-        CutsWordsDual(TextFile);
-
+        CutsWordsDual(TextFile, s, words);
+        //test
+        for(int a=0;a<vrai_mots.Count;a++)
+        {
+            Debug.Log(vrai_mots[a]);
+            Debug.Log(vrai_separators[a]);
+        }
         // creates separators list
         separators = new string[words.Count];
         for (int i = 0; i < separators.Length; i++) separators[i] = "";
         wordsObj = new GameObject[words.Count];
         slots = new GameObject[words.Count];
-        
-        placesWords();
-        
+        // Places the words
+        float W = 0f; // width cursor
+        float H = 0f; // height cursor
+        (float, float) thing = placesWords(words, slots, wordsObj, W, H, 1);
+        W = thing.Item1;
+        H = thing.Item2;
+
         GameObject virguleGen = GameObject.Find("Virgule Gen");
         GameObject pointGen = GameObject.Find("Point Gen");
         GameObject exclamationGen = GameObject.Find("Exclamation Gen");
         GameObject interrogationGen = GameObject.Find("Interrogation Gen");
         GameObject pointvirguleGen = GameObject.Find("point Virgule Gen");
         GameObject deuxpointsGen = GameObject.Find("Deux Points Gen");
+
+        //test brayan
+        for(int a=0;a<vrai_separators.Count;a++)
+        {
+            //ponct final
+            if(vrai_separators[a].Equals(".") || vrai_separators[a].Equals("!") || vrai_separators[a].Equals("?"))
+            {
+                pos_finPonct.Add(a);
+            }
+            //ponct milieu
+            if(vrai_separators[a].Equals(",") || vrai_separators[a].Equals(":") || vrai_separators[a].Equals(";"))
+            {
+                pos_midPonct.Add(a);
+            }
+                
+                
+        }
 
         if (!dualAnim) {
 
@@ -311,8 +333,8 @@ public class scrTextManager : MonoBehaviour
         //Debug.Log(System.IO.File.ReadAllText("./DOSSIER/" + pn + ".txt"));
 
 
-        //RefreshText();
-        //HideSlots(new Vector2(0,0),"init");
+        RefreshText();
+        HideSlots(new Vector2(0,0),"init");
     }
 
     // Update is called once per frame
@@ -437,135 +459,63 @@ public class scrTextManager : MonoBehaviour
         cursor.GetComponent<Animator>().SetBool("Validation",movingCursor);
     }
 
-     private void CutsWordsDual(TextAsset TF)
+    private (float, float) placesWords(List<string> words_e, GameObject[] slots_e, GameObject[] wordsObj_e, float W, float H, int INDEX)
     {
-        vrai_separators = new List<string>();
-        vrai_mots = new List<string>();
-        
-        string v_mots = "";
-        bool v_skip = false;
-        bool v_tiret = false;
-
-        for (int i = 0; i < TF.text.Length; i++)
-        {
-            switch (TF.text[i])
-            {
-                case ','://lettre_ponct_espace
-                    vrai_separators.Add(",");
-                    vrai_mots.Add(v_mots);
-                    v_skip = true;
-                    v_mots="";
-                    break;
-                case '.'://lettre_ponct_espace ou lettre_ponct_retourligne
-                    vrai_separators.Add(".");
-                    vrai_mots.Add(v_mots);
-                    v_skip = true;
-                    v_mots="";
-                    break;
-                case '!'://espace_ponct_espace ou espace_ponct_retourligne
-                    vrai_separators[vrai_separators.Count-1]="!";
-                    v_skip = true;
-                    break;
-                case '?'://espace_ponct_espace ou espace_ponct_retourligne
-                    vrai_separators[vrai_separators.Count-1]="?";
-                    v_skip = true;
-                    break;
-                case ':'://espace_ponct_espace ou espace_ponct_retourligne
-                    vrai_separators[vrai_separators.Count-1]=":";
-                    v_skip = true;
-                    break;
-                case ';'://espace_ponct_espace
-                    vrai_separators[vrai_separators.Count-1]=";";
-                    v_skip = true;
-                    break;
-                case '-'://lettre_tiret_lettre ou tiret_espace_lettre
-                    v_mots += "-";
-                    v_tiret = true;
-                    break;
-                case '\n'://ponct_retourligne
-                    vrai_mots[vrai_mots.Count-1]+="\n";
-                    v_skip = false;
-                    v_mots="";
-                    break;
-                case ' '://espace_ponct_espace ou lettre_espace ou ponct_espace
-                    if(v_tiret)
-                    {
-                        v_tiret = false;
-                        v_mots += " ";
-                    }
-                    else if(v_skip)
-                    {
-                        v_skip=false;
-                    }
-                    else
-                    {
-                        vrai_separators.Add("");
-                        vrai_mots.Add(v_mots);
-                        v_mots = "";  
-                    }
-                    
-                    break;
-                default://lettre
-                    v_mots += TF.text[i];
-                    v_tiret = false;
-                    break;
-            }
-        }
-        if(!v_skip){
-            vrai_mots.Add(v_mots);
-        }
-    }
-
-    private void placesWords()
-    {
-        vrai_slots = new List<GameObject>();
-        vrai_mots_GO = new List<GameObject>();
-
-        //taille police
+        //taillePolice = taille_Police(correctText.Length);
         WordPrefab.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
-        WordPrefab.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().fontSize=taillePolice;
-
-        //var
-        bool alaligne = false;
-        float total_width = 0;
-        float total_height = 0;
-        //boucle positionner chaque mots    
-        for (int i = 0; i < vrai_mots.Count; i++)
+        WordPrefab.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().fontSize=taillePolice;
+ 
+        for (int i = 0; i < words_e.Count; i++) // NEEDS: words, slots, wordsObj
         {
-            
-            //init chaque mot
-            GameObject slot = Instantiate(SlotPrefab);
+            //instantiate mot prefab
             GameObject wordObj = Instantiate(WordPrefab);
-            wordObj.GetComponentInChildren<TextMeshProUGUI>().text = vrai_mots[i];
+            GameObject slot = Instantiate(SlotPrefab);
+            //associe le prefab au texte
+            wordObj.GetComponentInChildren<TextMeshProUGUI>().text = words_e[i];//mot coupé
+
+            //test nulle
+            bool alaligne = false;
+            if(words_e[i].Length > 1)
+            {
+                alaligne = words_e[i][1].Equals('\n');
+            }
+            //fin
             
+            //longueur mot
             float pw = wordObj.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
             
-            if (total_width + pw > lineWidth || alaligne)
+            if (W + pw > lineWidth) // if the word is too long for the line size
             {
-                total_width = 0f;
-                total_height -= lineJump;
+                W = 0f; // moves cursors to the next line
+                H -= lineJump;
                 
+                lineToStop++;
                 lineNumber++;
             }
 
             //positions des mots et slots
-            alaligne = vrai_mots[i][vrai_mots[i].Length-1].Equals('\n');
-
-            total_width+=pw/2;
-            wordObj.transform.position = new Vector3(Screen.width*.1f+total_width, textFloor + total_height, 0);
-            total_width+=spaceSize/2+pw/2;
-            slot.transform.position = new Vector3(Screen.width*.1f+total_width, textFloor + total_height, 0);
+            W+=pw/2;
+            wordObj.transform.position = new Vector3(Screen.width*.1f+W, textFloor + H, 0);
+            W+=spaceSize/2+pw/2;
+            slot.transform.position = new Vector3(Screen.width*.1f+W, textFloor + H, 0);
             slot.transform.GetComponent<scrSlot>().ligne=lineNumber;
-            total_width+=spaceSize/2;
+            W+=spaceSize/2;
 
             //afficher sur le canvas
             wordObj.transform.SetParent(canvas.transform);
             slot.transform.SetParent(canvas.transform);
+            
+            //plus utile ?
+            wordObj.GetComponent<Image>().enabled = false;
 
-            vrai_slots.Add(slot);
-            vrai_mots_GO.Add(wordObj);
+            //definition attribut slots
+            slot.GetComponent<scrSlot>().INDEX = i;
+            slot.GetComponent<scrSlot>().txtManager = gameObject;
+            slots_e[i] = slot;
 
+            wordsObj_e[i] = wordObj;
         } // end of word placement
+        return (W, H);
     }
 
     private string RefreshTextN(string curr, string corr, List<string> W, string[] SEP, GameObject[] WOBJ)
@@ -575,7 +525,7 @@ public class scrTextManager : MonoBehaviour
 
         for (int i = 0; i < W.Count; i++)
         {
-            Debug.Log(WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().text);
+            
             if(SEP[i].Equals("!") || SEP[i].Equals("?") || SEP[i].Equals(":") || SEP[i].Equals(";"))
             {
                 curr += W[i] + " " + SEP[i] + " ";
@@ -615,6 +565,7 @@ public class scrTextManager : MonoBehaviour
             {
                 WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().text = W[i];
                 //bazar brayan
+                WOBJ[i].transform.GetChild(0).transform.GetChild(1).gameObject.SetActive(false);
                 WOBJ[i].transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                 //fin bazar
             }
@@ -1013,7 +964,158 @@ public class scrTextManager : MonoBehaviour
     }
 
 
-   
+    private void CutsWordsDual(TextAsset TF, List<string> S, List<string> W)
+    {
+        string word = "";
+        bool skipNext = false;
+        bool lowerNext = false;
+
+        for (int i = 0; i < TF.text.Length; i++)
+        {
+            switch (TF.text[i])
+            {
+                case ',':
+                    // VIRGULE
+                    S.Add(word);
+                    W.Add(word);
+                    S.Add(",");
+                    word = "";
+                    skipNext = true; // we skip the next char because it is a ' '
+                    break;
+                case '.':
+                    // POINT
+                    S.Add(word);
+                    W.Add(word);
+                    S.Add(".");
+                    word = "";
+                    skipNext = true; // we skip the next char because it is a ' '
+                    lowerNext = true; // we lower the next upper case (this is to avoid lowering any first name or the first letter of the text)
+                    break;
+                case '!':
+                    // EXCLAMATION
+                    S.Add("!");
+                    skipNext = true; // we skip the next char because it is a ' '
+                    lowerNext = true; // we lower the next upper case (this is to avoid lowering any first name or the first letter of the text)
+                    break;
+                case '?':
+                    // INTERROGATION
+                    S.Add("?");
+                    skipNext = true; // we skip the next char because it is a ' '
+                    lowerNext = true; // we lower the next upper case (this is to avoid lowering any first name or the first letter of the text)
+                    break;
+                case ':':
+                    // DEUX POINTS
+                    S.Add(":");
+                    skipNext = true; // we skip the next char because it is a ' '
+                    break;
+                case ';':
+                    // POINT VIRGULE
+                    S.Add(";");
+                    skipNext = true; // we skip the next char because it is a ' '
+                    break;
+                /*case '«':
+                    word += TF.text[i]+" ";
+                    skipNext = true;
+                    break;
+                case '»':
+                    word += TF.text[i]+" ";
+                    skipNext = true;
+                    break;*/
+                case ' ':
+                    // ESPACE
+                    if (!skipNext)
+                    {
+                        S.Add(word);
+                        W.Add(word);
+                        word = "";
+                    }
+                    else        
+                    {
+                        skipNext = false;
+                    }
+                    break;
+                default://Lettre
+
+                    word += TF.text[i];
+                    if (lowerNext)
+                    {
+                        // at this point, if everything works, the "word" is only a letter long
+                        word = word.ToLower();
+                        lowerNext = false;
+                    }
+                    break;
+            }
+        }
+        //test brayan
+        vrai_separators = new List<string>();
+        vrai_mots = new List<string>();
+        string v_mots = "";
+        bool v_skip = false;
+        bool v_tiret = false;
+
+        for (int i = 0; i < TF.text.Length; i++)
+        {
+            switch (TF.text[i])
+            {
+                case ','://lettre_ponct_espace
+                    vrai_separators.Add(",");
+                    vrai_mots.Add(v_mots);
+                    v_skip = true;
+                    break;
+                case '.'://lettre_ponct_espace ou lettre_ponct_retourligne
+                    vrai_separators.Add(".");
+                    vrai_mots.Add(v_mots);
+                    v_skip = true;
+                    break;
+                case '!'://espace_ponct_espace ou espace_ponct_retourligne
+                    vrai_separators[vrai_separators.Count-1]="!";
+                    v_skip = true;
+                    break;
+                case '?'://espace_ponct_espace ou espace_ponct_retourligne
+                    vrai_separators[vrai_separators.Count-1]="?";
+                    v_skip = true;
+                    break;
+                case ':'://espace_ponct_espace ou espace_ponct_retourligne
+                    vrai_separators[vrai_separators.Count-1]=":";
+                    v_skip = true;
+                    break;
+                case ';'://espace_ponct_espace
+                    vrai_separators[vrai_separators.Count-1]=";";
+                    v_skip = true;
+                    break;
+                case '-'://lettre_tiret_lettre ou tiret_espace_lettre
+                    v_mots += "-";
+                    v_tiret = true;
+                    break;
+                case '\n'://ponct_retourligne
+                    v_skip = false;
+                    v_mots="";
+                    break;
+                case ' '://espace_ponct_espace ou lettre_espace ou ponct_espace
+                    if(v_tiret)
+                    {
+                        v_tiret = false;
+                        v_mots += " ";
+                    }
+                    else if(v_skip)
+                    {
+                        v_skip=false;
+                    }
+                    else
+                    {
+                        vrai_separators.Add("");
+                        vrai_mots.Add(v_mots);
+                        v_mots = "";  
+                    }
+                    
+                    break;
+                default://lettre
+                    v_mots += TF.text[i];
+                    v_tiret = false;
+                    break;
+            }
+        }
+    }
 
     public void GoToMap() {
         SceneManager.LoadScene("MapScene");

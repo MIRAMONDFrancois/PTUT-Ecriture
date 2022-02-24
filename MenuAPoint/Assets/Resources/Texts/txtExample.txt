@@ -1,1 +1,1 @@
-Phrase une ; phrase deux.
+Phrase une. Phrase deux. Phrase trois. Tokki quatre.

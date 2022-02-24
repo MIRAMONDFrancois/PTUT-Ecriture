@@ -85,6 +85,7 @@ public class scrTextManager : MonoBehaviour
     private float taillePolice;
 
     //list mots et ponctuations
+    private List<string> vrai_nomspropres = new List<string>();//a mettre dans le globale
     private List<string> vrai_separators;
     private List<string> vrai_mots;
     //liste gameobject
@@ -106,27 +107,6 @@ public class scrTextManager : MonoBehaviour
     private bool point_reussite = false; 
     private bool virgule_reussite = false;
 
-    // Debug text obj
-    [Header("DEBUG")]
-    public Text debugText;
-    public bool IAmDebugging;
-
-    // Colors
-    [HideInInspector]
-    public Color colorBasique;
-    [HideInInspector]
-    public Color colorVirgule; // Color(1f, 0.6f, 0f); Color(80f / 255f, 138f / 255f, 50f / 255f);
-    [HideInInspector]
-    public Color colorPoint; // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
-    [HideInInspector]
-    public Color colorExclamation; // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
-    [HideInInspector]
-    public Color colorInterrogation; // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
-    [HideInInspector]
-    public Color colorDeuxPoints; // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
-    [HideInInspector]
-    public Color colorPointVirgule; // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
-
     // Data Export
     private string fullFolderName;
     private string recapContent;
@@ -137,25 +117,24 @@ public class scrTextManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        vrai_nomspropres.Add("Tokki");
+        vrai_nomspropres.Add("Pesto");
+
         // DATA IMPORT
         scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
-        if (!IAmDebugging) {
-            TextFile = globalScript.file;
-            CorrectFile = globalScript.animTextFile;
-            useSpecial = globalScript.isSpecial;
-            SpecialFile = globalScript.specialFile;
-            dualAnim = globalScript.nivAntiOubli;
-            pointLimit = globalScript.pointLimit;
-            virguleLimit = globalScript.virguleLimit;
-            exclamationLimit = globalScript.exclamationLimit;
-            interrogationLimit = globalScript.interrogationLimit;
-            deuxpointsLimit = globalScript.deuxpointsLimit;
-            pointvirguleLimit = globalScript.pointvirguleLimit;
-        } else {
-            globalScript.playerName = "MICHEL";
-            globalScript.levelNum = 4;
-        }
+
+        TextFile = globalScript.file;
+        CorrectFile = globalScript.animTextFile;
+        useSpecial = globalScript.isSpecial;
+        SpecialFile = globalScript.specialFile;
+        dualAnim = globalScript.nivAntiOubli;
+        pointLimit = globalScript.pointLimit;
+        virguleLimit = globalScript.virguleLimit;
+        exclamationLimit = globalScript.exclamationLimit;
+        interrogationLimit = globalScript.interrogationLimit;
+        deuxpointsLimit = globalScript.deuxpointsLimit;
+        pointvirguleLimit = globalScript.pointvirguleLimit;
+
         init_taille_texte();
 
 
@@ -168,7 +147,7 @@ public class scrTextManager : MonoBehaviour
         colorPointVirgule = new Color(80f / 255f, 138f / 255f, 50f / 255f); // Color(1f, 0.6f, 0f); Color(80f / 255f, 138f / 255f, 50f / 255f);
         colorDeuxPoints = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
         */
-        cursorStart = new Vector3(Screen.width*.05f,textFloor,0);
+        cursorStart = new Vector3(Screen.width*.05f,textFloor,0);//Screen.width*.05f -> 10%-5%
         cursor.transform.position = cursorStart;
         cursor.gameObject.SetActive(!dualAnim);
 
@@ -445,6 +424,7 @@ public class scrTextManager : MonoBehaviour
         string v_mots = "";
         bool v_skip = false;
         bool v_tiret = false;
+        bool toLower = false;
 
         for (int i = 0; i < TF.text.Length; i++)
         {
@@ -461,14 +441,18 @@ public class scrTextManager : MonoBehaviour
                     vrai_mots.Add(v_mots);
                     v_skip = true;
                     v_mots="";
+                    toLower = true;
+                    //if(toLower)vrai_mots[vrai_mots.Count-1][0]=vrai_mots[vrai_mots.Count-1][0].ToUpper();
                     break;
                 case '!'://espace_ponct_espace ou espace_ponct_retourligne
                     vrai_separators[vrai_separators.Count-1]="!";
                     v_skip = true;
+                    toLower = true;
                     break;
                 case '?'://espace_ponct_espace ou espace_ponct_retourligne
                     vrai_separators[vrai_separators.Count-1]="?";
                     v_skip = true;
+                    toLower = true;
                     break;
                 case ':'://espace_ponct_espace ou espace_ponct_retourligne
                     vrai_separators[vrai_separators.Count-1]=":";
@@ -488,6 +472,7 @@ public class scrTextManager : MonoBehaviour
                     v_mots="";
                     break;
                 case ' '://espace_ponct_espace ou lettre_espace ou ponct_espace
+                    
                     if(v_tiret)
                     {
                         v_tiret = false;
@@ -501,19 +486,52 @@ public class scrTextManager : MonoBehaviour
                     {
                         vrai_separators.Add("");
                         vrai_mots.Add(v_mots);
-                        v_mots = "";  
+                        v_mots = "";
                     }
                     
                     break;
                 default://lettre
                     v_mots += TF.text[i];
+
+                    if(toLower)
+                    {
+                        v_mots = v_mots.ToLower();
+                        toLower = false;
+                    }
                     v_tiret = false;
                     break;
             }
         }
-        if(!v_skip){
+        if(!v_skip)
+        {
             vrai_mots.Add(v_mots);
         }
+
+        //verif noms
+        for(int a=0;a<vrai_mots.Count;a++)
+        {
+            string verif_mot = vrai_mots[a].ToLower();
+            for(int b=0;b<vrai_nomspropres.Count;b++)
+            {
+                string verif_nom = vrai_nomspropres[b].ToLower();
+                if(verif_mot.Equals(verif_nom))verif_nompropre(a,verif_mot);
+            }
+        }
+    }
+
+    private void verif_nompropre(int pos_mot,string mot_maj)
+    {  
+        string mot_final = "";
+        string majuscule=mot_maj.ToUpper();
+        mot_final += majuscule[0];
+
+        for(int a=1;a<mot_maj.Length;a++)
+        {
+            mot_final += mot_maj[a];
+        }
+
+        vrai_mots[pos_mot]=mot_final;
+        
     }
 
     private void placesWords()
@@ -552,7 +570,7 @@ public class scrTextManager : MonoBehaviour
             alaligne = vrai_mots[i][vrai_mots[i].Length-1].Equals('\n');
 
             total_width+=pw/2;
-            wordObj.transform.position = new Vector3(Screen.width*.1f+total_width, textFloor + total_height, 0);
+            wordObj.transform.position = new Vector3(Screen.width*.1f+total_width, textFloor + total_height, 0);//Screen.width*.1f -> 10% gauche
             total_width+=spaceSize/2+pw/2;
             slot.transform.position = new Vector3(Screen.width*.1f+total_width, textFloor + total_height, 0);
             slot.transform.GetComponent<scrSlot>().ligne=lineNumber;
@@ -570,7 +588,6 @@ public class scrTextManager : MonoBehaviour
 
     private string RefreshTextN(string curr, string corr, List<string> W, string[] SEP, GameObject[] WOBJ)
     {
-        debugText.text = "";
         curr = "";
 
         for (int i = 0; i < W.Count; i++)
@@ -618,108 +635,9 @@ public class scrTextManager : MonoBehaviour
                 WOBJ[i].transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                 //fin bazar
             }
-
-            if (addColors)
-            {
-                // resets color
-                WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().color = colorBasique;
-                WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Normal;
-
-                // colors the left part of the block
-                switch (SEP[i])
-                {
-                    case ",":
-                        int j = i - 1;
-                        WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().color = colorVirgule;
-                        while (j >= 0 && SEP[j].Equals("")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
-                        {
-                            WOBJ[j].GetComponentInChildren<TextMeshProUGUI>().color = colorVirgule;
-                            j--;
-                        }
-                        break;
-                    case ".":
-                        // find the first (0;i-1) and last word (i), and make something
-                        // if i+1 exists, uppercase the letter (what will lowercase it?)
-                        int k = i - 1;
-                        WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().color = colorPoint;
-                        WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
-                        while (k >= 0 && !SEP[k].Equals(".")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
-                        {
-                            if (WOBJ[k].GetComponentInChildren<TextMeshProUGUI>().color == colorBasique)
-                            {
-                                WOBJ[k].GetComponentInChildren<TextMeshProUGUI>().color = colorPoint;
-                            }
-                            WOBJ[k].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
-                            k--;
-                        }
-                        break;
-                    case "!":
-                        // find the first (0;i-1) and last word (i), and make something
-                        // if i+1 exists, uppercase the letter (what will lowercase it?)
-                        int l = i - 1;
-                        WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().color = colorExclamation;
-                        WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
-                        while (l >= 0 && !SEP[l].Equals("!")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
-                        {
-                            if (WOBJ[l].GetComponentInChildren<TextMeshProUGUI>().color == colorBasique)
-                            {
-                                WOBJ[l].GetComponentInChildren<TextMeshProUGUI>().color = colorExclamation;
-                            }
-                            WOBJ[l].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
-                            l--;
-                        }
-                        break;
-                    case "?":
-                        // find the first (0;i-1) and last word (i), and make something
-                        // if i+1 exists, uppercase the letter (what will lowercase it?)
-                        int m = i - 1;
-                        WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().color = colorInterrogation;
-                        WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
-                        while (m >= 0 && !SEP[m].Equals("?")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
-                        {
-                            if (WOBJ[m].GetComponentInChildren<TextMeshProUGUI>().color == colorBasique)
-                            {
-                                WOBJ[m].GetComponentInChildren<TextMeshProUGUI>().color = colorInterrogation;
-                            }
-                            WOBJ[m].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Underline;
-                            m--;
-                        }
-                        break;
-                    case ":":
-                        int n = i - 1;
-                        WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().color = colorDeuxPoints;
-                        while (n >= 0 && SEP[n].Equals("")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
-                        {
-                            WOBJ[n].GetComponentInChildren<TextMeshProUGUI>().color = colorDeuxPoints;
-                            n--;
-                        }
-                        break;
-                    case ";":
-                        int o = i - 1;
-                        WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().color = colorPointVirgule;
-                        while (o >= 0 && SEP[o].Equals("")) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
-                        {
-                            WOBJ[o].GetComponentInChildren<TextMeshProUGUI>().color = colorPointVirgule;
-                            o--;
-                        }
-                        break;
-                    default:
-                        //nothing
-                        break;
-                }
-            }
         }
         curr = curr.Substring(0, curr.Length - 1); // to remove the last space
-        debugText.text = curr;
 
-        if (curr.ToLower().Equals(corr.ToLower())) // to lower pour éviter les ennuis atm
-        {
-            debugText.color = new Color(0, 200, 0);
-        }
-        else
-        {
-            debugText.color = new Color(0, 0, 0);
-        }
         return curr;
     }
 
@@ -1185,11 +1103,11 @@ public class scrTextManager : MonoBehaviour
         text_scaler.SetActive(true);
         text_scaler.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
     
-        lineWidth = Screen.width*.8f;
+        lineWidth = Screen.width*.7f; //taille dispo texte
 
         if(dualAnim)
         {
-            textFloor = Screen.height*.55f;
+            textFloor = Screen.height*.50f;
         }else
         {
             textFloor = Screen.height*.93f;

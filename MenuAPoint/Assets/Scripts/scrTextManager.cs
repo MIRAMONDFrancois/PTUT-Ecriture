@@ -135,6 +135,7 @@ public class scrTextManager : MonoBehaviour
         deuxpointsLimit = globalScript.deuxpointsLimit;
         pointvirguleLimit = globalScript.pointvirguleLimit;
 
+
         init_taille_texte();
 
 
@@ -579,9 +580,6 @@ public class scrTextManager : MonoBehaviour
             //afficher sur le canvas
             wordObj.transform.SetParent(canvas.transform);
             slot.transform.SetParent(canvas.transform);
-            
-            slot.GetComponent<scrSlot>().INDEX = i;
-            slot.GetComponent<scrSlot>().txtManager = gameObject;
 
             vrai_slots.Add(slot);
             vrai_mots_GO.Add(wordObj);

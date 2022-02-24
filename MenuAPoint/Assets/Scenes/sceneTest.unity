@@ -4291,7 +4291,7 @@ MonoBehaviour:
   block: {fileID: 1046700973729256850, guid: 27842e05dd9b55c428fd727c245376fb, type: 3}
   canvas: {fileID: 937505845}
   ponct: .
-  textManager: {fileID: 450333187}
+  textManager: {fileID: 579154064}
 --- !u!114 &2114690543
 MonoBehaviour:
   m_ObjectHideFlags: 0

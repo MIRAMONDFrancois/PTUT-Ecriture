@@ -1,11 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class scrBlockGenerator : MonoBehaviour
+public class backup_scrBlockGenerator : MonoBehaviour
 {
     public GameObject block;
     public GameObject canvas;
@@ -21,12 +21,11 @@ public class scrBlockGenerator : MonoBehaviour
 
 
     public void Start() {
-        Debug.Log(ponct+" ");
         switch (ponct) {
             case ".":
-                if (textManager.GetComponent<scrGlobal>().pointLimit != -1) {
+                if (textManager.GetComponent<scrTextManager>().pointLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                    numberLeft = textManager.GetComponent<scrGlobal>().pointLimit - GameObject.FindGameObjectsWithTag("Point").Length;
+                    numberLeft = textManager.GetComponent<scrTextManager>().pointLimit - GameObject.FindGameObjectsWithTag("Point").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
                 }
                 break;

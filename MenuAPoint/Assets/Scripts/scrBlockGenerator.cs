@@ -21,13 +21,14 @@ public class scrBlockGenerator : MonoBehaviour
 
 
     public void Start() {
-        
         switch (ponct) {
             case ".":
                 if (textManager.GetComponent<scrTextManager>().pointLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
                     numberLeft = textManager.GetComponent<scrTextManager>().pointLimit - GameObject.FindGameObjectsWithTag("Point").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
+                    gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = 50 + "";
+                    
                 }
                 break;
             case ",":
@@ -71,7 +72,7 @@ public class scrBlockGenerator : MonoBehaviour
     }
 
 
-    public void Update() {
+    /*public void Update() {
         // CE CODE EST IMMONDE ET EST EXECUTED A CHAQUE FRAME, il faudrait le placer aux moments de créations ou suppression de ponctuation, mais c'est trop relou
         switch (ponct) {
             case ".":
@@ -175,7 +176,7 @@ public class scrBlockGenerator : MonoBehaviour
         }
         
         //Debug.Log(GameObject.FindGameObjectsWithTag("Point").Length);
-    }
+    }*/
 
 
     public void CreatesBlock()

@@ -83,6 +83,7 @@ public class scrTextManager : MonoBehaviour
     private float spaceSize;
     private float lineJump;
     private float taillePolice;
+    private float text_sol;
 
     //list mots et ponctuations
     private List<string> vrai_nomspropres = new List<string>();//a mettre dans le globale //du détail pour vérifier nom
@@ -159,18 +160,17 @@ public class scrTextManager : MonoBehaviour
         canTouchPonct = true;
 
         s = new List<string>();
-        words = new List<string>();
+        words = new List<string>();        
 
         if(dualAnim)
         {
-            correctText = CorrectFile.text;
+            CutsWordsDual(CorrectFile);
         }else
         {
-            correctText = TextFile.text;
+            CutsWordsDual(TextFile);
+            
         }
         
-
-        CutsWordsDual(TextFile);
 
         // creates separators list
         separators = new string[words.Count];
@@ -179,7 +179,10 @@ public class scrTextManager : MonoBehaviour
         slots = new GameObject[words.Count];
         
         placesWords();
-        
+        if(dualAnim)
+        {
+            depart_block(TextFile);
+        }
         GameObject virguleGen = GameObject.Find("Virgule Gen");
         GameObject pointGen = GameObject.Find("Point Gen");
         GameObject exclamationGen = GameObject.Find("Exclamation Gen");
@@ -193,8 +196,6 @@ public class scrTextManager : MonoBehaviour
             animationLog.text = "Les clients ont hâte de manger votre plat !";
 
         } else {
-            // Dual Mode --------------------------------------------------
-
             animationObj.gameObject.SetActive(true);
             animationObj.GetComponent<Animator>().SetInteger("Niveau",globalScript.levelNum);
             animationLog.gameObject.SetActive(false);
@@ -202,6 +203,7 @@ public class scrTextManager : MonoBehaviour
             // special version dual
             GameObject block;
             Vector3 vect = new Vector3();
+
             int k = -1; // shh
             for (int i = 0; i < s.Count; i++) {
                 switch (s[i]) {
@@ -447,7 +449,6 @@ public class scrTextManager : MonoBehaviour
                     v_skip = true;
                     v_mots="";
                     toLower = true;
-                    //if(toLower)vrai_mots[vrai_mots.Count-1][0]=vrai_mots[vrai_mots.Count-1][0].ToUpper();
                     break;
                 case '!'://espace_ponct_espace ou espace_ponct_retourligne
                     vrai_separators[vrai_separators.Count-1]="!";
@@ -525,6 +526,105 @@ public class scrTextManager : MonoBehaviour
         }
     }
 
+    private void depart_block(TextAsset TF)//Switch Land
+    {
+        List<string> liste_ponct = new List<string>();
+        
+        bool v_skip = false;
+        bool v_tiret = false;
+
+        //recherche ponct à mettre de base
+        for(int a=0;a<TF.text.Length;a++)
+        {
+            switch(TF.text[a])
+            {
+                case '.':
+                    liste_ponct.Add(".");
+                    v_skip = true;
+                break;
+                case '!':
+                    liste_ponct[liste_ponct.Count-1]="!";
+                    v_skip = true;
+                break;
+                case '?':
+                    liste_ponct[liste_ponct.Count-1]="?";
+                    v_skip = true;
+                break;
+                case ',':
+                    liste_ponct.Add(",");
+                    v_skip = true;
+                break;
+                case ';':
+                    liste_ponct[liste_ponct.Count-1]=";";
+                    v_skip = true;
+                break;
+                case ':':
+                    liste_ponct[liste_ponct.Count-1]=":";
+                    v_skip = true;
+                break;
+                case '-':
+                    v_tiret = true;
+                break;
+                case '\n':
+                    v_skip = false;
+                break;
+                case ' ':
+                    if(v_tiret)
+                    {
+                        v_tiret = false;
+                    }
+                    else if(v_skip)
+                    {
+                        v_skip=false;
+                    }
+                    else
+                    {
+                        liste_ponct.Add("");
+                    }
+                break;
+                default:
+                    v_tiret = false;
+                break;
+
+            }
+        }
+
+        Vector3 correctif = new Vector3(0,0,0);
+        for(int a=0;a<liste_ponct.Count;a++)
+        {
+            switch(liste_ponct[a])
+            {
+                case ".":
+                    correctif = quel_pot("Point");
+                    GameObject.Find("Point Gen").GetComponent<scrBlockGenerator>().animBlock(vrai_slots_GO[a].GetComponent<scrSlot>().pos_origine + correctif);
+                break;
+                case "!":
+                    correctif = quel_pot("Exclamation");
+                    GameObject.Find("Exclamation Gen").GetComponent<scrBlockGenerator>().animBlock(vrai_slots_GO[a].GetComponent<scrSlot>().pos_origine + correctif);
+                break;
+                case "?":
+                    correctif = quel_pot("Interrogation");
+                    GameObject.Find("Interrogation Gen").GetComponent<scrBlockGenerator>().animBlock(vrai_slots_GO[a].GetComponent<scrSlot>().pos_origine + correctif);
+                break;
+                case ",":
+                    correctif = quel_pot("Virgule");
+                    GameObject.Find("Virgule Gen").GetComponent<scrBlockGenerator>().animBlock(vrai_slots_GO[a].GetComponent<scrSlot>().pos_origine + correctif);
+                break;
+                case ":":
+                    correctif = quel_pot("Deux Points");
+                    GameObject.Find("Deux Points Gen").GetComponent<scrBlockGenerator>().animBlock(vrai_slots_GO[a].GetComponent<scrSlot>().pos_origine + correctif);
+                break;
+                case ";":
+                    correctif = quel_pot("Point Virgule");
+                    GameObject.Find("Point Virgule Gen").GetComponent<scrBlockGenerator>().animBlock(vrai_slots_GO[a].GetComponent<scrSlot>().pos_origine + correctif);
+                break;
+                default:
+                break;
+            }
+            vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation = liste_ponct[a];
+        }
+    }
+
     private void verif_nompropre(int pos_mot,string mot_maj)//liste à définir avant pour les prénoms
     {  
         string mot_final = "";
@@ -542,8 +642,10 @@ public class scrTextManager : MonoBehaviour
 
     private void placesWords()
     {
+
         vrai_slots_GO = new List<GameObject>();
         vrai_mots_GO = new List<GameObject>();
+        
 
         //taille police
         WordPrefab.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
@@ -590,10 +692,33 @@ public class scrTextManager : MonoBehaviour
             vrai_slots_GO[i].GetComponent<scrSlot>().pos_origine = slot.transform.position;
             vrai_mots_GO.Add(wordObj);
             
+            
 
         } // end of word placement
+
+        if(vrai_mots_GO[vrai_mots_GO.Count-1].transform.position.y < text_sol)
+        {
+            replaceWords();
+        }
     }
 
+    public void vrai_valider()
+    {
+        bool flag = true;
+        for(int a=0;a<vrai_separators.Count;a++)
+        {
+            if(!vrai_separators[a].Equals(vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation))flag = false;
+        }
+        Debug.Log(flag);
+    }
+
+    public void replaceWords()
+    {
+        for(int a=0;a<vrai_mots_GO.Count;a++)
+        {
+            vrai_mots_GO[a].GetComponentInChildren<TextMeshProUGUI>().fontSize= taillePolice/2;
+        }
+    }
 
     private string RefreshTextN(string curr, string corr, List<string> W, string[] SEP, GameObject[] WOBJ)
     {
@@ -1041,7 +1166,7 @@ public class scrTextManager : MonoBehaviour
     {
         float ratio_x = Screen.width / 1920f;
         float ratio_y = Screen.height / 1080f;
-        Debug.Log("ratio : "+ratio_x+" "+ratio_y);
+
         if(pot == "init"){
             return new Vector2 (0*ratio_x,0*ratio_y);
         }
@@ -1104,12 +1229,13 @@ public class scrTextManager : MonoBehaviour
 
         if(dualAnim)
         {
-            textFloor = Screen.height*.50f;
+            textFloor = Screen.height*.55f;
         }else
         {
             textFloor = Screen.height*.93f;
         }
         
+        text_sol = Screen.height*.35f;
             
         spaceSize = 1.6f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
 

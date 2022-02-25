@@ -108,6 +108,18 @@ public class scrBlockGenerator : MonoBehaviour
         
     }
 
+    public void animBlock(Vector3 pos_slot)
+    {
+        obj = Instantiate(block);
+        obj.transform.SetParent(canvas.transform);
+        obj.GetComponent<scrDragAndDrop>().canBeMoved = true;
+        obj.GetComponent<scrDragAndDrop>().canBeDeleted = true;
+
+        obj.transform.position = pos_slot;
+
+        affichage(-1);
+    }
+
     public GameObject CreatesBlockForManager() //brute as heck
     {
         obj = Instantiate(block);

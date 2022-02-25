@@ -17,7 +17,7 @@ public class scrEnd : MonoBehaviour
         switch (GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices)
         {
             case 0:
-                TextFin.text = "Grâce à votre aide, Tokki est devenue une cuisinère impressionnante !";
+                TextFin.text = "Grâce à votre aide, Tokki est devenue une cuisinère surprenante !";
                 break;
             case 1:
                 TextFin.text = "Grâce à votre aide, Tokki est devenue une cuisinière remarquable !";

@@ -85,12 +85,13 @@ public class scrTextManager : MonoBehaviour
     private float taillePolice;
 
     //list mots et ponctuations
-    private List<string> vrai_nomspropres = new List<string>();//a mettre dans le globale
-    private List<string> vrai_separators;
-    private List<string> vrai_mots;
+    private List<string> vrai_nomspropres = new List<string>();//a mettre dans le globale //du détail pour vérifier nom
+    private List<string> vrai_separators;//pour la vérification
+    private List<string> vrai_mots;//pour écrire
+    private List<string> vrai_slot;//pour vérification
     //liste gameobject
-    private List<GameObject> vrai_slots;
-    private List<GameObject> vrai_mots_GO;
+    private List<GameObject> vrai_slots_GO;//pour le jeu
+    private List<GameObject> vrai_mots_GO;//pour le jeu
 
     //fin de phrase
     private bool pointTropTot = false;
@@ -292,7 +293,7 @@ public class scrTextManager : MonoBehaviour
 
 
         //RefreshText();
-        //HideSlots(new Vector2(0,0),"init");
+        HideSlots(new Vector2(0,0),"init");
     }
 
     // Update is called once per frame
@@ -421,6 +422,7 @@ public class scrTextManager : MonoBehaviour
     {
         vrai_separators = new List<string>();
         vrai_mots = new List<string>();
+        vrai_slot = new List<string>();
         
         string v_mots = "";
         bool v_skip = false;
@@ -433,12 +435,14 @@ public class scrTextManager : MonoBehaviour
             {
                 case ','://lettre_ponct_espace
                     vrai_separators.Add(",");
+                    vrai_slot.Add("");
                     vrai_mots.Add(v_mots);
                     v_skip = true;
                     v_mots="";
                     break;
                 case '.'://lettre_ponct_espace ou lettre_ponct_retourligne
                     vrai_separators.Add(".");
+                    vrai_slot.Add("");
                     vrai_mots.Add(v_mots);
                     v_skip = true;
                     v_mots="";
@@ -486,6 +490,7 @@ public class scrTextManager : MonoBehaviour
                     else
                     {
                         vrai_separators.Add("");
+                        vrai_slot.Add("");
                         vrai_mots.Add(v_mots);
                         v_mots = "";
                     }
@@ -520,7 +525,7 @@ public class scrTextManager : MonoBehaviour
         }
     }
 
-    private void verif_nompropre(int pos_mot,string mot_maj)
+    private void verif_nompropre(int pos_mot,string mot_maj)//liste à définir avant pour les prénoms
     {  
         string mot_final = "";
         string majuscule=mot_maj.ToUpper();
@@ -537,7 +542,7 @@ public class scrTextManager : MonoBehaviour
 
     private void placesWords()
     {
-        vrai_slots = new List<GameObject>();
+        vrai_slots_GO = new List<GameObject>();
         vrai_mots_GO = new List<GameObject>();
 
         //taille police
@@ -581,11 +586,14 @@ public class scrTextManager : MonoBehaviour
             wordObj.transform.SetParent(canvas.transform);
             slot.transform.SetParent(canvas.transform);
 
-            vrai_slots.Add(slot);
+            vrai_slots_GO.Add(slot);
+            vrai_slots_GO[i].GetComponent<scrSlot>().pos_origine = slot.transform.position;
             vrai_mots_GO.Add(wordObj);
+            
 
         } // end of word placement
     }
+
 
     private string RefreshTextN(string curr, string corr, List<string> W, string[] SEP, GameObject[] WOBJ)
     {
@@ -900,15 +908,16 @@ public class scrTextManager : MonoBehaviour
 
         if(dualAnim && init_anim)HideSlots(taillePot, pot);
 
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < vrai_slots_GO.Count; i++)
         {
-            if(!slots[i].GetComponentInChildren<scrSlot>().isUsed)slots[i].GetComponentInChildren<Image>().enabled = true;
+            //pas afficher s'il y a déjà une ponctuation
+            if(!vrai_slots_GO[i].GetComponentInChildren<scrSlot>().isUsed)vrai_slots_GO[i].GetComponentInChildren<Image>().enabled = true;
 
-            slots[i].GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = taillePot;
-            slots[i].GetComponentInChildren<BoxCollider2D>().size = taillePot;
+            vrai_slots_GO[i].GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = taillePot;
+            vrai_slots_GO[i].GetComponentInChildren<BoxCollider2D>().size = taillePot;
             
-            Vector3 V3_slot = slots[i].GetComponentInChildren<RectTransform>().position;
-            slots[i].GetComponentInChildren<RectTransform>().position = new Vector3(V3_slot.x+slot_pos.x,V3_slot.y+slot_pos.y,V3_slot.z);
+            Vector3 V3_slot = vrai_slots_GO[i].GetComponentInChildren<RectTransform>().position;
+            vrai_slots_GO[i].GetComponentInChildren<RectTransform>().position = new Vector3(V3_slot.x+slot_pos.x,V3_slot.y+slot_pos.y,V3_slot.z);
             
         }
 
@@ -916,23 +925,16 @@ public class scrTextManager : MonoBehaviour
     }
 
     public void HideSlots(Vector2 taillePot, string pot)
-    {
-        Vector2 slot_pos = quel_pot(pot);
-        
-        for (int i = 0; i < slots.Length; i++)
+    {   
+        for (int i = 0; i < vrai_slots_GO.Count; i++)
         {
-            slots[i].GetComponentInChildren<Image>().enabled = false;
+            vrai_slots_GO[i].GetComponentInChildren<Image>().enabled = false;
 
-            Vector3 V3_slot = slots[i].GetComponentInChildren<RectTransform>().position;
-            slots[i].GetComponentInChildren<RectTransform>().position = new Vector3(V3_slot.x-slot_pos.x,V3_slot.y-slot_pos.y,V3_slot.z);
-
+            vrai_slots_GO[i].GetComponentInChildren<RectTransform>().position = vrai_slots_GO[i].GetComponent<scrSlot>().pos_origine;
         }
 
         if(pot.Equals("init"))init_anim = false;
     }
-
-
-   
 
     public void GoToMap() {
         SceneManager.LoadScene("MapScene");
@@ -1037,23 +1039,32 @@ public class scrTextManager : MonoBehaviour
 
     private Vector2 quel_pot(string pot)
     {
+        float ratio_x = Screen.width / 1920f;
+        float ratio_y = Screen.height / 1080f;
+        Debug.Log("ratio : "+ratio_x+" "+ratio_y);
         if(pot == "init"){
-            return new Vector2 (0,0);
+            return new Vector2 (0*ratio_x,0*ratio_y);
+        }
+        else if(pot == "Point"){
+            return new Vector2 (-10*ratio_x,-20*ratio_y);
+        }
+        else if(pot == "Virgule"){
+            return new Vector2 (-10*ratio_x,-30*ratio_y);
         }
         else if(pot == "Deux Points"){
-            return new Vector2 (0,20);
+            return new Vector2 (0*ratio_x,-10*ratio_y);
         }
         else if(pot == "Point Virgule"){
-            return new Vector2 (-5,10);
+            return new Vector2 (0*ratio_x,-15*ratio_y);
         }
         else if(pot == "Exclamation"){
-            return new Vector2 (-5,25);
+            return new Vector2 (0*ratio_x,0*ratio_y);
         }
         else if(pot == "Interrogation"){
-            return new Vector2 (-5,25);
+            return new Vector2 (0*ratio_x,0*ratio_y);
         }
         else{
-            return new Vector2 (-5,0);
+            return new Vector2 (0*ratio_x,0*ratio_y);
         }
     }
 
@@ -1082,21 +1093,6 @@ public class scrTextManager : MonoBehaviour
         }
     }
 
-    public float taille_Police(int lg_text)
-    {
-        
-        float ratio = textFloor/lg_text;
-
-        if(lg_text>textFloor)
-        {
-            lineJump = lineJump*ratio;
-            spaceSize = spaceSize*ratio;
-            return ratio*taillePolice;
-        }
-        return taillePolice;
-        
-    }
-
     public void init_taille_texte()
     {
         taillePolice = Screen.width*.04f;
@@ -1115,7 +1111,7 @@ public class scrTextManager : MonoBehaviour
         }
         
             
-        spaceSize = 1.5f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
+        spaceSize = 1.6f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
 
         lineJump = 1.1f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
 

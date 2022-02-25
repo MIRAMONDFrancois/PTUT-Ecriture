@@ -23,11 +23,13 @@ public class scrDragAndDrop : MonoBehaviour
     [HideInInspector]
     public Collider2D prevcol;
     [HideInInspector]
-    public float offset = 8;
+    public float offset = 4;
+    public float offset_x;
+    public float offset_y;
 
     public GameObject textManager;
 
-    public void Awake()
+    public void Awake()//on commence à prendre un ingrédient
     {
         textManager = GameObject.Find("GameManager");
 
@@ -35,6 +37,7 @@ public class scrDragAndDrop : MonoBehaviour
         snapPos = ogPos;
         willSnap = false;
         
+        //resize la taille du block
         Vector2 tailleponct = this.GetComponent<RectTransform>().sizeDelta;
 
         float potx = tailleponct[0]*Screen.width/1920;
@@ -42,21 +45,24 @@ public class scrDragAndDrop : MonoBehaviour
 
         this.GetComponent<RectTransform>().sizeDelta=new Vector2(potx,poty);
         this.GetComponent<BoxCollider2D>().size=new Vector2(potx,poty);
+
+        offset_x = offset*Screen.width/1920;
+        offset_y = offset*Screen.height/1080;
     }
 
-
-    private void Update()
+    private void Update()//pour suivre le déplacement de la souris
     {
         if (dragging && canBeMoved)
         {
             Vector3 vect = Input.mousePosition;
-            vect.x = vect.x - offset;
-            vect.y = vect.y + offset;
+            vect.x = vect.x - offset_x;
+            vect.y = vect.y + offset_y;
             transform.position = vect;
         }
+        
     }
 
-    public void StartDragUI()
+    public void StartDragUI()//génération du block
     {
         if (canBeMoved && textManager.GetComponent<scrTextManager>().canTouchPonct)
         {
@@ -66,13 +72,18 @@ public class scrDragAndDrop : MonoBehaviour
 
             if (col != null)
             {
-                col.GetComponent<scrSlot>().SendPonct("");
+                //col.GetComponent<scrSlot>().SendPonct("");
                 col.GetComponent<scrSlot>().isUsed = false;
+
+                col.GetComponent<scrSlot>().ponctuation = "";
+                
             }
 
             Vector2 taillePot = this.GetComponent<RectTransform>().sizeDelta;
             textManager.GetComponent<scrTextManager>().ShowSlots(taillePot,this.tag);
+
         }
+        
     }
 
     public void StopDragUI()
@@ -80,13 +91,17 @@ public class scrDragAndDrop : MonoBehaviour
         if (canBeMoved)
         {
             if (dragging) dragging = false;
+
             if (willSnap)
             {
                 // WILL SNAP TO A SLOT NEARBY
                 //transform.position = snapPos;
-                col.GetComponent<scrSlot>().SendPonct(ponct);
+                //col.GetComponent<scrSlot>().SendPonct(ponct);
                 col.GetComponent<scrSlot>().isUsed = true;
+
+                col.GetComponent<scrSlot>().ponctuation = ponct;
                 prevcol = col;
+                
 
             } else
             {
@@ -94,14 +109,20 @@ public class scrDragAndDrop : MonoBehaviour
                 if (canBeDeleted)
                 {
                     // DESTROY
+                    
                     Destroy(gameObject);
                 } else
                 {
                     // SNAP BACK TO THE LAST POSSIBLE POSITION
                     col = prevcol;
-                    col.GetComponent<scrSlot>().SendPonct(ponct);
+                    //col.GetComponent<scrSlot>().SendPonct(ponct);
                     col.GetComponent<scrSlot>().isUsed = true;
+
+                    col.GetComponent<scrSlot>().ponctuation = ponct;
+                    
                 }
+                string nom_gen = generateur();
+                GameObject.Find(nom_gen).GetComponent<scrBlockGenerator>().affichage(1);
             }
 
             transform.position = snapPos;
@@ -114,7 +135,6 @@ public class scrDragAndDrop : MonoBehaviour
         }
     }
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (canBeMoved)
@@ -123,7 +143,6 @@ public class scrDragAndDrop : MonoBehaviour
             {
                 willSnap = true;
                 Vector3 vect = collision.transform.position;
-                vect.y = vect.y - 25;
                 snapPos = vect;
 
                 col = collision;
@@ -148,4 +167,31 @@ public class scrDragAndDrop : MonoBehaviour
         }
     }
 
+    private string generateur()//return nom gen
+    {
+        switch(ponct)
+        {
+            case ".":
+                return "Point Gen";
+            break;
+            case "!":
+                return "Exclamation Gen";
+            break;
+            case "?":
+                return "Interrogation Gen";
+            break;
+            case ",":
+                return "Virgule Gen";
+            break;
+            case ":":
+                return "Deux Points Gen";
+            break;
+            case ";":
+                return "Point Virgule Gen";
+            break;
+            default:
+            break;
+        }
+        return null;
+    }
 }

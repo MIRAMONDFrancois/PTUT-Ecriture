@@ -9,6 +9,7 @@ public class scrSlot : MonoBehaviour
     public bool isUsed = false;
     public float ligne;
     public string ponctuation;
+    public Vector3 pos_origine; 
     //public bool fromSlotsOne = true;
 
     public void SendPonct(string ponct)

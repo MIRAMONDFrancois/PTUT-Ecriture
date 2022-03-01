@@ -97,13 +97,13 @@ public class scrTextManager : MonoBehaviour
     //fin de phrase
     private bool pointTropTot = false;
     private bool manquePoint = false;
-    private List<int> pos_finPonct = new List<int>();
+    private bool mauvaisPoint = false;//mauvaise fin ponctuation
 
     //mileu de phrase
     private bool tropVirgule = false;
     private bool pasAssezVirgule = false;
     private bool mauvaiseVirgule = false;//mauvaise position
-    private List<int> pos_midPonct = new List<int>();
+    private bool pasbonneVirgule = false;//mauvaise mid ponctuation
 
     private bool textreussite = false; //pour pas faire "!bool && !bool" à chaque fois
     private bool point_reussite = false; 
@@ -307,7 +307,7 @@ public class scrTextManager : MonoBehaviour
             Vector3 trans = cursor.transform.position;
             trans.x += cursorSpeed;
             //OK
-            if ( trans.x > lineWidth+(lineWidth*.05f) )
+            if ( trans.x > lineWidth+(lineWidth*.1f) )
             {
                 trans.x = cursorStart.x;
                 trans.y -= lineJump;
@@ -704,12 +704,147 @@ public class scrTextManager : MonoBehaviour
 
     public void vrai_valider()
     {
-        bool flag = true;
+        bool flag_debug = true;
+        //var de vérification
+        int nb_midponct_joueur = 0; //pour savoir si trop ou pas assez
+        int nb_midponct_verif = 0;
+
+        //reset valeur pour animation
+        pointTropTot = false;
+        manquePoint = false;
+        mauvaisPoint = false;
+
+        pasAssezVirgule = false;
+        tropVirgule = false;
+        mauvaiseVirgule = false;
+        pasbonneVirgule = false;
+
+        //boucle de vérification
         for(int a=0;a<vrai_separators.Count;a++)
         {
-            if(!vrai_separators[a].Equals(vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation))flag = false;
+            string slot_joueur = vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation;
+            string slot_verif = vrai_separators[a];
+
+            
+            if(!slot_joueur.Equals(slot_verif))
+            {
+                //slot sans ponctuation 
+                if(slot_joueur.Equals(""))
+                {
+                    //au lieu de mid ponct
+                    if(slot_verif.Equals(",") || slot_verif.Equals(":") || slot_verif.Equals(";"))
+                    {
+                        nb_midponct_verif++;
+                    }
+                    //au lieu de fin ponct
+                    else if(slot_verif.Equals(".") || slot_verif.Equals("?") || slot_verif.Equals("!"))
+                    {
+
+                        manquePoint = true;
+
+                        if(nb_midponct_verif>nb_midponct_joueur)
+                        {
+                            pasAssezVirgule = true;
+                        }
+                        else if(nb_midponct_verif<nb_midponct_joueur)
+                        {
+                            tropVirgule = true;
+                        }
+                    }
+                }
+                //slot mid ponctuation
+                else if(slot_joueur.Equals(",") || slot_joueur.Equals(":") || slot_joueur.Equals(";"))
+                {
+                    nb_midponct_joueur++;
+                    //au lieu d'un vide
+                    if(slot_verif.Equals(""))
+                    {
+                        mauvaiseVirgule = true;
+                    }
+                    //au lieu de fin ponct
+                    else if(slot_verif.Equals(".") || slot_verif.Equals("?") || slot_verif.Equals("!"))
+                    {
+                        manquePoint = true;
+                        mauvaiseVirgule = true;
+                        
+                        if(nb_midponct_verif>nb_midponct_joueur)
+                        {
+                            pasAssezVirgule = true;
+                        }
+                        else if(nb_midponct_verif<nb_midponct_joueur)
+                        {
+                            tropVirgule = true;
+                        }
+                    }
+                    //mais mauvaise mid ponctuation
+                    else
+                    {
+                        pasbonneVirgule = true;
+                        nb_midponct_verif++;
+                    }
+                }
+
+                //slot fin ponctuation
+                else
+                {
+                    //au lieu d'un vide
+                    if(slot_verif.Equals(""))
+                    {
+                        pointTropTot = true;
+                    }
+                    //au lieu de mid ponct
+                    else if(slot_verif.Equals(",") || slot_verif.Equals(":") || slot_verif.Equals(";"))
+                    {
+                        pointTropTot = true;
+                        nb_midponct_verif++;
+                    }
+                    else
+                    {
+                        mauvaisPoint = true;
+                    }
+
+                    //verification nb mid ponct
+                    if(nb_midponct_verif>nb_midponct_joueur)
+                    {
+                        pasAssezVirgule = true;
+                    }
+                    else if(nb_midponct_verif<nb_midponct_joueur)
+                    {
+                        tropVirgule = true;
+                    }
+
+                    
+                    deplacement_cursor(a);
+
+                    return;
+                }
+            }
+
+            pasAssezVirgule = nb_midponct_joueur < nb_midponct_verif;
+            tropVirgule = nb_midponct_joueur > nb_midponct_verif;
+
+            if(slot_joueur!=slot_verif)flag_debug=false;
         }
-        Debug.Log(flag);
+        
+        deplacement_cursor(vrai_slots_GO.Count-1);
+
+        Debug.Log("Niveau : "+flag_debug);
+    }
+
+    private void deplacement_cursor(int pos)
+    {
+        animationLog.text = "Les clients sont en train de tester votre plat...";
+
+        lineToStop = vrai_slots_GO[pos].GetComponent<scrSlot>().ligne;
+        posToStop = vrai_slots_GO[pos].transform.position.x-(cursor.transform.GetComponent<RectTransform>().sizeDelta.x/4);
+        
+
+        movingCursor = true;
+        canTouchPonct = false;
+        cursor.transform.position = cursorStart;
+        lineCursor = 0;
+        cursor.transform.SetAsLastSibling();
+        ButtonLayer.SetActive(false);
     }
 
     public void replaceWords()
@@ -807,35 +942,6 @@ public class scrTextManager : MonoBehaviour
 
     private void Valider()
     {
-        //validation Brayan ICI
-        /*for(int a=0;a<pos_midPonct.Count;a++)
-        {
-            Debug.Log(pos_midPonct[a]);
-        }
-        for(int a=0;a<pos_finPonct.Count;a++)
-        {
-            Debug.Log(pos_finPonct[a]);
-        }*/
-
-        //Parcours ponctuations
-        for(int a=0;a<separators.Length;a++)
-        {
-            //Différence entre ponctuation
-            if(!separators[a].Equals(vrai_separators[a]))
-            {
-                //Test de Vide
-                if(separators[a].Equals(""))
-                {
-                    Debug.Log("Manque quelque chose");
-                }
-
-                if(vrai_separators[a].Equals(""))
-                {
-                    Debug.Log("Trop de ponct");
-                }
-                
-            }
-        }
 
         //Debug.Log("Validation...");
         bool willStop = false;

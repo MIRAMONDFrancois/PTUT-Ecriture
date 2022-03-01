@@ -1,1 +1,1 @@
-Phrase une. Phrase deux. Phrase SPA trois. Tokki quatre.
+Phrase de test, phrase de test.

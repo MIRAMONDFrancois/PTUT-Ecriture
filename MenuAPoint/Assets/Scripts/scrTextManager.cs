@@ -199,74 +199,6 @@ public class scrTextManager : MonoBehaviour
             animationObj.gameObject.SetActive(true);
             animationObj.GetComponent<Animator>().SetInteger("Niveau",globalScript.levelNum);
             animationLog.gameObject.SetActive(false);
-
-            // special version dual
-            GameObject block;
-            Vector3 vect = new Vector3();
-
-            int k = -1; // shh
-            for (int i = 0; i < s.Count; i++) {
-                switch (s[i]) {
-                    case ",":
-                        block = virguleGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                        slots[k].GetComponent<scrSlot>().SendPonct(",");
-
-                        vect = slots[k].transform.position + quelle_ponct("Virgule");
-                        break;
-                    case ".":
-                        block = pointGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                        slots[k].GetComponent<scrSlot>().SendPonct(".");
-
-                        vect = slots[k].transform.position + quelle_ponct("Point");
-                        break;
-                    case "!":
-                        block = exclamationGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                        slots[k].GetComponent<scrSlot>().SendPonct("!");
-
-                        vect = slots[k].transform.position + quelle_ponct("Exclamation");
-                        break;
-                    case "?":
-                        block = interrogationGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                        slots[k].GetComponent<scrSlot>().SendPonct("?");
-
-                        vect = slots[k].transform.position + quelle_ponct("Interrogation");
-                        break;
-                    case ":":
-                        block = deuxpointsGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                        slots[k].GetComponent<scrSlot>().SendPonct(":");
-
-                        vect = slots[k].transform.position + quelle_ponct("Deux Points");
-                        break;
-                    case ";":
-                        block = pointvirguleGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                        slots[k].GetComponent<scrSlot>().SendPonct(";");
-
-                        vect = slots[k].transform.position + quelle_ponct("Point Virgule");
-                        break;
-                    default:
-                        block = null;
-                        k++;
-                        break;
-                }
-                if (block != null)
-                {
-                    block.GetComponent<scrDragAndDrop>().dragging = false;
-                    block.GetComponent<scrDragAndDrop>().canBeMoved = canBeMoved;
-                    block.GetComponent<scrDragAndDrop>().canBeDeleted = canBeDeleted;
-                    slots[k].GetComponent<scrSlot>().isUsed = true;
-                    block.GetComponent<scrDragAndDrop>().willSnap = true;
-                    block.GetComponent<scrDragAndDrop>().col = slots[k].GetComponent<BoxCollider2D>();
-
-                    //Vector3 vect = slots[k].transform.position;
-                    //vect.y -= 25;
-                    block.GetComponent<scrDragAndDrop>().ogPos = vect;
-                    block.GetComponent<scrDragAndDrop>().snapPos = vect;
-                    block.transform.position = vect;
-                }
-            }
-
-
-            // END OF DUAL MODE
         } 
 
         // DATA EXPORT
@@ -294,7 +226,6 @@ public class scrTextManager : MonoBehaviour
         //Debug.Log(System.IO.File.ReadAllText("./DOSSIER/" + pn + ".txt"));
 
 
-        //RefreshText();
         HideSlots(new Vector2(0,0),"init");
     }
 
@@ -307,7 +238,7 @@ public class scrTextManager : MonoBehaviour
             Vector3 trans = cursor.transform.position;
             trans.x += cursorSpeed;
             //OK
-            if ( trans.x > lineWidth+(lineWidth*.1f) )
+            if ( trans.x > lineWidth+(lineWidth*.15f) )
             {
                 trans.x = cursorStart.x;
                 trans.y -= lineJump;
@@ -321,21 +252,10 @@ public class scrTextManager : MonoBehaviour
                 {
                     // play animations
                     movingCursor = false;
-
-                    /*if (pointTropTot) Debug.Log("<color=orange>(MAIGRE)</color> Point trop tôt");
-                    if (manquePoint) Debug.Log("<color=orange>(GROS)</color> Manque de point");
-
-                    if (tropVirgule) Debug.Log("<color=orange>(FEU)</color> Trop de virgules");
-                    if (pasAssezVirgule) Debug.Log("<color=orange>(FADE)</color> Pas assez de virgules");
-                    if (mauvaiseVirgule) Debug.Log("<color=orange>(CONFUS)</color> Mauvais placement de virgule");*/
                     
                     //prhase correcte
-                    if (!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule)
+                    if (textreussite)
                     {
-                        // CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT
-                        //Debug.Log("<color=green>CORRECT!</color>");
-                        
-                        
                         switch (Random.Range(1, 4))
                         {
                             case 1:
@@ -353,11 +273,6 @@ public class scrTextManager : MonoBehaviour
                         scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
                         System.IO.File.WriteAllText(fullFolderName + "/Niveau"+globalScript.levelNum+".txt", recapContent);
                         
-                        // Updates level unlocked + 1
-                        // ???
-                        // ???
-                        // ???
-
                         // Hides all buttons and shows the "continue" one, which is the first child
                         ButtonLayer.SetActive(true);
                         ButtonLayer.transform.GetChild(0).gameObject.SetActive(true);
@@ -368,11 +283,9 @@ public class scrTextManager : MonoBehaviour
                         // Unlocks next level
                         globalScript.levelunlocked[globalScript.levelNum] = true;
                     }
-
                     // recap phrase for the animation recall
-                    if (pointTropTot || manquePoint || tropVirgule || pasAssezVirgule || mauvaiseVirgule)
+                    else
                     {
-                        // ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR
                         string recap = "";
                         switch (Random.Range(1, 4))
                         {
@@ -388,18 +301,20 @@ public class scrTextManager : MonoBehaviour
                         }
                         recapContent += "\nErreur à " + frames/60 + " secondes :\n";
 
-                        /*if (tropVirgule) { recap += " trop épicé"; recapContent += "- trop de virgule\n"; }
+                        if (tropVirgule) { recap += " trop épicé"; recapContent += "- trop de virgule\n"; }
                         if (pasAssezVirgule) { recap += " un peu fade"; recapContent += "- pas assez de virgule\n"; }
                         if (mauvaiseVirgule) { recap += " bizarrement épicé"; recapContent += "- mauvais placement de virgule\n"; }
-                        if ((tropVirgule || pasAssezVirgule || mauvaiseVirgule) && (pointTropTot || manquePoint)) { recap += " et"; }
+                        if (pasbonneVirgule) { recap += " différent"; recapContent += "- mauvaise virgule\n"; }
+                        if ((!virgule_reussite) && (!point_reussite)) { recap += " et"; }
                         if (pointTropTot) { recap += " trop léger."; recapContent += "- point trop tôt\n"; }
-                        if (manquePoint) { recap += " trop lourd."; recapContent += "- manque d'un point\n"; }*
+                        if (manquePoint) { recap += " trop lourd."; recapContent += "- manque d'un point\n"; }
+                        if (mauvaisPoint) { recap += " étrange."; recapContent += "- mauvais point\n"; }
                         animationLog.text = recap;
 
                         // data recap
-                        recapContent += currentText + "\n";
+                        //recapContent += currentText + "\n";
                         recapContent += "\n----------------------------------------------\n";
-                        errorNum++;*/
+                        errorNum++;
                         ButtonLayer.SetActive(true);
 
                         canTouchPonct = true;
@@ -825,7 +740,7 @@ public class scrTextManager : MonoBehaviour
 
             if(slot_joueur!=slot_verif)flag_debug=false;
         }
-        
+
         deplacement_cursor(vrai_slots_GO.Count-1);
 
         Debug.Log("Niveau : "+flag_debug);
@@ -833,6 +748,10 @@ public class scrTextManager : MonoBehaviour
 
     private void deplacement_cursor(int pos)
     {
+        point_reussite = !pointTropTot && !manquePoint && !mauvaisPoint;
+        virgule_reussite = !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule && !pasbonneVirgule;
+        textreussite = point_reussite && virgule_reussite;
+
         animationLog.text = "Les clients sont en train de tester votre plat...";
 
         lineToStop = vrai_slots_GO[pos].GetComponent<scrSlot>().ligne;
@@ -917,15 +836,21 @@ public class scrTextManager : MonoBehaviour
 
     public void ValiderClick()
     {
-        if (!dualAnim) Valider();
+        if (!dualAnim) vrai_valider();
         else ValiderDual();
     }
 
     public void ValiderDual() {
-        bool dual_reussite = correctText == currentText;
+
+        bool dual_reussite = true;//flag
+        //verification
+        for(int a=0;a<vrai_slots_GO.Count;a++)
+        {
+            if(!vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation.Equals(vrai_separators[a]))dual_reussite=false;
+        }
+
         animationObj.GetComponent<Animator>().SetBool("Validation",true);
         animationObj.GetComponent<Animator>().SetBool("Reussite",dual_reussite);
-        Debug.Log(correctText+" "+ currentText);
         
         if(dual_reussite)
         {
@@ -1173,11 +1098,6 @@ public class scrTextManager : MonoBehaviour
 
     public void AnimationFondu()
     {
-        //raccourci variable
-        point_reussite = !pointTropTot && !manquePoint;
-        virgule_reussite = !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule;
-        textreussite = point_reussite && virgule_reussite;
-
         //affichage premier plan
         fondu.transform.SetAsLastSibling();
         

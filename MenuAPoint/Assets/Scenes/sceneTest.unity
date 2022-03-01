@@ -1405,7 +1405,7 @@ MonoBehaviour:
   playerName: 
   levelNum: 0
   levelunlocked: 
-  file: {fileID: 4900000, guid: fed3d83418b3d90499a1c41bfc6eb695, type: 3}
+  file: {fileID: 4900000, guid: 53dce84c04c69cb4ca43498f00f0a054, type: 3}
   isSpecial: 0
   specialFile: {fileID: 0}
   pointLimit: -1
@@ -1414,7 +1414,7 @@ MonoBehaviour:
   interrogationLimit: -1
   deuxpointsLimit: -1
   pointvirguleLimit: -1
-  nivAntiOubli: 0
+  nivAntiOubli: 1
   animTextFile: {fileID: 4900000, guid: 01aee940f6d40a1488afbb418defa685, type: 3}
   canBeMoved: 1
   canBeDeleted: 1
@@ -1941,7 +1941,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 450333188}
-        m_MethodName: vrai_valider
+        m_MethodName: ValiderClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

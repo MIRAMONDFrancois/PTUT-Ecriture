@@ -436,7 +436,7 @@ public class scrTextManager : MonoBehaviour
             for(int b=0;b<vrai_nomspropres.Count;b++)
             {
                 string verif_nom = vrai_nomspropres[b].ToLower();
-                if(verif_mot.Equals(verif_nom))verif_nompropre(a,verif_mot);
+                if(verif_mot.Equals(verif_nom))vrai_mots[a] = verif_mot.Substring(0, 1).ToUpper() + verif_mot.Substring(1, verif_mot.Length - 1);
             }
         }
     }
@@ -540,21 +540,6 @@ public class scrTextManager : MonoBehaviour
         }
     }
 
-    private void verif_nompropre(int pos_mot,string mot_maj)//liste à définir avant pour les prénoms
-    {  
-        string mot_final = "";
-        string majuscule=mot_maj.ToUpper();
-        mot_final += majuscule[0];
-
-        for(int a=1;a<mot_maj.Length;a++)
-        {
-            mot_final += mot_maj[a];
-        }
-
-        vrai_mots[pos_mot]=mot_final;
-        
-    }
-
     private void placesWords()
     {
 
@@ -578,6 +563,20 @@ public class scrTextManager : MonoBehaviour
             GameObject slot = Instantiate(SlotPrefab);
             GameObject wordObj = Instantiate(WordPrefab);
             wordObj.GetComponentInChildren<TextMeshProUGUI>().text = vrai_mots[i];
+            wordObj.GetComponent<MotsGO>().nom_propre = true;
+
+            //maj position 
+            for(int a=0;a<vrai_mots[i].Length;a++)
+            {
+                if(!vrai_mots[i][a].Equals('-') && !vrai_mots[i][a].Equals(' '))
+                {
+                    wordObj.GetComponent<MotsGO>().maj_pos = a;
+                    break;
+                }
+            }
+
+            //verif nom propre et mot en maj
+            if(vrai_mots[i].Equals(vrai_mots[i].ToLower()))wordObj.GetComponent<MotsGO>().nom_propre = false;
             
             float pw = wordObj.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
             
@@ -597,6 +596,8 @@ public class scrTextManager : MonoBehaviour
             total_width+=spaceSize/2+pw/2;
             slot.transform.position = new Vector3(Screen.width*.1f+total_width, textFloor + total_height, 0);
             slot.transform.GetComponent<scrSlot>().ligne=lineNumber;
+            slot.transform.GetComponent<scrSlot>().INDEX=i;
+            slot.transform.GetComponent<scrSlot>().pos_origine=slot.transform.position;
             total_width+=spaceSize/2;
 
             //afficher sur le canvas
@@ -604,7 +605,6 @@ public class scrTextManager : MonoBehaviour
             slot.transform.SetParent(canvas.transform);
 
             vrai_slots_GO.Add(slot);
-            vrai_slots_GO[i].GetComponent<scrSlot>().pos_origine = slot.transform.position;
             vrai_mots_GO.Add(wordObj);
             
             
@@ -772,6 +772,41 @@ public class scrTextManager : MonoBehaviour
         {
             vrai_mots_GO[a].GetComponentInChildren<TextMeshProUGUI>().fontSize= taillePolice/2;
         }
+    }
+
+    public void majuscule(string tag, int slot_pos)
+    {
+        if(slot_pos==vrai_mots_GO.Count-1)return;
+
+        
+        if(tag.Equals("Point") || tag.Equals("Exclamation") || tag.Equals("Interrogation"))
+        {
+            if(!vrai_mots_GO[slot_pos+1].GetComponent<MotsGO>().nom_propre)
+            {
+                string mot = vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
+                int maj_pos = vrai_mots_GO[slot_pos+1].GetComponent<MotsGO>().maj_pos+1;
+                vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = mot.Substring(0, maj_pos).ToUpper() + mot.Substring(maj_pos, mot.Length - maj_pos);
+            }
+            
+        }
+        
+        
+    }
+
+    public void demajuscule(string tag, int slot_pos)
+    {
+        if(slot_pos==vrai_mots_GO.Count-1)return;
+
+        
+        if(tag.Equals("Point") || tag.Equals("Exclamation") || tag.Equals("Interrogation"))
+        {
+            if(!vrai_mots_GO[slot_pos+1].GetComponent<MotsGO>().nom_propre)
+            {
+                string mot = vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
+                vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = mot.ToLower();
+            }
+            
+        }     
     }
 
     private string RefreshTextN(string curr, string corr, List<string> W, string[] SEP, GameObject[] WOBJ)
@@ -1129,6 +1164,7 @@ public class scrTextManager : MonoBehaviour
         cursor.GetComponent<Animator>().SetBool("Reussite",textreussite);
         cursor.GetComponent<Animator>().SetBool("Maigre",pointTropTot);
         cursor.GetComponent<Animator>().SetBool("Gros",manquePoint);
+        cursor.GetComponent<Animator>().SetBool("Mauvaise",mauvaisPoint);
         
         //delai avant passage en fond et suite de l'animation des clients
         if(!point_reussite && virgule_reussite){
@@ -1154,6 +1190,7 @@ public class scrTextManager : MonoBehaviour
         client_virgule.GetComponent<Animator>().SetBool("Feu",tropVirgule);
         client_virgule.GetComponent<Animator>().SetBool("Berk",pasAssezVirgule);
         client_virgule.GetComponent<Animator>().SetBool("Confu",mauvaiseVirgule);
+        client_virgule.GetComponent<Animator>().SetBool("Mauvaise",pasbonneVirgule);
         client_virgule.GetComponent<Animator>().SetBool("Reussite",textreussite);
 
         
@@ -1171,6 +1208,7 @@ public class scrTextManager : MonoBehaviour
     {   
         cursor.GetComponent<Animator>().SetBool("Maigre",false);
         cursor.GetComponent<Animator>().SetBool("Gros",false);
+        cursor.GetComponent<Animator>().SetBool("Mauvaise",false);
         fondu.GetComponent<Animator>().SetBool("Actif",false);
 
         cursor.transform.position = cursorStart;
@@ -1178,6 +1216,7 @@ public class scrTextManager : MonoBehaviour
         //reset
         client_virgule.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0);
         client_virgule.GetComponent<RectTransform>().sizeDelta = new Vector2(478,844);
+        client_virgule.GetComponent<Image>().color = new Color(1f,1f,1f);
         client_virgule.SetActive(false);
         fondu.SetActive(false); 
     }

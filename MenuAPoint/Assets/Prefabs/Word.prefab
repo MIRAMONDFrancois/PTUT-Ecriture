@@ -320,6 +320,7 @@ GameObject:
   - component: {fileID: 444234112903781400}
   - component: {fileID: 444234112903781402}
   - component: {fileID: 444234112903781403}
+  - component: {fileID: 7346659955920092316}
   m_Layer: 5
   m_Name: Word
   m_TagString: Untagged
@@ -398,3 +399,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7346659955920092316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444234112903781605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 090aa11db39380a41aa306f133d58263, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -76,7 +76,8 @@ public class scrDragAndDrop : MonoBehaviour
                 col.GetComponent<scrSlot>().isUsed = false;
 
                 col.GetComponent<scrSlot>().ponctuation = "";
-                
+
+                textManager.GetComponent<scrTextManager>().demajuscule(tag,col.GetComponent<scrSlot>().INDEX);      
             }
 
             Vector2 taillePot = this.GetComponent<RectTransform>().sizeDelta;
@@ -102,7 +103,7 @@ public class scrDragAndDrop : MonoBehaviour
                 col.GetComponent<scrSlot>().ponctuation = ponct;
                 prevcol = col;
                 
-
+                textManager.GetComponent<scrTextManager>().majuscule(tag,col.GetComponent<scrSlot>().INDEX);
             } else
             {
                 // WILL NOT SNAP TO A SLOT
@@ -119,7 +120,8 @@ public class scrDragAndDrop : MonoBehaviour
                     col.GetComponent<scrSlot>().isUsed = true;
 
                     col.GetComponent<scrSlot>().ponctuation = ponct;
-                    
+
+                    textManager.GetComponent<scrTextManager>().majuscule(tag, col.GetComponent<scrSlot>().INDEX);
                 }
                 string nom_gen = generateur();
                 GameObject.Find(nom_gen).GetComponent<scrBlockGenerator>().affichage(1);

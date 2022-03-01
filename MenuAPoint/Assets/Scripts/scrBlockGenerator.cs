@@ -81,7 +81,7 @@ public class scrBlockGenerator : MonoBehaviour
         machin+=plus_ou_moins;
         transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = machin +"";
 
-        //bloquer le generateur si 0, si infini -> décrémente à l'infini
+        //bloquer le generateur si 0. Si infini -> décrémente à l'infini
         if(machin==0)
         {
             gameObject.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1);

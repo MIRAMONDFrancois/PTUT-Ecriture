@@ -1,0 +1,42 @@
+Fichier de  sur le niveau 0.
+Le texte correct est:
+
+
+----------------------------------------------
+
+Erreur à 38 secondes :
+- point trop tôt
+C’est  le  jour  du  grand. Concours  Tokki  espère  gagner  le  grand  prix  une  super  spatule  
+
+----------------------------------------------
+
+Erreur à 43 secondes :
+- manque d'un point
+C’est  le  jour  du  grand  concours  Tokki. Espère  gagner  le  grand  prix  une  super  spatule  
+
+----------------------------------------------
+
+Erreur à 47 secondes :
+- pas assez de virgule
+- manque d'un point
+C’est  le  jour  du  grand  concours  Tokki  espère  gagner  le  grand  prix. Une  super  spatule  
+
+----------------------------------------------
+
+Erreur à 53 secondes :
+- trop de virgule
+- mauvais placement de virgule
+- manque d'un point
+C’est  le  jour  du  grand  concours, Tokki  espère  gagner  le  grand  prix. Une  super  spatule  
+
+----------------------------------------------
+
+Erreur à 58 secondes :
+- trop de virgule
+- mauvais placement de virgule
+- manque d'un point
+C’est  le  jour  du  grand  concours  Tokki  espère  gagner  le  grand, prix. Une  super  spatule  
+
+----------------------------------------------
+
+Terminé en 70 secondes avec 5 erreur(s).

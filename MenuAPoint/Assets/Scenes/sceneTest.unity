@@ -1359,6 +1359,8 @@ MonoBehaviour:
   canBeDeleted: 1
   animationObj: {fileID: 1268975000}
   text_scaler: {fileID: 1431182919}
+  scaler_x: 0
+  scaler_y: 0
 --- !u!4 &450333189
 Transform:
   m_ObjectHideFlags: 0
@@ -1405,7 +1407,7 @@ MonoBehaviour:
   playerName: 
   levelNum: 0
   levelunlocked: 
-  file: {fileID: 4900000, guid: 4a1327e5fc48d4f45bd2268a4857508e, type: 3}
+  file: {fileID: 4900000, guid: 53dce84c04c69cb4ca43498f00f0a054, type: 3}
   isSpecial: 0
   specialFile: {fileID: 0}
   pointLimit: -1
@@ -1414,11 +1416,11 @@ MonoBehaviour:
   interrogationLimit: -1
   deuxpointsLimit: -1
   pointvirguleLimit: -1
-  nivAntiOubli: 0
+  nivAntiOubli: 1
   animTextFile: {fileID: 4900000, guid: 01aee940f6d40a1488afbb418defa685, type: 3}
   canBeMoved: 1
   canBeDeleted: 1
-  tutoChecked: 0
+  tutoChecked: 1
   nbIndices: 5
 --- !u!4 &579154066
 Transform:
@@ -2732,8 +2734,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000011444, y: 56.3}
-  m_SizeDelta: {x: 40.19, y: 80.44}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 40.190002, y: 80.44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1431182921
 MonoBehaviour:
@@ -2831,7 +2833,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -0.000061035156, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

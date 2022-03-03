@@ -114,8 +114,32 @@ public class scrBlockGenerator : MonoBehaviour
         obj.transform.SetParent(canvas.transform);
         obj.GetComponent<scrDragAndDrop>().canBeMoved = true;
         obj.GetComponent<scrDragAndDrop>().canBeDeleted = true;
+        obj.GetComponent<scrDragAndDrop>().willSnap = true;
 
+        obj.GetComponent<scrDragAndDrop>().StartDragUI();
+        
         obj.transform.position = pos_slot;
+        
+        obj.GetComponent<scrDragAndDrop>().StopDragUI();
+        
+
+        affichage(-1);
+    }
+
+    public void demarrageBlock(GameObject slot)
+    {
+        obj = Instantiate(block);
+        obj.transform.SetParent(canvas.transform);
+        obj.GetComponent<scrDragAndDrop>().canBeMoved = true;
+        obj.GetComponent<scrDragAndDrop>().canBeDeleted = true;
+        obj.GetComponent<scrDragAndDrop>().willSnap = true;
+        obj.GetComponent<scrDragAndDrop>().col = slot.GetComponent<Collider2D>();
+        
+        obj.GetComponent<scrDragAndDrop>().StartDragUI();
+        obj.GetComponent<scrDragAndDrop>().snapPos = slot.GetComponent<Collider2D>().transform.position;
+        obj.GetComponent<scrDragAndDrop>().StopDragUI();
+
+        
 
         affichage(-1);
     }

@@ -9,6 +9,7 @@ public class scrDragAndDrop : MonoBehaviour
     public string ponct;
     public bool canBeMoved = true;
     public bool canBeDeleted = true;
+    private int estsortie = 0;
 
     [HideInInspector]
     public bool dragging;
@@ -23,7 +24,7 @@ public class scrDragAndDrop : MonoBehaviour
     [HideInInspector]
     public Collider2D prevcol;
     [HideInInspector]
-    public float offset = 4;
+    public float offset = 0;
     public float offset_x;
     public float offset_y;
 
@@ -38,10 +39,13 @@ public class scrDragAndDrop : MonoBehaviour
         willSnap = false;
         
         //resize la taille du block
-        Vector2 tailleponct = this.GetComponent<RectTransform>().sizeDelta;
+        float scale_x = textManager.GetComponent<scrTextManager>().scaler_x;
+        float scale_y = textManager.GetComponent<scrTextManager>().scaler_y;
 
-        float potx = tailleponct[0]*Screen.width/1920;
-        float poty = tailleponct[1]*Screen.height/1080;
+        Vector2 tailleponct = this.GetComponent<RectTransform>().sizeDelta;//taille origine * ratio
+
+        float potx = tailleponct[0]*Screen.width/1920*scale_x;
+        float poty = tailleponct[1]*Screen.height/1080*scale_y;
 
         this.GetComponent<RectTransform>().sizeDelta=new Vector2(potx,poty);
         this.GetComponent<BoxCollider2D>().size=new Vector2(potx,poty);
@@ -72,7 +76,6 @@ public class scrDragAndDrop : MonoBehaviour
 
             if (col != null)
             {
-                //col.GetComponent<scrSlot>().SendPonct("");
                 col.GetComponent<scrSlot>().isUsed = false;
 
                 col.GetComponent<scrSlot>().ponctuation = "";
@@ -84,7 +87,6 @@ public class scrDragAndDrop : MonoBehaviour
             textManager.GetComponent<scrTextManager>().ShowSlots(taillePot,this.tag);
 
         }
-        
     }
 
     public void StopDragUI()
@@ -96,8 +98,6 @@ public class scrDragAndDrop : MonoBehaviour
             if (willSnap)
             {
                 // WILL SNAP TO A SLOT NEARBY
-                //transform.position = snapPos;
-                //col.GetComponent<scrSlot>().SendPonct(ponct);
                 col.GetComponent<scrSlot>().isUsed = true;
 
                 col.GetComponent<scrSlot>().ponctuation = ponct;
@@ -110,7 +110,6 @@ public class scrDragAndDrop : MonoBehaviour
                 if (canBeDeleted)
                 {
                     // DESTROY
-                    
                     Destroy(gameObject);
                 } else
                 {
@@ -130,7 +129,7 @@ public class scrDragAndDrop : MonoBehaviour
             transform.position = snapPos;
             
             Vector2 taillePot = this.GetComponent<RectTransform>().sizeDelta;
-            textManager.GetComponent<scrTextManager>().HideSlots(taillePot,this.tag);
+            textManager.GetComponent<scrTextManager>().HideSlots();
             ogPos = snapPos; // this becomes the "last viable position"
 
 
@@ -139,7 +138,7 @@ public class scrDragAndDrop : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (canBeMoved)
+        if (canBeMoved && dragging)
         {
             if (collision.CompareTag("Slot") && collision.GetComponent<scrSlot>().isUsed == false)
             {
@@ -148,7 +147,7 @@ public class scrDragAndDrop : MonoBehaviour
                 snapPos = vect;
 
                 col = collision;
-                //Debug.Log("enter coll");
+                estsortie++;
             }
         }
     }
@@ -157,11 +156,11 @@ public class scrDragAndDrop : MonoBehaviour
     {
         if (dragging && canBeMoved)
         {
-            if (collision.CompareTag("Slot"))
+            estsortie--;
+            if (collision.CompareTag("Slot") && estsortie==0)
             {
                 willSnap = false;
                 snapPos = ogPos;
-                //Debug.Log("exit coll");
 
                 // exits the first slot and save it in case of problems
                 if (prevcol == null) { prevcol = col;  }

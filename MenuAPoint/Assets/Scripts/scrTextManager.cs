@@ -903,6 +903,17 @@ public class scrTextManager : MonoBehaviour
         Invoke("dual_anim_reset",1f);
     }
 
+    public void showIndice()
+    {
+        for(int a=0;a<vrai_separators.Count;a++)
+        {
+            if(!vrai_separators[a].Equals(""))
+            {
+                vrai_slots_GO[a].GetComponent<scrSlot>().showIndice();
+            }
+        }
+    }
+
     public void ShowSlots(Vector2 taillePot, string pot)
     {
         Vector2 slot_pos = quel_pot(pot);
@@ -910,7 +921,20 @@ public class scrTextManager : MonoBehaviour
         for (int i = 0; i < vrai_slots_GO.Count; i++)
         {
             //pas afficher s'il y a déjà une ponctuation
-            if(!vrai_slots_GO[i].GetComponentInChildren<scrSlot>().isUsed)vrai_slots_GO[i].GetComponentInChildren<Image>().enabled = true;
+            if(!vrai_slots_GO[i].GetComponentInChildren<scrSlot>().isUsed)
+            {
+                vrai_slots_GO[i].GetComponentInChildren<Image>().enabled = true;
+
+                if(vrai_slots_GO[i].GetComponentInChildren<scrSlot>().indice)
+                {
+                    vrai_slots_GO[i].transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+                }
+                
+
+            }else
+            {
+                vrai_slots_GO[i].transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+            }
 
             vrai_slots_GO[i].GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = taillePot;
             vrai_slots_GO[i].GetComponentInChildren<BoxCollider2D>().size = taillePot;
@@ -927,7 +951,13 @@ public class scrTextManager : MonoBehaviour
     {   
         for (int i = 0; i < vrai_slots_GO.Count; i++)
         {
+
             vrai_slots_GO[i].GetComponentInChildren<Image>().enabled = false;
+
+            if(vrai_slots_GO[i].GetComponentInChildren<scrSlot>().isUsed && vrai_slots_GO[i].GetComponentInChildren<scrSlot>().indice)
+            {
+                vrai_slots_GO[i].transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+            }
 
             vrai_slots_GO[i].GetComponentInChildren<RectTransform>().position = vrai_slots_GO[i].GetComponent<scrSlot>().pos_origine;
         }

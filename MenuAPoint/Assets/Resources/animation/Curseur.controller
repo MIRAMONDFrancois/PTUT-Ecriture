@@ -254,7 +254,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1288453533580640625}
-    m_Position: {x: 270, y: 180, z: 0}
+    m_Position: {x: 260, y: 180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2072882364347707524}
     m_Position: {x: 0, y: 390, z: 0}
@@ -263,7 +263,7 @@ AnimatorStateMachine:
     m_Position: {x: 0, y: 190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1673419820641526806}
-    m_Position: {x: -290, y: 380, z: 0}
+    m_Position: {x: -290, y: 390, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7034088214477326997}
     m_Position: {x: 300, y: 370, z: 0}
@@ -453,31 +453,31 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Validation
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Maigre
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Gros
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Mauvaise
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer

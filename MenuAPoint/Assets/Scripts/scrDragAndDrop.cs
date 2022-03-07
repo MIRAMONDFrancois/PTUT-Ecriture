@@ -9,6 +9,7 @@ public class scrDragAndDrop : MonoBehaviour
     public string ponct;
     public bool canBeMoved = true;
     public bool canBeDeleted = true;
+    private int estsortie = 0;
 
     [HideInInspector]
     public bool dragging;
@@ -23,11 +24,13 @@ public class scrDragAndDrop : MonoBehaviour
     [HideInInspector]
     public Collider2D prevcol;
     [HideInInspector]
-    public float offset = 8;
+    public float offset = 0;
+    public float offset_x;
+    public float offset_y;
 
     public GameObject textManager;
 
-    public void Awake()
+    public void Awake()//on commence à prendre un ingrédient
     {
         textManager = GameObject.Find("GameManager");
 
@@ -35,28 +38,35 @@ public class scrDragAndDrop : MonoBehaviour
         snapPos = ogPos;
         willSnap = false;
         
-        Vector2 tailleponct = this.GetComponent<RectTransform>().sizeDelta;
+        //resize la taille du block
+        float scale_x = textManager.GetComponent<scrTextManager>().scaler_x;
+        float scale_y = textManager.GetComponent<scrTextManager>().scaler_y;
 
-        float potx = tailleponct[0]*Screen.width/1920;
-        float poty = tailleponct[1]*Screen.height/1080;
+        Vector2 tailleponct = this.GetComponent<RectTransform>().sizeDelta;//taille origine * ratio
+
+        float potx = tailleponct[0]*Screen.width/1920*scale_x;
+        float poty = tailleponct[1]*Screen.height/1080*scale_y;
 
         this.GetComponent<RectTransform>().sizeDelta=new Vector2(potx,poty);
         this.GetComponent<BoxCollider2D>().size=new Vector2(potx,poty);
+
+        offset_x = offset*Screen.width/1920;
+        offset_y = offset*Screen.height/1080;
     }
 
-
-    private void Update()
+    private void Update()//pour suivre le déplacement de la souris
     {
         if (dragging && canBeMoved)
         {
             Vector3 vect = Input.mousePosition;
-            vect.x = vect.x - offset;
-            vect.y = vect.y + offset;
+            vect.x = vect.x - offset_x;
+            vect.y = vect.y + offset_y;
             transform.position = vect;
         }
+        
     }
 
-    public void StartDragUI()
+    public void StartDragUI()//génération du block
     {
         if (canBeMoved && textManager.GetComponent<scrTextManager>().canTouchPonct)
         {
@@ -66,12 +76,16 @@ public class scrDragAndDrop : MonoBehaviour
 
             if (col != null)
             {
-                col.GetComponent<scrSlot>().SendPonct("");
                 col.GetComponent<scrSlot>().isUsed = false;
+
+                col.GetComponent<scrSlot>().ponctuation = "";
+
+                textManager.GetComponent<scrTextManager>().demajuscule(tag,col.GetComponent<scrSlot>().INDEX);      
             }
 
             Vector2 taillePot = this.GetComponent<RectTransform>().sizeDelta;
             textManager.GetComponent<scrTextManager>().ShowSlots(taillePot,this.tag);
+
         }
     }
 
@@ -80,14 +94,16 @@ public class scrDragAndDrop : MonoBehaviour
         if (canBeMoved)
         {
             if (dragging) dragging = false;
+
             if (willSnap)
             {
                 // WILL SNAP TO A SLOT NEARBY
-                //transform.position = snapPos;
-                col.GetComponent<scrSlot>().SendPonct(ponct);
                 col.GetComponent<scrSlot>().isUsed = true;
-                prevcol = col;
 
+                col.GetComponent<scrSlot>().ponctuation = ponct;
+                prevcol = col;
+                
+                textManager.GetComponent<scrTextManager>().majuscule(tag,col.GetComponent<scrSlot>().INDEX);
             } else
             {
                 // WILL NOT SNAP TO A SLOT
@@ -99,35 +115,39 @@ public class scrDragAndDrop : MonoBehaviour
                 {
                     // SNAP BACK TO THE LAST POSSIBLE POSITION
                     col = prevcol;
-                    col.GetComponent<scrSlot>().SendPonct(ponct);
+                    //col.GetComponent<scrSlot>().SendPonct(ponct);
                     col.GetComponent<scrSlot>().isUsed = true;
+
+                    col.GetComponent<scrSlot>().ponctuation = ponct;
+
+                    textManager.GetComponent<scrTextManager>().majuscule(tag, col.GetComponent<scrSlot>().INDEX);
                 }
+                string nom_gen = generateur();
+                GameObject.Find(nom_gen).GetComponent<scrBlockGenerator>().affichage(1);
             }
 
             transform.position = snapPos;
             
             Vector2 taillePot = this.GetComponent<RectTransform>().sizeDelta;
-            textManager.GetComponent<scrTextManager>().HideSlots(taillePot,this.tag);
+            textManager.GetComponent<scrTextManager>().HideSlots();
             ogPos = snapPos; // this becomes the "last viable position"
 
 
         }
     }
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (canBeMoved)
+        if (canBeMoved && dragging)
         {
             if (collision.CompareTag("Slot") && collision.GetComponent<scrSlot>().isUsed == false)
             {
                 willSnap = true;
                 Vector3 vect = collision.transform.position;
-                vect.y = vect.y - 25;
                 snapPos = vect;
 
                 col = collision;
-                //Debug.Log("enter coll");
+                estsortie++;
             }
         }
     }
@@ -136,11 +156,11 @@ public class scrDragAndDrop : MonoBehaviour
     {
         if (dragging && canBeMoved)
         {
-            if (collision.CompareTag("Slot"))
+            estsortie--;
+            if (collision.CompareTag("Slot") && estsortie==0)
             {
                 willSnap = false;
                 snapPos = ogPos;
-                //Debug.Log("exit coll");
 
                 // exits the first slot and save it in case of problems
                 if (prevcol == null) { prevcol = col;  }
@@ -148,4 +168,31 @@ public class scrDragAndDrop : MonoBehaviour
         }
     }
 
+    private string generateur()//return nom gen
+    {
+        switch(ponct)
+        {
+            case ".":
+                return "Point Gen";
+            break;
+            case "!":
+                return "Exclamation Gen";
+            break;
+            case "?":
+                return "Interrogation Gen";
+            break;
+            case ",":
+                return "Virgule Gen";
+            break;
+            case ":":
+                return "Deux Points Gen";
+            break;
+            case ";":
+                return "Point Virgule Gen";
+            break;
+            default:
+            break;
+        }
+        return null;
+    }
 }

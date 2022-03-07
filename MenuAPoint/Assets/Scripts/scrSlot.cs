@@ -7,14 +7,18 @@ public class scrSlot : MonoBehaviour
     public GameObject txtManager;
     public int INDEX;
     public bool isUsed = false;
+    public bool indice = false;
     public float ligne;
     public string ponctuation;
-    //public bool fromSlotsOne = true;
+    public Vector3 pos_origine;
 
-    public void SendPonct(string ponct)
+    public void showIndice()
     {
-        txtManager.GetComponent<scrTextManager>().separators[INDEX] = ponct;
-        txtManager.GetComponent<scrTextManager>().RefreshText();
-        //Debug.Log("Sent ponct [" + ponct + "] to list " + fromSlotsOne + " (true=1;false=2)");
+        indice = true;
+        if(!isUsed)
+        {
+            transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+        }
+        
     }
 }

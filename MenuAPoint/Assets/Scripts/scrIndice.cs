@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class scrIndice : MonoBehaviour
 {
+    private bool used = false;
     public GameObject Indice;
 
     void Start()
@@ -13,8 +14,13 @@ public class scrIndice : MonoBehaviour
 
     public void decrementIndice()
     {
-        if (GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices > 0)
+        if (GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices > 0 && !used)
+        {
             GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices--;
+
+            used = true;
+            GameObject.Find("GameManager").GetComponent<scrTextManager>().showIndice();
+        }
     }
 
     public void level3unlocked()

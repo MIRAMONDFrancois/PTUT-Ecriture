@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,6 +14,7 @@ public class scrBlockGenerator : MonoBehaviour
 
     public string ponct;
     public GameObject textManager;
+    private GameObject globalManager;
 
     private GameObject obj;
 
@@ -21,162 +23,75 @@ public class scrBlockGenerator : MonoBehaviour
 
 
     public void Start() {
-        Debug.Log(ponct+" ");
+        globalManager = GameObject.Find("Global");
+
         switch (ponct) {
             case ".":
-                if (textManager.GetComponent<scrGlobal>().pointLimit != -1) {
+                if (globalManager.GetComponent<scrGlobal>().pointLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                    numberLeft = textManager.GetComponent<scrGlobal>().pointLimit - GameObject.FindGameObjectsWithTag("Point").Length;
+                    numberLeft = globalManager.GetComponent<scrGlobal>().pointLimit - GameObject.FindGameObjectsWithTag("Point").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
                 }
                 break;
             case ",":
-                if (textManager.GetComponent<scrTextManager>().virguleLimit != -1) {
+                if (globalManager.GetComponent<scrGlobal>().virguleLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                    numberLeft = textManager.GetComponent<scrTextManager>().virguleLimit - GameObject.FindGameObjectsWithTag("Virgule").Length;
+                    numberLeft = globalManager.GetComponent<scrGlobal>().virguleLimit - GameObject.FindGameObjectsWithTag("Virgule").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
                 }
                 break;
             case "!":
-                if (textManager.GetComponent<scrTextManager>().exclamationLimit != -1) {
+                if (globalManager.GetComponent<scrGlobal>().exclamationLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                    numberLeft = textManager.GetComponent<scrTextManager>().exclamationLimit - GameObject.FindGameObjectsWithTag("Exclamation").Length;
+                    numberLeft = globalManager.GetComponent<scrGlobal>().exclamationLimit - GameObject.FindGameObjectsWithTag("Exclamation").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
                 }
                 break;
             case "?":
-                if (textManager.GetComponent<scrTextManager>().interrogationLimit != -1) {
+                if (globalManager.GetComponent<scrGlobal>().interrogationLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                    numberLeft = textManager.GetComponent<scrTextManager>().interrogationLimit - GameObject.FindGameObjectsWithTag("Interrogation").Length;
+                    numberLeft = globalManager.GetComponent<scrGlobal>().interrogationLimit - GameObject.FindGameObjectsWithTag("Interrogation").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
                 }
                 break;
             case ":":
-                if (textManager.GetComponent<scrTextManager>().deuxpointsLimit != -1) {
+                if (globalManager.GetComponent<scrGlobal>().deuxpointsLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                    numberLeft = textManager.GetComponent<scrTextManager>().deuxpointsLimit - GameObject.FindGameObjectsWithTag("Deux Points").Length;
+                    numberLeft = globalManager.GetComponent<scrGlobal>().deuxpointsLimit - GameObject.FindGameObjectsWithTag("Deux Points").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
                 }
                 break;
             case ";":
-                if (textManager.GetComponent<scrTextManager>().pointvirguleLimit != -1) {
+                if (globalManager.GetComponent<scrGlobal>().pointvirguleLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                    numberLeft = textManager.GetComponent<scrTextManager>().pointvirguleLimit - GameObject.FindGameObjectsWithTag("Point Virgule").Length;
+                    numberLeft = globalManager.GetComponent<scrGlobal>().pointvirguleLimit - GameObject.FindGameObjectsWithTag("Point Virgule").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
                 }
                 break;
             default:
                 break;
         }
+        affichage(0);
     }
 
+    public void affichage(int plus_ou_moins)
+    {
+        //GameObject gen_nombre = GameObject.Find(generator);
+        int machin = Int32.Parse(transform.GetChild(1).GetComponent<TextMeshProUGUI>().text);
+        machin+=plus_ou_moins;
+        transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = machin +"";
 
-    /*public void Update() {
-        // CE CODE EST IMMONDE ET EST EXECUTED A CHAQUE FRAME, il faudrait le placer aux moments de créations ou suppression de ponctuation, mais c'est trop relou
-        switch (ponct) {
-            case ".":
-                if (textManager.GetComponent<scrTextManager>().pointLimit != -1) { // if limit isn't infinite
-                    if (GameObject.FindGameObjectsWithTag("Point").Length < textManager.GetComponent<scrTextManager>().pointLimit) {
-                        // still visible
-                        gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                        isActive = true;
-                        numberLeft = textManager.GetComponent<scrTextManager>().pointLimit - GameObject.FindGameObjectsWithTag("Point").Length;
-                        gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
-                    } else {
-                        // locked
-                        gameObject.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1);
-                        isActive = false;
-                        gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "0";
-                    }
-                }
-                break;
-            case ",":
-                if (textManager.GetComponent<scrTextManager>().virguleLimit != -1) { // if limit isn't infinite
-                    if (GameObject.FindGameObjectsWithTag("Virgule").Length < textManager.GetComponent<scrTextManager>().virguleLimit) {
-                        // still visible
-                        gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                        isActive = true;
-                        numberLeft = textManager.GetComponent<scrTextManager>().virguleLimit - GameObject.FindGameObjectsWithTag("Virgule").Length;
-                        gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
-                    } else {
-                        // locked
-                        gameObject.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1);
-                        isActive = false;
-                        gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "0";
-                    }
-                }
-                break;
-            case "!":
-                if (textManager.GetComponent<scrTextManager>().exclamationLimit != -1) { // if limit isn't infinite
-                    if (GameObject.FindGameObjectsWithTag("Exclamation").Length < textManager.GetComponent<scrTextManager>().exclamationLimit) {
-                        // still visible
-                        gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                        isActive = true;
-                        numberLeft = textManager.GetComponent<scrTextManager>().exclamationLimit - GameObject.FindGameObjectsWithTag("Exclamation").Length;
-                        gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
-                    } else {
-                        // locked
-                        gameObject.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1);
-                        isActive = false;
-                        gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "0";
-                    }
-                }
-                break;
-            case "?":
-                if (textManager.GetComponent<scrTextManager>().interrogationLimit != -1) { // if limit isn't infinite
-                    if (GameObject.FindGameObjectsWithTag("Interrogation").Length < textManager.GetComponent<scrTextManager>().interrogationLimit) {
-                        // still visible
-                        gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                        isActive = true;
-                        numberLeft = textManager.GetComponent<scrTextManager>().interrogationLimit - GameObject.FindGameObjectsWithTag("Interrogation").Length;
-                        gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
-                    } else {
-                        // locked
-                        gameObject.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1);
-                        isActive = false;
-                        gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "0";
-                    }
-                }
-                break;
-            case ":":
-                if (textManager.GetComponent<scrTextManager>().deuxpointsLimit != -1) { // if limit isn't infinite
-                    if (GameObject.FindGameObjectsWithTag("Deux Points").Length < textManager.GetComponent<scrTextManager>().deuxpointsLimit) {
-                        // still visible
-                        gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                        isActive = true;
-                        numberLeft = textManager.GetComponent<scrTextManager>().deuxpointsLimit - GameObject.FindGameObjectsWithTag("Deux Points").Length;
-                        gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
-                    } else {
-                        // locked
-                        gameObject.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1);
-                        isActive = false;
-                        gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "0";
-                    }
-                }
-                break;
-            case ";":
-                if (textManager.GetComponent<scrTextManager>().pointvirguleLimit != -1) { // if limit isn't infinite
-                    if (GameObject.FindGameObjectsWithTag("Point Virgule").Length < textManager.GetComponent<scrTextManager>().pointvirguleLimit) {
-                        // still visible
-                        gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                        isActive = true;
-                        numberLeft = textManager.GetComponent<scrTextManager>().pointvirguleLimit - GameObject.FindGameObjectsWithTag("Point Virgule").Length;
-                        gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
-                    } else {
-                        // locked
-                        gameObject.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1);
-                        isActive = false;
-                        gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "0";
-                    }
-                }
-                break;
-            default:
-                break;
+        //bloquer le generateur si 0. Si infini -> décrémente à l'infini
+        if(machin==0)
+        {
+            gameObject.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1);
+            isActive=false;
+        }else
+        {
+            gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+            isActive = true;
         }
-        
-        //Debug.Log(GameObject.FindGameObjectsWithTag("Point").Length);
-    }*/
-
+    }
 
     public void CreatesBlock()
     {
@@ -187,8 +102,46 @@ public class scrBlockGenerator : MonoBehaviour
             obj.GetComponent<scrDragAndDrop>().canBeDeleted = true;
 
             obj.GetComponent<scrDragAndDrop>().StartDragUI();
+ 
+            affichage(-1);
         }
         
+    }
+
+    public void animBlock(Vector3 pos_slot)
+    {
+        obj = Instantiate(block);
+        obj.transform.SetParent(canvas.transform);
+        obj.GetComponent<scrDragAndDrop>().canBeMoved = true;
+        obj.GetComponent<scrDragAndDrop>().canBeDeleted = true;
+        obj.GetComponent<scrDragAndDrop>().willSnap = true;
+
+        obj.GetComponent<scrDragAndDrop>().StartDragUI();
+        
+        obj.transform.position = pos_slot;
+        
+        obj.GetComponent<scrDragAndDrop>().StopDragUI();
+        
+
+        affichage(-1);
+    }
+
+    public void demarrageBlock(GameObject slot)
+    {
+        obj = Instantiate(block);
+        obj.transform.SetParent(canvas.transform);
+        obj.GetComponent<scrDragAndDrop>().canBeMoved = true;
+        obj.GetComponent<scrDragAndDrop>().canBeDeleted = true;
+        obj.GetComponent<scrDragAndDrop>().willSnap = true;
+        obj.GetComponent<scrDragAndDrop>().col = slot.GetComponent<Collider2D>();
+        
+        obj.GetComponent<scrDragAndDrop>().StartDragUI();
+        obj.GetComponent<scrDragAndDrop>().snapPos = slot.GetComponent<Collider2D>().transform.position;
+        obj.GetComponent<scrDragAndDrop>().StopDragUI();
+
+        
+
+        affichage(-1);
     }
 
     public GameObject CreatesBlockForManager() //brute as heck

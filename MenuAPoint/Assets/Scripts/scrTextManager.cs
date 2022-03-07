@@ -78,30 +78,34 @@ public class scrTextManager : MonoBehaviour
 
     // Text pos
     public GameObject text_scaler;
+    public float scaler_x;//pour affichage slot
+    public float scaler_y;//pour affichage slot
     private float lineWidth;
     private float textFloor;
     private float spaceSize;
     private float lineJump;
     private float taillePolice;
+    private float text_sol;
 
     //list mots et ponctuations
-    private List<string> vrai_nomspropres = new List<string>();//a mettre dans le globale
-    private List<string> vrai_separators;
-    private List<string> vrai_mots;
+    private List<string> vrai_nomspropres = new List<string>();//a mettre dans le globale //du détail pour vérifier nom
+    private List<string> vrai_separators;//pour la vérification
+    private List<string> vrai_mots;//pour écrire
+    private List<string> vrai_slot;//pour vérification
     //liste gameobject
-    private List<GameObject> vrai_slots;
-    private List<GameObject> vrai_mots_GO;
+    private List<GameObject> vrai_slots_GO;//pour le jeu
+    private List<GameObject> vrai_mots_GO;//pour le jeu
 
     //fin de phrase
     private bool pointTropTot = false;
     private bool manquePoint = false;
-    private List<int> pos_finPonct = new List<int>();
+    private bool mauvaisPoint = false;//mauvaise fin ponctuation
 
     //mileu de phrase
     private bool tropVirgule = false;
     private bool pasAssezVirgule = false;
     private bool mauvaiseVirgule = false;//mauvaise position
-    private List<int> pos_midPonct = new List<int>();
+    private bool pasbonneVirgule = false;//mauvaise mid ponctuation
 
     private bool textreussite = false; //pour pas faire "!bool && !bool" à chaque fois
     private bool point_reussite = false; 
@@ -138,16 +142,6 @@ public class scrTextManager : MonoBehaviour
 
         init_taille_texte();
 
-
-        /*
-        colorBasique = new Color(0f, 0f, 0f);
-        colorVirgule = new Color(80f / 255f, 138f / 255f, 50f / 255f); // Color(1f, 0.6f, 0f); Color(80f / 255f, 138f / 255f, 50f / 255f);
-        colorPoint = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
-        colorExclamation = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
-        colorInterrogation = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
-        colorPointVirgule = new Color(80f / 255f, 138f / 255f, 50f / 255f); // Color(1f, 0.6f, 0f); Color(80f / 255f, 138f / 255f, 50f / 255f);
-        colorDeuxPoints = new Color(131f / 255f, 208f / 255f, 245f / 255f); // Color(0.9f, 0.9f, 0.5f); Color(131f / 255f, 208f / 255f, 245f / 255f);
-        */
         cursorStart = new Vector3(Screen.width*.05f,textFloor,0);//Screen.width*.05f -> 10%-5%
         cursor.transform.position = cursorStart;
         cursor.gameObject.SetActive(!dualAnim);
@@ -158,18 +152,17 @@ public class scrTextManager : MonoBehaviour
         canTouchPonct = true;
 
         s = new List<string>();
-        words = new List<string>();
+        words = new List<string>();        
 
         if(dualAnim)
         {
-            correctText = CorrectFile.text;
+            CutsWordsDual(CorrectFile);
         }else
         {
-            correctText = TextFile.text;
+            CutsWordsDual(TextFile);
+            
         }
         
-
-        CutsWordsDual(TextFile);
 
         // creates separators list
         separators = new string[words.Count];
@@ -178,13 +171,10 @@ public class scrTextManager : MonoBehaviour
         slots = new GameObject[words.Count];
         
         placesWords();
-        
-        GameObject virguleGen = GameObject.Find("Virgule Gen");
-        GameObject pointGen = GameObject.Find("Point Gen");
-        GameObject exclamationGen = GameObject.Find("Exclamation Gen");
-        GameObject interrogationGen = GameObject.Find("Interrogation Gen");
-        GameObject pointvirguleGen = GameObject.Find("point Virgule Gen");
-        GameObject deuxpointsGen = GameObject.Find("Deux Points Gen");
+        if(dualAnim)
+        {
+            depart_block(TextFile);
+        }
 
         if (!dualAnim) {
 
@@ -192,78 +182,9 @@ public class scrTextManager : MonoBehaviour
             animationLog.text = "Les clients ont hâte de manger votre plat !";
 
         } else {
-            // Dual Mode --------------------------------------------------
-
             animationObj.gameObject.SetActive(true);
             animationObj.GetComponent<Animator>().SetInteger("Niveau",globalScript.levelNum);
             animationLog.gameObject.SetActive(false);
-
-            // special version dual
-            GameObject block;
-            Vector3 vect = new Vector3();
-            int k = -1; // shh
-            for (int i = 0; i < s.Count; i++) {
-                switch (s[i]) {
-                    case ",":
-                        block = virguleGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                        slots[k].GetComponent<scrSlot>().SendPonct(",");
-
-                        vect = slots[k].transform.position + quelle_ponct("Virgule");
-                        break;
-                    case ".":
-                        block = pointGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                        slots[k].GetComponent<scrSlot>().SendPonct(".");
-
-                        vect = slots[k].transform.position + quelle_ponct("Point");
-                        break;
-                    case "!":
-                        block = exclamationGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                        slots[k].GetComponent<scrSlot>().SendPonct("!");
-
-                        vect = slots[k].transform.position + quelle_ponct("Exclamation");
-                        break;
-                    case "?":
-                        block = interrogationGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                        slots[k].GetComponent<scrSlot>().SendPonct("?");
-
-                        vect = slots[k].transform.position + quelle_ponct("Interrogation");
-                        break;
-                    case ":":
-                        block = deuxpointsGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                        slots[k].GetComponent<scrSlot>().SendPonct(":");
-
-                        vect = slots[k].transform.position + quelle_ponct("Deux Points");
-                        break;
-                    case ";":
-                        block = pointvirguleGen.GetComponent<scrBlockGenerator>().CreatesBlockForManager();
-                        slots[k].GetComponent<scrSlot>().SendPonct(";");
-
-                        vect = slots[k].transform.position + quelle_ponct("Point Virgule");
-                        break;
-                    default:
-                        block = null;
-                        k++;
-                        break;
-                }
-                if (block != null)
-                {
-                    block.GetComponent<scrDragAndDrop>().dragging = false;
-                    block.GetComponent<scrDragAndDrop>().canBeMoved = canBeMoved;
-                    block.GetComponent<scrDragAndDrop>().canBeDeleted = canBeDeleted;
-                    slots[k].GetComponent<scrSlot>().isUsed = true;
-                    block.GetComponent<scrDragAndDrop>().willSnap = true;
-                    block.GetComponent<scrDragAndDrop>().col = slots[k].GetComponent<BoxCollider2D>();
-
-                    //Vector3 vect = slots[k].transform.position;
-                    //vect.y -= 25;
-                    block.GetComponent<scrDragAndDrop>().ogPos = vect;
-                    block.GetComponent<scrDragAndDrop>().snapPos = vect;
-                    block.transform.position = vect;
-                }
-            }
-
-
-            // END OF DUAL MODE
         } 
 
         // DATA EXPORT
@@ -291,8 +212,7 @@ public class scrTextManager : MonoBehaviour
         //Debug.Log(System.IO.File.ReadAllText("./DOSSIER/" + pn + ".txt"));
 
 
-        //RefreshText();
-        //HideSlots(new Vector2(0,0),"init");
+        HideSlots();
     }
 
     // Update is called once per frame
@@ -304,7 +224,7 @@ public class scrTextManager : MonoBehaviour
             Vector3 trans = cursor.transform.position;
             trans.x += cursorSpeed;
             //OK
-            if ( trans.x > lineWidth+(lineWidth*.05f) )
+            if ( trans.x > lineWidth+(lineWidth*.15f) )
             {
                 trans.x = cursorStart.x;
                 trans.y -= lineJump;
@@ -318,21 +238,10 @@ public class scrTextManager : MonoBehaviour
                 {
                     // play animations
                     movingCursor = false;
-
-                    /*if (pointTropTot) Debug.Log("<color=orange>(MAIGRE)</color> Point trop tôt");
-                    if (manquePoint) Debug.Log("<color=orange>(GROS)</color> Manque de point");
-
-                    if (tropVirgule) Debug.Log("<color=orange>(FEU)</color> Trop de virgules");
-                    if (pasAssezVirgule) Debug.Log("<color=orange>(FADE)</color> Pas assez de virgules");
-                    if (mauvaiseVirgule) Debug.Log("<color=orange>(CONFUS)</color> Mauvais placement de virgule");*/
                     
                     //prhase correcte
-                    if (!pointTropTot && !manquePoint && !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule)
+                    if (textreussite)
                     {
-                        // CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT CORRECT
-                        //Debug.Log("<color=green>CORRECT!</color>");
-                        
-                        
                         switch (Random.Range(1, 4))
                         {
                             case 1:
@@ -346,15 +255,8 @@ public class scrTextManager : MonoBehaviour
                                 break;
                         }
                         // writes on the .txt
-                        recapContent += "\nTerminé en " + frames/60 + " secondes avec " + errorNum + " erreur(s).";
-                        scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
-                        System.IO.File.WriteAllText(fullFolderName + "/Niveau"+globalScript.levelNum+".txt", recapContent);
                         
-                        // Updates level unlocked + 1
-                        // ???
-                        // ???
-                        // ???
-
+                        
                         // Hides all buttons and shows the "continue" one, which is the first child
                         ButtonLayer.SetActive(true);
                         ButtonLayer.transform.GetChild(0).gameObject.SetActive(true);
@@ -363,13 +265,12 @@ public class scrTextManager : MonoBehaviour
                         }
 
                         // Unlocks next level
+                        scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
                         globalScript.levelunlocked[globalScript.levelNum] = true;
                     }
-
                     // recap phrase for the animation recall
-                    if (pointTropTot || manquePoint || tropVirgule || pasAssezVirgule || mauvaiseVirgule)
+                    else
                     {
-                        // ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR
                         string recap = "";
                         switch (Random.Range(1, 4))
                         {
@@ -385,23 +286,22 @@ public class scrTextManager : MonoBehaviour
                         }
                         recapContent += "\nErreur à " + frames/60 + " secondes :\n";
 
-                        /*if (tropVirgule) { recap += " trop épicé"; recapContent += "- trop de virgule\n"; }
+                        if (tropVirgule) { recap += " trop épicé"; recapContent += "- trop de virgule\n"; }
                         if (pasAssezVirgule) { recap += " un peu fade"; recapContent += "- pas assez de virgule\n"; }
                         if (mauvaiseVirgule) { recap += " bizarrement épicé"; recapContent += "- mauvais placement de virgule\n"; }
-                        if ((tropVirgule || pasAssezVirgule || mauvaiseVirgule) && (pointTropTot || manquePoint)) { recap += " et"; }
+                        if (pasbonneVirgule) { recap += " différent"; recapContent += "- mauvaise virgule\n"; }
+                        if ((!virgule_reussite) && (!point_reussite)) { recap += " et"; }
                         if (pointTropTot) { recap += " trop léger."; recapContent += "- point trop tôt\n"; }
-                        if (manquePoint) { recap += " trop lourd."; recapContent += "- manque d'un point\n"; }*
+                        if (manquePoint) { recap += " trop lourd."; recapContent += "- manque d'un point\n"; }
+                        if (mauvaisPoint) { recap += " étrange."; recapContent += "- mauvais point\n"; }
                         animationLog.text = recap;
 
                         // data recap
-                        recapContent += currentText + "\n";
-                        recapContent += "\n----------------------------------------------\n";
-                        errorNum++;*/
                         ButtonLayer.SetActive(true);
 
                         canTouchPonct = true;
                     }
-                    
+                    texte_data();
                     //Début animation après fin validation
                     AnimationFondu();
                 }
@@ -421,6 +321,7 @@ public class scrTextManager : MonoBehaviour
     {
         vrai_separators = new List<string>();
         vrai_mots = new List<string>();
+        vrai_slot = new List<string>();
         
         string v_mots = "";
         bool v_skip = false;
@@ -433,17 +334,18 @@ public class scrTextManager : MonoBehaviour
             {
                 case ','://lettre_ponct_espace
                     vrai_separators.Add(",");
+                    vrai_slot.Add("");
                     vrai_mots.Add(v_mots);
                     v_skip = true;
                     v_mots="";
                     break;
                 case '.'://lettre_ponct_espace ou lettre_ponct_retourligne
                     vrai_separators.Add(".");
+                    vrai_slot.Add("");
                     vrai_mots.Add(v_mots);
                     v_skip = true;
                     v_mots="";
                     toLower = true;
-                    //if(toLower)vrai_mots[vrai_mots.Count-1][0]=vrai_mots[vrai_mots.Count-1][0].ToUpper();
                     break;
                 case '!'://espace_ponct_espace ou espace_ponct_retourligne
                     vrai_separators[vrai_separators.Count-1]="!";
@@ -468,9 +370,9 @@ public class scrTextManager : MonoBehaviour
                     v_tiret = true;
                     break;
                 case '\n'://ponct_retourligne
-                    vrai_mots[vrai_mots.Count-1]+="\n";
+                    //vrai_mots[vrai_mots.Count-1]+="\n";
                     v_skip = false;
-                    v_mots="";
+                    v_mots="\n";
                     break;
                 case ' '://espace_ponct_espace ou lettre_espace ou ponct_espace
                     
@@ -486,6 +388,7 @@ public class scrTextManager : MonoBehaviour
                     else
                     {
                         vrai_separators.Add("");
+                        vrai_slot.Add("");
                         vrai_mots.Add(v_mots);
                         v_mots = "";
                     }
@@ -515,34 +418,113 @@ public class scrTextManager : MonoBehaviour
             for(int b=0;b<vrai_nomspropres.Count;b++)
             {
                 string verif_nom = vrai_nomspropres[b].ToLower();
-                if(verif_mot.Equals(verif_nom))verif_nompropre(a,verif_mot);
+                if(verif_mot.Equals(verif_nom))vrai_mots[a] = verif_mot.Substring(0, 1).ToUpper() + verif_mot.Substring(1, verif_mot.Length - 1);
             }
         }
     }
 
-    private void verif_nompropre(int pos_mot,string mot_maj)
-    {  
-        string mot_final = "";
-        string majuscule=mot_maj.ToUpper();
-        mot_final += majuscule[0];
+    private void depart_block(TextAsset TF)//Switch Land
+    {
+        List<string> liste_ponct = new List<string>();
+        
+        bool v_skip = false;
+        bool v_tiret = false;
 
-        for(int a=1;a<mot_maj.Length;a++)
+        //recherche ponct à mettre de base
+        for(int a=0;a<TF.text.Length;a++)
         {
-            mot_final += mot_maj[a];
+            switch(TF.text[a])
+            {
+                case '.':
+                    liste_ponct.Add(".");
+                    v_skip = true;
+                break;
+                case '!':
+                    liste_ponct[liste_ponct.Count-1]="!";
+                    v_skip = true;
+                break;
+                case '?':
+                    liste_ponct[liste_ponct.Count-1]="?";
+                    v_skip = true;
+                break;
+                case ',':
+                    liste_ponct.Add(",");
+                    v_skip = true;
+                break;
+                case ';':
+                    liste_ponct[liste_ponct.Count-1]=";";
+                    v_skip = true;
+                break;
+                case ':':
+                    liste_ponct[liste_ponct.Count-1]=":";
+                    v_skip = true;
+                break;
+                case '-':
+                    v_tiret = true;
+                break;
+                case '\n':
+                    v_skip = false;
+                break;
+                case ' ':
+                    if(v_tiret)
+                    {
+                        v_tiret = false;
+                    }
+                    else if(v_skip)
+                    {
+                        v_skip=false;
+                    }
+                    else
+                    {
+                        liste_ponct.Add("");
+                    }
+                break;
+                default:
+                    v_tiret = false;
+                break;
+
+            }
         }
 
-        vrai_mots[pos_mot]=mot_final;
-        
+        Vector3 correctif = new Vector3(0,0,0);
+        for(int a=0;a<liste_ponct.Count;a++)
+        {
+            switch(liste_ponct[a])
+            {
+                case ".":
+                    GameObject.Find("Point Gen").GetComponent<scrBlockGenerator>().demarrageBlock(vrai_slots_GO[a]);
+                break;
+                case "!":
+                    GameObject.Find("Exclamation Gen").GetComponent<scrBlockGenerator>().demarrageBlock(vrai_slots_GO[a]);
+                break;
+                case "?":
+                    GameObject.Find("Interrogation Gen").GetComponent<scrBlockGenerator>().demarrageBlock(vrai_slots_GO[a]);
+                break;
+                case ",":
+                    GameObject.Find("Virgule Gen").GetComponent<scrBlockGenerator>().demarrageBlock(vrai_slots_GO[a]);
+                break;
+                case ":":
+                    GameObject.Find("Deux Points Gen").GetComponent<scrBlockGenerator>().demarrageBlock(vrai_slots_GO[a]);
+                break;
+                case ";":
+                    GameObject.Find("Point Virgule Gen").GetComponent<scrBlockGenerator>().demarrageBlock(vrai_slots_GO[a]);
+                break;
+                default:
+                break;
+            }
+        }
     }
 
     private void placesWords()
     {
-        vrai_slots = new List<GameObject>();
+
+        vrai_slots_GO = new List<GameObject>();
         vrai_mots_GO = new List<GameObject>();
+        
 
         //taille police
         WordPrefab.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
-        WordPrefab.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().fontSize=taillePolice;
+        WordPrefab.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().fontSize=taillePolice;
 
         //var
         bool alaligne = false;
@@ -556,11 +538,32 @@ public class scrTextManager : MonoBehaviour
             GameObject slot = Instantiate(SlotPrefab);
             GameObject wordObj = Instantiate(WordPrefab);
             wordObj.GetComponentInChildren<TextMeshProUGUI>().text = vrai_mots[i];
+            wordObj.GetComponent<MotsGO>().nom_propre = true;
+
+            //maj position 
+            for(int a=0;a<vrai_mots[i].Length;a++)
+            {
+                if(!vrai_mots[i][a].Equals('-') && !vrai_mots[i][a].Equals(' '))
+                {
+                    wordObj.GetComponent<MotsGO>().maj_pos = a;
+                    break;
+                }
+            }
+
+            //verif nom propre et mot en maj
+            if(vrai_mots[i].Equals(vrai_mots[i].ToLower()))wordObj.GetComponent<MotsGO>().nom_propre = false;
             
             float pw = wordObj.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
             
+            alaligne = vrai_mots[i][0].Equals('\n');
+
             if (total_width + pw > lineWidth || alaligne)
             {
+                if(alaligne)
+                {
+                    wordObj.GetComponentInChildren<TextMeshProUGUI>().text =  vrai_mots[i].Substring(1, vrai_mots[i].Length - 1);
+                }
+
                 total_width = 0f;
                 total_height -= lineJump;
                 
@@ -568,96 +571,324 @@ public class scrTextManager : MonoBehaviour
             }
 
             //positions des mots et slots
-            alaligne = vrai_mots[i][vrai_mots[i].Length-1].Equals('\n');
+            
 
             total_width+=pw/2;
             wordObj.transform.position = new Vector3(Screen.width*.1f+total_width, textFloor + total_height, 0);//Screen.width*.1f -> 10% gauche
             total_width+=spaceSize/2+pw/2;
             slot.transform.position = new Vector3(Screen.width*.1f+total_width, textFloor + total_height, 0);
             slot.transform.GetComponent<scrSlot>().ligne=lineNumber;
+            slot.transform.GetComponent<scrSlot>().INDEX=i;
+            slot.transform.GetComponent<scrSlot>().pos_origine=slot.transform.position;
             total_width+=spaceSize/2;
 
             //afficher sur le canvas
             wordObj.transform.SetParent(canvas.transform);
             slot.transform.SetParent(canvas.transform);
 
-            vrai_slots.Add(slot);
+            vrai_slots_GO.Add(slot);
             vrai_mots_GO.Add(wordObj);
+            
+            
 
         } // end of word placement
-    }
 
-    private string RefreshTextN(string curr, string corr, List<string> W, string[] SEP, GameObject[] WOBJ)
-    {
-        curr = "";
-
-        for (int i = 0; i < W.Count; i++)
+        if(vrai_mots_GO[vrai_mots_GO.Count-1].transform.position.y < text_sol)
         {
-            Debug.Log(WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().text);
-            if(SEP[i].Equals("!") || SEP[i].Equals("?") || SEP[i].Equals(":") || SEP[i].Equals(";"))
-            {
-                curr += W[i] + " " + SEP[i] + " ";
-            }else
-            {
-                curr += W[i] + SEP[i] + " ";
-            }
-            // adds an UPPERCASE letter to the next word
-            if (i > 0 && (SEP[i - 1].Equals(".") || SEP[i - 1].Equals("!") || SEP[i - 1].Equals("?"))) // using the fact that if the first condition is false, it directly stops, preventing the possible out of bounds error
-            {
-                string mot = WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().text;
-                WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().text = mot.Substring(0, 1).ToUpper() + mot.Substring(1, mot.Length - 1);
-                
-                //bazar brayan
-                GameObject test3 = WOBJ[i].transform.GetChild(0).transform.GetChild(1).gameObject;
-                GameObject test4 = WOBJ[i].transform.GetChild(0).transform.GetChild(0).gameObject;
-                
-                
-                test3.GetComponentInChildren<TextMeshProUGUI>().text = mot.ToUpper()[0].ToString();
-                float test3w = test3.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
-                float test3h = test3.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
-                float test3size = Mathf.Max(test3w,test3h);
-                
-
-                //position
-                test4.GetComponentInChildren<RectTransform>().anchoredPosition = new Vector2(test3w/2,0);
-                test3.GetComponentInChildren<RectTransform>().anchoredPosition = new Vector2(test3w/2,0);
-                //taille
-                test4.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(test3size, test3size);
-                test3.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(test3w,test3h);
-                
-                test4.SetActive(true);
-                test3.SetActive(true);
-                //fin bazar
-            }
-            else
-            {
-                WOBJ[i].GetComponentInChildren<TextMeshProUGUI>().text = W[i];
-                //bazar brayan
-                WOBJ[i].transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-                //fin bazar
-            }
+            replaceWords();
         }
-        curr = curr.Substring(0, curr.Length - 1); // to remove the last space
-
-        return curr;
     }
 
-    public void RefreshText()
+    public void vrai_valider()
     {
-        currentText = RefreshTextN(currentText, correctText, words, separators, wordsObj);
+        bool flag_debug = true;
+        //var de vérification
+        int nb_midponct_joueur = 0; //pour savoir si trop ou pas assez
+        int nb_midponct_verif = 0;
+
+        //reset valeur pour animation
+        pointTropTot = false;
+        manquePoint = false;
+        mauvaisPoint = false;
+
+        pasAssezVirgule = false;
+        tropVirgule = false;
+        mauvaiseVirgule = false;
+        pasbonneVirgule = false;
+
+        //boucle de vérification
+        for(int a=0;a<vrai_separators.Count;a++)
+        {
+            string slot_joueur = vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation;
+            string slot_verif = vrai_separators[a];
+
+            
+            if(!slot_joueur.Equals(slot_verif))
+            {
+                //slot sans ponctuation 
+                if(slot_joueur.Equals(""))
+                {
+                    //au lieu de mid ponct
+                    if(slot_verif.Equals(",") || slot_verif.Equals(":") || slot_verif.Equals(";"))
+                    {
+                        nb_midponct_verif++;
+                    }
+                    //au lieu de fin ponct
+                    else if(slot_verif.Equals(".") || slot_verif.Equals("?") || slot_verif.Equals("!"))
+                    {
+
+                        manquePoint = true;
+
+                        if(nb_midponct_verif>nb_midponct_joueur)
+                        {
+                            pasAssezVirgule = true;
+                        }
+                        else if(nb_midponct_verif<nb_midponct_joueur)
+                        {
+                            tropVirgule = true;
+                        }
+                    }
+                }
+                //slot mid ponctuation
+                else if(slot_joueur.Equals(",") || slot_joueur.Equals(":") || slot_joueur.Equals(";"))
+                {
+                    nb_midponct_joueur++;
+                    //au lieu d'un vide
+                    if(slot_verif.Equals(""))
+                    {
+                        mauvaiseVirgule = true;
+                    }
+                    //au lieu de fin ponct
+                    else if(slot_verif.Equals(".") || slot_verif.Equals("?") || slot_verif.Equals("!"))
+                    {
+                        manquePoint = true;
+                        mauvaiseVirgule = true;
+                        
+                        if(nb_midponct_verif>nb_midponct_joueur)
+                        {
+                            pasAssezVirgule = true;
+                        }
+                        else if(nb_midponct_verif<nb_midponct_joueur)
+                        {
+                            tropVirgule = true;
+                        }
+                    }
+                    //mais mauvaise mid ponctuation
+                    else
+                    {
+                        pasbonneVirgule = true;
+                        nb_midponct_verif++;
+                    }
+                }
+
+                //slot fin ponctuation
+                else
+                {
+                    //au lieu d'un vide
+                    if(slot_verif.Equals(""))
+                    {
+                        pointTropTot = (true != manquePoint);
+                    }
+                    //au lieu de mid ponct
+                    else if(slot_verif.Equals(",") || slot_verif.Equals(":") || slot_verif.Equals(";"))
+                    {
+                        pointTropTot = (true != manquePoint);
+                        nb_midponct_verif++;
+                    }
+                    else
+                    {
+                        mauvaisPoint = true;
+                    }
+
+                    //verification nb mid ponct
+                    if(nb_midponct_verif>nb_midponct_joueur)
+                    {
+                        pasAssezVirgule = true;
+                    }
+                    else if(nb_midponct_verif<nb_midponct_joueur)
+                    {
+                        tropVirgule = true;
+                    }
+
+                    
+                    deplacement_cursor(a);
+
+                    return;
+                }
+            }
+
+            pasAssezVirgule = nb_midponct_joueur < nb_midponct_verif;
+            tropVirgule = nb_midponct_joueur > nb_midponct_verif;
+
+            if(slot_joueur!=slot_verif)flag_debug=false;
+        }
+
+        deplacement_cursor(vrai_slots_GO.Count-1);
+
+        Debug.Log("Niveau : "+flag_debug);
+    }
+
+    private void deplacement_cursor(int pos)
+    {
+        point_reussite = !pointTropTot && !manquePoint && !mauvaisPoint;
+        virgule_reussite = !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule && !pasbonneVirgule;
+        textreussite = point_reussite && virgule_reussite;
+
+        animationLog.text = "Les clients sont en train de tester votre plat...";
+
+        lineToStop = vrai_slots_GO[pos].GetComponent<scrSlot>().ligne;
+        posToStop = vrai_slots_GO[pos].transform.position.x-(cursor.transform.GetComponent<RectTransform>().sizeDelta.x/4);
+        
+
+        movingCursor = true;
+        canTouchPonct = false;
+        cursor.transform.position = cursorStart;
+        lineCursor = 0;
+        cursor.transform.SetAsLastSibling();
+        ButtonLayer.SetActive(false);
+    }
+
+    public void replaceWords()
+    {
+        //globale
+        taillePolice -= 5;
+        lineNumber = 0;
+        //fonction
+        bool alaligne = false;
+        float total_width = 0;
+        float total_height = 0;
+
+        text_scaler.SetActive(true);
+
+        float scale_x = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
+        float scale_y = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
+        text_scaler.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
+        scaler_x = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth / scale_x;
+        scaler_y = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / scale_y;
+
+        spaceSize = 1.8f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
+        lineJump = 1.2f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
+
+        text_scaler.SetActive(false);
+
+        for(int a=0;a<vrai_mots_GO.Count;a++)
+        {
+            vrai_mots_GO[a].GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
+            vrai_mots_GO[a].transform.GetChild(0).GetChild(1).GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
+
+            float pw = vrai_mots_GO[a].GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
+
+            alaligne = vrai_mots[a][0].Equals('\n');
+
+            if (total_width + pw > lineWidth || alaligne)
+            {
+                if(alaligne)
+                {
+                    vrai_mots_GO[a].GetComponentInChildren<TextMeshProUGUI>().text =  vrai_mots[a].Substring(1, vrai_mots[a].Length - 1);
+                }
+
+                total_width = 0f;
+                total_height -= lineJump;
+                
+                lineNumber++;
+            }
+
+            total_width+=pw/2;
+            vrai_mots_GO[a].transform.position = new Vector3(Screen.width*.1f+total_width, textFloor + total_height, 0);//Screen.width*.1f -> 10% gauche
+            total_width+=spaceSize/2+pw/2;
+            vrai_slots_GO[a].transform.position = new Vector3(Screen.width*.1f+total_width, textFloor + total_height, 0);
+            vrai_slots_GO[a].transform.GetComponent<scrSlot>().ligne=lineNumber;
+            vrai_slots_GO[a].transform.GetComponent<scrSlot>().pos_origine=vrai_slots_GO[a].transform.position;
+            total_width+=spaceSize/2;
+            
+        }
+
+        if(vrai_mots_GO[vrai_mots_GO.Count-1].transform.position.y < text_sol)
+        {
+            replaceWords();
+        }
+    }
+
+    public void majuscule(string tag, int slot_pos)
+    {
+        if(slot_pos==vrai_mots_GO.Count-1)return;
+
+        
+        if(tag.Equals("Point") || tag.Equals("Exclamation") || tag.Equals("Interrogation"))
+        {
+            if(!vrai_mots_GO[slot_pos+1].GetComponent<MotsGO>().nom_propre)
+            {
+                //ajout majuscule
+                string mot = vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
+                int maj_pos = vrai_mots_GO[slot_pos+1].GetComponent<MotsGO>().maj_pos+1;
+                vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = mot.Substring(0, maj_pos).ToUpper() + mot.Substring(maj_pos, mot.Length - maj_pos);
+                
+                
+
+                //triche majuscule animation
+                vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = mot.Substring(0, maj_pos).ToUpper();
+                vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+
+                //var raccourci
+                float maj_width = vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().preferredWidth;
+                float maj_height = vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().preferredHeight;
+                float maj_max = Mathf.Max(maj_width,maj_height);
+                
+                //partie texte
+                vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetChild(1).GetComponent<RectTransform>().sizeDelta = new Vector2(maj_width,maj_height);
+                vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetChild(1).GetComponent<RectTransform>().anchoredPosition = new Vector2(maj_width/2,0);
+                
+                
+                //partie anim
+                vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetChild(0).gameObject.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(maj_max, maj_max);
+                vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetChild(0).gameObject.GetComponentInChildren<RectTransform>().anchoredPosition = new Vector2(maj_width/2,0);
+                
+                vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+            }
+            
+        }
+        
+        
+    }
+
+    public void demajuscule(string tag, int slot_pos)
+    {
+        if(slot_pos==vrai_mots_GO.Count-1)return;
+
+        
+        if(tag.Equals("Point") || tag.Equals("Exclamation") || tag.Equals("Interrogation"))
+        {
+            if(!vrai_mots_GO[slot_pos+1].GetComponent<MotsGO>().nom_propre)
+            {
+                string mot = vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
+                vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = mot.ToLower();
+
+                //partie anim
+                vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+                vrai_mots_GO[slot_pos+1].transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+            }
+            
+        }     
     }
 
     public void ValiderClick()
     {
-        if (!dualAnim) Valider();
+        if (!dualAnim) vrai_valider();
         else ValiderDual();
     }
 
     public void ValiderDual() {
-        bool dual_reussite = correctText == currentText;
+
+        bool dual_reussite = true;//flag
+        //verification
+        for(int a=0;a<vrai_slots_GO.Count;a++)
+        {
+            Debug.Log(vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation);
+            if(!vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation.Equals(vrai_separators[a]))dual_reussite=false;
+        }
+
         animationObj.GetComponent<Animator>().SetBool("Validation",true);
         animationObj.GetComponent<Animator>().SetBool("Reussite",dual_reussite);
-        Debug.Log(correctText+" "+ currentText);
         
         if(dual_reussite)
         {
@@ -672,267 +903,106 @@ public class scrTextManager : MonoBehaviour
         Invoke("dual_anim_reset",1f);
     }
 
-    private void Valider()
+    public void showIndice()
     {
-        //validation Brayan ICI
-        /*for(int a=0;a<pos_midPonct.Count;a++)
+        for(int a=0;a<vrai_separators.Count;a++)
         {
-            Debug.Log(pos_midPonct[a]);
-        }
-        for(int a=0;a<pos_finPonct.Count;a++)
-        {
-            Debug.Log(pos_finPonct[a]);
-        }*/
-
-        //Parcours ponctuations
-        for(int a=0;a<separators.Length;a++)
-        {
-            //Différence entre ponctuation
-            if(!separators[a].Equals(vrai_separators[a]))
+            if(!vrai_separators[a].Equals(""))
             {
-                //Test de Vide
-                if(separators[a].Equals(""))
-                {
-                    Debug.Log("Manque quelque chose");
-                }
-
-                if(vrai_separators[a].Equals(""))
-                {
-                    Debug.Log("Trop de ponct");
-                }
-                
+                vrai_slots_GO[a].GetComponent<scrSlot>().showIndice();
             }
         }
-
-        //Debug.Log("Validation...");
-        bool willStop = false;
-        bool forceStop = false;
-        int vN = 0; // nombre de virgule
-        int vNC = 0; // nombre de virgule dans la correction
-        int vNBP = 0; // nombre de virgule bien placée
-
-
-        pointTropTot = false;
-        manquePoint = false;
-        tropVirgule = false;
-        pasAssezVirgule = false;
-        mauvaiseVirgule = false;
-
-
-        int i = 0; // indice current
-        int j = 0; // indice correct
-
-        
-
-        //parcours
-        while ( (i < currentText.Length) && !forceStop && (!((willStop && (currentText[i].Equals('.') || currentText[i].Equals('!') || currentText[i].Equals('?'))))) )
-        {
-            vN += currentText[i].Equals(',') ? 1 : 0;
-            vNBP += (currentText[i].Equals(',') && correctText[j].Equals(',')) ? 1 : 0;
-            if (!willStop)
-            {
-                vNC += correctText[j].Equals(',') ? 1 : 0;
-            }
-
-            if (currentText[i].Equals('.') || currentText[i].Equals('!') || currentText[i].Equals('?') )
-            {
-                if (!correctText[j].Equals(currentText[i]))
-                {
-                    // point trop tôt
-                    forceStop = true;
-                    pointTropTot = true;
-                } else
-                {
-                    if (vN != vNC)
-                    {
-                        // mauvais nombre de virgule
-                        forceStop = true;
-                        pasAssezVirgule = (vN < vNC);
-                        tropVirgule = !pasAssezVirgule;
-                    } else
-                    {
-                        if (vNBP != vNC)
-                        {
-                            // nombre de virgule bon, mais mal placées
-                            forceStop = true;
-                            mauvaiseVirgule = true;
-                        }
-                    }
-                }
-            }
-
-            //absence
-            if (correctText[j].Equals(',') && !currentText[i].Equals(','))
-            {
-                willStop = true;
-                //mauvaiseVirgule = true;
-            }
-            if (correctText[j].Equals('.') && !currentText[i].Equals('.'))
-            {
-                willStop = true;
-                manquePoint = true;
-            }
-            if (correctText[j].Equals('!') && !currentText[i].Equals('!'))
-            {
-                willStop = true;
-                manquePoint = true;
-            }
-            if (correctText[j].Equals('?') && !currentText[i].Equals('?'))
-            {
-                willStop = true;
-                manquePoint = true;
-            }
-
-            bool currPonct = (currentText[i].Equals(',') || currentText[i].Equals('.') || currentText[i].Equals('!') || currentText[i].Equals('?'));
-            bool corrPonct = (correctText[j].Equals(',') || correctText[j].Equals('.') || correctText[j].Equals('!') || correctText[j].Equals('?'));
-
-            if (currPonct && !corrPonct)
-            {
-                i++;
-            }
-            if (!currPonct && corrPonct)
-            {
-                j++;
-            }
-            if (currPonct && corrPonct)
-            {
-                i++;
-                j++;
-            }
-            if (!currPonct && !corrPonct)
-            {
-                i++;
-                j++;
-            }
-        }
-        // post search error check
-        if (willStop || !currentText[currentText.Length - 1].Equals(correctText[correctText.Length - 1]))
-        {
-            if ( (i == currentText.Length) && !currentText[currentText.Length - 1].Equals(correctText[correctText.Length - 1]))
-            {
-                manquePoint = true;
-            }
-
-            if (i < currentText.Length && !manquePoint) //  && !willStop ------ bruteforce, i know
-            {
-                if ((currentText[i].Equals('.') && !correctText[j].Equals('.')))
-                {
-                    pointTropTot = true;
-                }
-                if ((currentText[i].Equals('!') && !correctText[j].Equals('!')))
-                {
-                    pointTropTot = true;
-                }
-                if ((currentText[i].Equals('?') && !correctText[j].Equals('?')))
-                {
-                    pointTropTot = true;
-                }
-            }
-
-            if (vN != vNC)
-            {
-                pasAssezVirgule = (vN < vNC);
-                tropVirgule = !pasAssezVirgule;
-            }
-            else
-            {
-                if (vNBP != vNC)
-                {
-                    mauvaiseVirgule = true;
-                }
-            }
-        }
-
-        // <- here were the debug.logs of the errors
-
-        if (pointTropTot || manquePoint || tropVirgule || pasAssezVirgule || mauvaiseVirgule)
-        {
-            // il faut trouver l'indice du point sur lequel s'arrêter
-            int cCount = 0;
-
-            string t = currentText.Substring(0, i);
-            char[] a = { ',', '.', '!', '?',';',':' };
-            int l = t.Split(a).Length;
-            
-            int cIndex = i - 1 - l; // char sur lequel s'arrêter
-
-            bool found = false;
-            int k = 0;
-            while ( (!found) && (k < words.Count) )
-            {
-                cCount += words[k].Length;
-                if (cCount >= cIndex)
-                {
-                    found = true;
-                } else
-                {
-                    k++;
-                    cCount++; // espace
-                }
-            }
-            //
-            lineToStop = slots[k].GetComponent<scrSlot>().ligne;
-            posToStop = slots[k].transform.position.x-(cursor.transform.GetComponent<RectTransform>().sizeDelta.x/4);
-
-        } else
-        {
-            lineToStop = lineNumber;
-            posToStop = slots[slots.Length-1].transform.position.x-(cursor.transform.GetComponent<RectTransform>().sizeDelta.x/4);
-        }
-        //Debug.Log("FIN DE LA VALIDATION (" + i + "/" + currentText.Length + ")");
-
-        //Debug.Log("lineToStop:"+lineToStop + " posToStop:" + posToStop);
-
-        animationLog.text = "Les clients sont en train de tester votre plat...";
-
-        movingCursor = true;
-        canTouchPonct = false;
-        cursor.transform.position = cursorStart;
-        lineCursor = 0;
-        cursor.transform.SetAsLastSibling();
-        ButtonLayer.SetActive(false);
     }
-
 
     public void ShowSlots(Vector2 taillePot, string pot)
     {
-        Vector2 slot_pos = quel_pot(pot);//valeur fixe
-
-        if(dualAnim && init_anim)HideSlots(taillePot, pot);
-
-        for (int i = 0; i < slots.Length; i++)
-        {
-            if(!slots[i].GetComponentInChildren<scrSlot>().isUsed)slots[i].GetComponentInChildren<Image>().enabled = true;
-
-            slots[i].GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = taillePot;
-            slots[i].GetComponentInChildren<BoxCollider2D>().size = taillePot;
-            
-            Vector3 V3_slot = slots[i].GetComponentInChildren<RectTransform>().position;
-            slots[i].GetComponentInChildren<RectTransform>().position = new Vector3(V3_slot.x+slot_pos.x,V3_slot.y+slot_pos.y,V3_slot.z);
-            
-        }
-
-        
-    }
-
-    public void HideSlots(Vector2 taillePot, string pot)
-    {
         Vector2 slot_pos = quel_pot(pot);
-        
-        for (int i = 0; i < slots.Length; i++)
+
+        for (int i = 0; i < vrai_slots_GO.Count; i++)
         {
-            slots[i].GetComponentInChildren<Image>().enabled = false;
+            //pas afficher s'il y a déjà une ponctuation
+            if(!vrai_slots_GO[i].GetComponentInChildren<scrSlot>().isUsed)
+            {
+                vrai_slots_GO[i].GetComponentInChildren<Image>().enabled = true;
 
-            Vector3 V3_slot = slots[i].GetComponentInChildren<RectTransform>().position;
-            slots[i].GetComponentInChildren<RectTransform>().position = new Vector3(V3_slot.x-slot_pos.x,V3_slot.y-slot_pos.y,V3_slot.z);
+                if(vrai_slots_GO[i].GetComponentInChildren<scrSlot>().indice)
+                {
+                    vrai_slots_GO[i].transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+                }
+                
 
+            }else
+            {
+                vrai_slots_GO[i].transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+            }
+
+            vrai_slots_GO[i].GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = taillePot;
+            vrai_slots_GO[i].GetComponentInChildren<BoxCollider2D>().size = taillePot;
+            
+            Vector3 V3_slot = vrai_slots_GO[i].GetComponentInChildren<RectTransform>().position;
+            vrai_slots_GO[i].GetComponentInChildren<RectTransform>().position = new Vector3(V3_slot.x+slot_pos.x,V3_slot.y+slot_pos.y,V3_slot.z);
+            
         }
 
-        if(pot.Equals("init"))init_anim = false;
+        
     }
 
+    public void HideSlots()
+    {   
+        for (int i = 0; i < vrai_slots_GO.Count; i++)
+        {
 
-   
+            vrai_slots_GO[i].GetComponentInChildren<Image>().enabled = false;
+
+            if(vrai_slots_GO[i].GetComponentInChildren<scrSlot>().isUsed && vrai_slots_GO[i].GetComponentInChildren<scrSlot>().indice)
+            {
+                vrai_slots_GO[i].transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+            }
+
+            vrai_slots_GO[i].GetComponentInChildren<RectTransform>().position = vrai_slots_GO[i].GetComponent<scrSlot>().pos_origine;
+        }
+    }
+
+    public void whole_text()
+    {
+        currentText = "";
+        string text_or_GO = "";
+        for(int a=0;a<vrai_mots_GO.Count;a++)
+        {
+
+            if(vrai_mots[a].ToLower().Equals(vrai_mots_GO[a].GetComponentInChildren<TextMeshProUGUI>().text.ToLower()))
+            {
+                text_or_GO = vrai_mots_GO[a].GetComponentInChildren<TextMeshProUGUI>().text;
+            }else
+            {
+                text_or_GO = vrai_mots[a];
+            }
+
+            if(!(vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation.Equals(",") || vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation.Equals(".")))
+            {
+                text_or_GO += " ";
+            }
+            currentText +=  text_or_GO + vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation + " ";
+        }
+    }
+
+    public void texte_data()
+    {
+        if(textreussite)
+        {
+            recapContent += "\nTerminé en " + frames/60 + " secondes avec " + errorNum + " erreur(s).";
+            scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
+            System.IO.File.WriteAllText(fullFolderName + "/Niveau"+globalScript.levelNum+".txt", recapContent);
+
+        }else
+        {
+            whole_text();
+            recapContent += currentText + "\n";
+            recapContent += "\n----------------------------------------------\n";
+            errorNum++;
+
+        }
+    }
 
     public void GoToMap() {
         SceneManager.LoadScene("MapScene");
@@ -940,11 +1010,6 @@ public class scrTextManager : MonoBehaviour
 
     public void AnimationFondu()
     {
-        //raccourci variable
-        point_reussite = !pointTropTot && !manquePoint;
-        virgule_reussite = !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule;
-        textreussite = point_reussite && virgule_reussite;
-
         //affichage premier plan
         fondu.transform.SetAsLastSibling();
         
@@ -976,6 +1041,7 @@ public class scrTextManager : MonoBehaviour
         cursor.GetComponent<Animator>().SetBool("Reussite",textreussite);
         cursor.GetComponent<Animator>().SetBool("Maigre",pointTropTot);
         cursor.GetComponent<Animator>().SetBool("Gros",manquePoint);
+        cursor.GetComponent<Animator>().SetBool("Mauvaise",mauvaisPoint);
         
         //delai avant passage en fond et suite de l'animation des clients
         if(!point_reussite && virgule_reussite){
@@ -1001,6 +1067,7 @@ public class scrTextManager : MonoBehaviour
         client_virgule.GetComponent<Animator>().SetBool("Feu",tropVirgule);
         client_virgule.GetComponent<Animator>().SetBool("Berk",pasAssezVirgule);
         client_virgule.GetComponent<Animator>().SetBool("Confu",mauvaiseVirgule);
+        client_virgule.GetComponent<Animator>().SetBool("Mauvaise",pasbonneVirgule);
         client_virgule.GetComponent<Animator>().SetBool("Reussite",textreussite);
 
         
@@ -1018,6 +1085,7 @@ public class scrTextManager : MonoBehaviour
     {   
         cursor.GetComponent<Animator>().SetBool("Maigre",false);
         cursor.GetComponent<Animator>().SetBool("Gros",false);
+        cursor.GetComponent<Animator>().SetBool("Mauvaise",false);
         fondu.GetComponent<Animator>().SetBool("Actif",false);
 
         cursor.transform.position = cursorStart;
@@ -1025,6 +1093,7 @@ public class scrTextManager : MonoBehaviour
         //reset
         client_virgule.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0);
         client_virgule.GetComponent<RectTransform>().sizeDelta = new Vector2(478,844);
+        client_virgule.GetComponent<Image>().color = new Color(1f,1f,1f);
         client_virgule.SetActive(false);
         fondu.SetActive(false); 
     }
@@ -1037,85 +1106,57 @@ public class scrTextManager : MonoBehaviour
 
     private Vector2 quel_pot(string pot)
     {
+        float ratio_x = Screen.width / 1920f*scaler_x;
+        float ratio_y = Screen.height / 1080f*scaler_y;
+
         if(pot == "init"){
-            return new Vector2 (0,0);
+            return new Vector2 (0*ratio_x,0*ratio_y);
+        }
+        else if(pot == "Point"){
+            return new Vector2 (-10*ratio_x,-20*ratio_y);
+        }
+        else if(pot == "Virgule"){
+            return new Vector2 (-10*ratio_x,-30*ratio_y);
         }
         else if(pot == "Deux Points"){
-            return new Vector2 (0,20);
+            return new Vector2 (0*ratio_x,-10*ratio_y);
         }
         else if(pot == "Point Virgule"){
-            return new Vector2 (-5,10);
+            return new Vector2 (0*ratio_x,-15*ratio_y);
         }
         else if(pot == "Exclamation"){
-            return new Vector2 (-5,25);
+            return new Vector2 (0*ratio_x,0*ratio_y);
         }
         else if(pot == "Interrogation"){
-            return new Vector2 (-5,25);
+            return new Vector2 (0*ratio_x,0*ratio_y);
         }
         else{
-            return new Vector2 (-5,0);
+            return new Vector2 (0*ratio_x,0*ratio_y);
         }
-    }
-
-    private Vector3 quelle_ponct(string ponct)
-    {
-        if(ponct == "Point"){
-            return new Vector3 (-5,-25,0);
-        }
-        else if(ponct == "Virgule"){
-            return new Vector3 (-5,-25,0);
-        }
-        else if(ponct == "Deux Points"){
-            return new Vector3 (0,-5,0);
-        }
-        else if(ponct == "Point Virgule"){
-            return new Vector3 (-5,-15,0);
-        }
-        else if(ponct == "Exclamation"){
-            return new Vector3 (-5,0,0);
-        }
-        else if(ponct == "Interrogation"){
-            return new Vector3 (-5,0,0);
-        }
-        else{
-            return new Vector3 (0,0,0);
-        }
-    }
-
-    public float taille_Police(int lg_text)
-    {
-        
-        float ratio = textFloor/lg_text;
-
-        if(lg_text>textFloor)
-        {
-            lineJump = lineJump*ratio;
-            spaceSize = spaceSize*ratio;
-            return ratio*taillePolice;
-        }
-        return taillePolice;
-        
     }
 
     public void init_taille_texte()
     {
         taillePolice = Screen.width*.04f;
+        scaler_x = 1;
+        scaler_y = 1;
 
         text_scaler.SetActive(true);
         text_scaler.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
     
-        lineWidth = Screen.width*.7f; //taille dispo texte
+        lineWidth = Screen.width*.80f; //taille dispo texte
 
         if(dualAnim)
         {
-            textFloor = Screen.height*.50f;
+            textFloor = Screen.height*.55f;
         }else
         {
             textFloor = Screen.height*.93f;
         }
         
+        text_sol = Screen.height*.43f;
             
-        spaceSize = 1.5f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
+        spaceSize = 1.6f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
 
         lineJump = 1.1f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
 

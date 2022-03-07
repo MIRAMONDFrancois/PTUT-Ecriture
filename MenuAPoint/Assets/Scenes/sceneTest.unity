@@ -518,7 +518,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: -1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -634,7 +634,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -772, y: 39}
+  m_AnchoredPosition: {x: -777, y: 124}
   m_SizeDelta: {x: 120, y: 175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &232467045
@@ -1043,7 +1043,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: -1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1159,7 +1159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1, y: 56}
+  m_AnchoredPosition: {x: 1, y: 139}
   m_SizeDelta: {x: 120, y: 175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &417546659
@@ -1346,7 +1346,8 @@ MonoBehaviour:
   canBeDeleted: 1
   animationObj: {fileID: 1268975000}
   text_scaler: {fileID: 1431182919}
---- !u!4 &450333189
+  scaler_x: 0
+  scaler_y: 0
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1392,7 +1393,7 @@ MonoBehaviour:
   playerName: 
   levelNum: 0
   levelunlocked: 
-  file: {fileID: 4900000, guid: fed3d83418b3d90499a1c41bfc6eb695, type: 3}
+  file: {fileID: 4900000, guid: 42825b26c90271242b9fd4aa5a171dd1, type: 3}
   isSpecial: 0
   specialFile: {fileID: 0}
   pointLimit: -1
@@ -1405,7 +1406,7 @@ MonoBehaviour:
   animTextFile: {fileID: 4900000, guid: 01aee940f6d40a1488afbb418defa685, type: 3}
   canBeMoved: 1
   canBeDeleted: 1
-  tutoChecked: 0
+  tutoChecked: 1
   nbIndices: 5
 --- !u!4 &579154066
 Transform:
@@ -1460,7 +1461,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -128, y: 50}
+  m_AnchoredPosition: {x: -147, y: 121}
   m_SizeDelta: {x: 120, y: 175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &623581001
@@ -2119,7 +2120,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: -1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2573,7 +2574,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -500, y: 38}
+  m_AnchoredPosition: {x: -519, y: 128}
   m_SizeDelta: {x: 120, y: 175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1371101054
@@ -2733,8 +2734,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000011444, y: 56.3}
-  m_SizeDelta: {x: 40.19, y: 80.44}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 40.190002, y: 80.44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1431182921
 MonoBehaviour:
@@ -2832,7 +2833,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -0.000061035156, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3168,7 +3169,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: -1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3434,7 +3435,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: -1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4135,7 +4136,7 @@ Camera:
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
+  m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!4 &1968091315
@@ -4321,7 +4322,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 37, y: -400}
+  m_AnchoredPosition: {x: 442, y: -308}
   m_SizeDelta: {x: 1455.6589, y: 93.999985}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2108866314
@@ -4497,7 +4498,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -250, y: 38}
+  m_AnchoredPosition: {x: -288, y: 130}
   m_SizeDelta: {x: 120, y: 175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2114690542
@@ -4515,7 +4516,7 @@ MonoBehaviour:
   block: {fileID: 1046700973729256850, guid: 27842e05dd9b55c428fd727c245376fb, type: 3}
   canvas: {fileID: 937505845}
   ponct: .
-  textManager: {fileID: 579154064}
+  textManager: {fileID: 450333187}
 --- !u!114 &2114690543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4661,7 +4662,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -633, y: 40}
+  m_AnchoredPosition: {x: -638, y: 139}
   m_SizeDelta: {x: 120, y: 175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2137988382
@@ -4842,7 +4843,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: -1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

@@ -14,9 +14,17 @@ public class scrGlobal : MonoBehaviour
     [Header("Base Text File")]
     public TextAsset file;
     
-    [Header("Fixed Separators")]
+    [HideInInspector]
     public bool isSpecial;
     public TextAsset specialFile;
+
+    [Header("Position Text (en pourcentage)")]
+    public float debut_text_gauche = 10f;//10% à gauche
+    public float marge_text_droite = 10f;//10% à droite
+    public float taille_police = 4f;//1920(taille écran) * .04f = 76. -> taille avec laquelle on a conçu le jeu
+    public float debut_hauteur_dual = 60f;//ça commence en bas
+    public float debut_hauteur_normal = 97f;
+    public float hauteur_table = 43f;//.40 +.03 de marge pour les trucs chiants -> pq,
 
     [Header("Limited Generators")]
     public int pointLimit = 0;

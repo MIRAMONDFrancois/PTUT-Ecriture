@@ -14,7 +14,7 @@ public class scrCredits : MonoBehaviour
 
     public void afficheCredits()
     {
-        TextFin.text = "Benjamin, \n Brayan, \n François, \n Gabriel, \n Hugo & \n Julie. \n" +
+        TextFin.text = "Benjamin, \n Brayan, \n François, \n Gabriel, \n Hugo, \n Julie. \n" +
             "Avec le soutien de Véronique Paolacci.";
     }
 

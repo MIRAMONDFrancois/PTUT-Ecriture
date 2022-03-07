@@ -9,7 +9,7 @@ public class scrDragAndDrop : MonoBehaviour
     public string ponct;
     public bool canBeMoved = true;
     public bool canBeDeleted = true;
-    private int estsortie = 0;
+    public int estsortie = 0;
 
     [HideInInspector]
     public bool dragging;

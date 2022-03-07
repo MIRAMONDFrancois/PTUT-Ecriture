@@ -108,24 +108,6 @@ public class scrBlockGenerator : MonoBehaviour
         
     }
 
-    public void animBlock(Vector3 pos_slot)
-    {
-        obj = Instantiate(block);
-        obj.transform.SetParent(canvas.transform);
-        obj.GetComponent<scrDragAndDrop>().canBeMoved = true;
-        obj.GetComponent<scrDragAndDrop>().canBeDeleted = true;
-        obj.GetComponent<scrDragAndDrop>().willSnap = true;
-
-        obj.GetComponent<scrDragAndDrop>().StartDragUI();
-        
-        obj.transform.position = pos_slot;
-        
-        obj.GetComponent<scrDragAndDrop>().StopDragUI();
-        
-
-        affichage(-1);
-    }
-
     public void demarrageBlock(GameObject slot)
     {
         obj = Instantiate(block);
@@ -137,23 +119,12 @@ public class scrBlockGenerator : MonoBehaviour
         
         obj.GetComponent<scrDragAndDrop>().StartDragUI();
         obj.GetComponent<scrDragAndDrop>().snapPos = slot.GetComponent<Collider2D>().transform.position;
+        obj.GetComponent<scrDragAndDrop>().estsortie = 1;
         obj.GetComponent<scrDragAndDrop>().StopDragUI();
 
         
 
         affichage(-1);
-    }
-
-    public GameObject CreatesBlockForManager() //brute as heck
-    {
-        obj = Instantiate(block);
-        obj.transform.SetParent(canvas.transform);
-        obj.GetComponent<scrDragAndDrop>().canBeMoved = true;
-        obj.GetComponent<scrDragAndDrop>().canBeDeleted = true;
-
-        obj.GetComponent<scrDragAndDrop>().StartDragUI();
-        
-        return obj;
     }
 
     public void DouillePointerUp()

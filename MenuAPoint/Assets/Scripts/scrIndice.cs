@@ -5,6 +5,12 @@ using UnityEngine;
 public class scrIndice : MonoBehaviour
 {
     private bool used = false;
+    public GameObject Indice;
+
+    void Start()
+    {
+        level3unlocked();
+    }
 
     public void decrementIndice()
     {
@@ -14,6 +20,15 @@ public class scrIndice : MonoBehaviour
 
             used = true;
             GameObject.Find("GameManager").GetComponent<scrTextManager>().showIndice();
+        }
+    }
+
+    public void level3unlocked()
+    {
+        if(GameObject.Find("Global").GetComponent<scrGlobal>().levelNum > 3)
+        {
+            
+            Indice.SetActive(true);
         }
     }
 }

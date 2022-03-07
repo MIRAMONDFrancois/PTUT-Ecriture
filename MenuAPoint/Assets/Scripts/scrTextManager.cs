@@ -24,15 +24,16 @@ public class scrTextManager : MonoBehaviour
     public GameObject client_virgule;
     public bool showLog;
     public Text animationLog;
-    public Sprite machin;
 
-    [Header("Custom")]
-    public bool addColors = false; // if the blocks color the words or not
+    [Header("Position Text (en pourcentage)")]
+    public float debut_text_gauche;
+    public float marge_text_droite; 
+    public float taille_police;
+    public float debut_hauteur_dual;
+    public float debut_hauteur_normal;
+    public float hauteur_table;
+    
 
-    [Header("Fixed Separators")]
-    public bool useSpecial = false;
-    public TextAsset SpecialFile;
-    private string[] sp;
 
     // Cursor
     private bool movingCursor;
@@ -68,9 +69,7 @@ public class scrTextManager : MonoBehaviour
 
     [Header("Dual Animation mode")]
     public bool dualAnim;
-    private bool init_anim;
     public TextAsset CorrectFile;
-    private bool hideGen; // may be irrelevant, like useSpecial and others
     public bool canBeMoved;
     public bool canBeDeleted;
     public GameObject animationObj;
@@ -129,8 +128,6 @@ public class scrTextManager : MonoBehaviour
 
         TextFile = globalScript.file;
         CorrectFile = globalScript.animTextFile;
-        useSpecial = globalScript.isSpecial;
-        SpecialFile = globalScript.specialFile;
         dualAnim = globalScript.nivAntiOubli;
         pointLimit = globalScript.pointLimit;
         virguleLimit = globalScript.virguleLimit;
@@ -139,20 +136,19 @@ public class scrTextManager : MonoBehaviour
         deuxpointsLimit = globalScript.deuxpointsLimit;
         pointvirguleLimit = globalScript.pointvirguleLimit;
 
+        debut_text_gauche = globalScript.debut_text_gauche/100f;
+        marge_text_droite = globalScript.marge_text_droite/100f;
+        taille_police = globalScript.taille_police/100f;
+        debut_hauteur_dual = globalScript.debut_hauteur_dual/100f;
+        debut_hauteur_normal = globalScript.debut_hauteur_normal/100f;
+        hauteur_table = globalScript.hauteur_table/100f;
 
-        init_taille_texte();
-
-        cursorStart = new Vector3(Screen.width*.05f,textFloor,0);//Screen.width*.05f -> 10%-5%
-        cursor.transform.position = cursorStart;
-        cursor.gameObject.SetActive(!dualAnim);
-
-        init_anim = dualAnim;
-        
+        init_taille_texte(); 
 
         canTouchPonct = true;
-
         s = new List<string>();
         words = new List<string>();        
+        cursor.gameObject.SetActive(!dualAnim);
 
         if(dualAnim)
         {
@@ -160,8 +156,10 @@ public class scrTextManager : MonoBehaviour
         }else
         {
             CutsWordsDual(TextFile);
-            
+            cursorStart = new Vector3(Screen.width*debut_text_gauche-cursor.GetComponent<RectTransform>().sizeDelta.x/2,textFloor,0);
+            cursor.transform.position = cursorStart;
         }
+        
         
 
         // creates separators list
@@ -223,9 +221,9 @@ public class scrTextManager : MonoBehaviour
             
             Vector3 trans = cursor.transform.position;
             trans.x += cursorSpeed;
-            //OK
-            if ( trans.x > lineWidth+(lineWidth*.15f) )
-            {
+
+            if ( trans.x > Screen.width*(1f-marge_text_droite))
+            {   
                 trans.x = cursorStart.x;
                 trans.y -= lineJump;
                 lineCursor++;
@@ -557,13 +555,13 @@ public class scrTextManager : MonoBehaviour
             
             alaligne = vrai_mots[i][0].Equals('\n');
 
-            if (total_width + pw > lineWidth || alaligne)
+            if (total_width + pw + spaceSize > lineWidth || alaligne)
             {
                 if(alaligne)
                 {
                     wordObj.GetComponentInChildren<TextMeshProUGUI>().text =  vrai_mots[i].Substring(1, vrai_mots[i].Length - 1);
                 }
-
+                Debug.Log("total "+total_width +"pw "+pw + "line "+lineWidth);
                 total_width = 0f;
                 total_height -= lineJump;
                 
@@ -574,9 +572,9 @@ public class scrTextManager : MonoBehaviour
             
 
             total_width+=pw/2;
-            wordObj.transform.position = new Vector3(Screen.width*.1f+total_width, textFloor + total_height, 0);//Screen.width*.1f -> 10% gauche
+            wordObj.transform.position = new Vector3(Screen.width*debut_text_gauche+total_width, textFloor + total_height, 0);
             total_width+=spaceSize/2+pw/2;
-            slot.transform.position = new Vector3(Screen.width*.1f+total_width, textFloor + total_height, 0);
+            slot.transform.position = new Vector3(Screen.width*debut_text_gauche+total_width, textFloor + total_height, 0);
             slot.transform.GetComponent<scrSlot>().ligne=lineNumber;
             slot.transform.GetComponent<scrSlot>().INDEX=i;
             slot.transform.GetComponent<scrSlot>().pos_origine=slot.transform.position;
@@ -766,6 +764,15 @@ public class scrTextManager : MonoBehaviour
         scaler_x = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth / scale_x;
         scaler_y = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / scale_y;
 
+        if(dualAnim)
+        {
+            textFloor = Screen.height*debut_hauteur_dual - text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / 2;
+        }
+        else
+        {
+            textFloor = Screen.height*debut_hauteur_normal - text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / 2;
+        }
+        
         spaceSize = 1.8f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
         lineJump = 1.2f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
 
@@ -794,9 +801,9 @@ public class scrTextManager : MonoBehaviour
             }
 
             total_width+=pw/2;
-            vrai_mots_GO[a].transform.position = new Vector3(Screen.width*.1f+total_width, textFloor + total_height, 0);//Screen.width*.1f -> 10% gauche
+            vrai_mots_GO[a].transform.position = new Vector3(Screen.width*debut_text_gauche+total_width, textFloor + total_height, 0);
             total_width+=spaceSize/2+pw/2;
-            vrai_slots_GO[a].transform.position = new Vector3(Screen.width*.1f+total_width, textFloor + total_height, 0);
+            vrai_slots_GO[a].transform.position = new Vector3(Screen.width*debut_text_gauche+total_width, textFloor + total_height, 0);
             vrai_slots_GO[a].transform.GetComponent<scrSlot>().ligne=lineNumber;
             vrai_slots_GO[a].transform.GetComponent<scrSlot>().pos_origine=vrai_slots_GO[a].transform.position;
             total_width+=spaceSize/2;
@@ -1137,28 +1144,30 @@ public class scrTextManager : MonoBehaviour
 
     public void init_taille_texte()
     {
-        taillePolice = Screen.width*.04f;
+        taillePolice = Screen.width*taille_police;
         scaler_x = 1;
         scaler_y = 1;
 
         text_scaler.SetActive(true);
         text_scaler.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
     
-        lineWidth = Screen.width*.80f; //taille dispo texte
+        lineWidth = Screen.width*(1f-debut_text_gauche-marge_text_droite);
 
         if(dualAnim)
         {
-            textFloor = Screen.height*.55f;
+            textFloor = Screen.height*debut_hauteur_dual - text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / 2;
         }else
         {
-            textFloor = Screen.height*.93f;
+            textFloor = Screen.height*debut_hauteur_normal - text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / 2;
         }
         
-        text_sol = Screen.height*.43f;
+        text_sol = Screen.height*hauteur_table;
             
         spaceSize = 1.6f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
 
         lineJump = 1.1f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
+
+        
 
         text_scaler.SetActive(false);
     }

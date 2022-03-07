@@ -1327,6 +1327,11 @@ MonoBehaviour:
   showLog: 1
   animationLog: {fileID: 2065556285}
   debut_text_gauche: 0.1
+  marge_text_droite: 0
+  taille_police: 0
+  debut_hauteur_dual: 0
+  debut_hauteur_normal: 0
+  hauteur_table: 0
   canTouchPonct: 0
   slots: []
   separators: []
@@ -1391,9 +1396,15 @@ MonoBehaviour:
   playerName: 
   levelNum: 0
   levelunlocked: 
-  file: {fileID: 4900000, guid: fed3d83418b3d90499a1c41bfc6eb695, type: 3}
+  file: {fileID: 4900000, guid: b3307c36e54e1cd419403a75fe92816e, type: 3}
   isSpecial: 0
   specialFile: {fileID: 0}
+  debut_text_gauche: 10
+  marge_text_droite: 10
+  taille_police: 4
+  debut_hauteur_dual: 60
+  debut_hauteur_normal: 97
+  hauteur_table: 43
   pointLimit: -1
   virguleLimit: -1
   exclamationLimit: -1

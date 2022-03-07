@@ -89,6 +89,7 @@ public class scrTextManager : MonoBehaviour
     //list mots et ponctuations
     private List<string> vrai_nomspropres = new List<string>();//a mettre dans le globale //du détail pour vérifier nom
     private List<string> vrai_separators;//pour la vérification
+    private List<List<string>> liste_separators;
     private List<string> vrai_mots;//pour écrire
     private List<string> vrai_slot;//pour vérification
     //liste gameobject
@@ -325,6 +326,11 @@ public class scrTextManager : MonoBehaviour
         bool v_skip = false;
         bool v_tiret = false;
         bool toLower = false;
+        //condition autre possibilité pour le texte
+        bool cond1 = false;
+        bool cond2 = false;
+        bool cond3 = false;
+        bool cond4 = false;
 
         for (int i = 0; i < TF.text.Length; i++)
         {
@@ -366,12 +372,43 @@ public class scrTextManager : MonoBehaviour
                 case '-'://lettre_tiret_lettre ou tiret_espace_lettre
                     v_mots += "-";
                     v_tiret = true;
+                    cond1 = false;
                     break;
                 case '\n'://ponct_retourligne
                     //vrai_mots[vrai_mots.Count-1]+="\n";
                     v_skip = false;
                     v_mots="\n";
+                    cond1 = true;
+                    if(cond3)
+                    {
+                        v_skip = true;
+                        cond3=false;
+                        cond4=true;
+                    }
                     break;
+                case '/':
+                    if(cond1){
+                        cond1 = false;
+                        cond2 = true;
+                        break;
+                    }
+                    if(cond2)
+                    {
+                        cond2 = false;
+                        cond3 = true;
+                        break;
+                    }
+                    //lettre
+                    Debug.Log("coucou");
+                    v_mots += TF.text[i];
+
+                    if(toLower)
+                    {
+                        v_mots = v_mots.ToLower();
+                        toLower = false;
+                    }
+                    v_tiret = false;
+                break;
                 case ' '://espace_ponct_espace ou lettre_espace ou ponct_espace
                     
                     if(v_tiret)
@@ -393,6 +430,7 @@ public class scrTextManager : MonoBehaviour
                     
                     break;
                 default://lettre
+                    cond1 = false;
                     v_mots += TF.text[i];
 
                     if(toLower)
@@ -403,6 +441,7 @@ public class scrTextManager : MonoBehaviour
                     v_tiret = false;
                     break;
             }
+            if(cond4)break;
         }
         if(!v_skip)
         {
@@ -419,6 +458,110 @@ public class scrTextManager : MonoBehaviour
                 if(verif_mot.Equals(verif_nom))vrai_mots[a] = verif_mot.Substring(0, 1).ToUpper() + verif_mot.Substring(1, verif_mot.Length - 1);
             }
         }
+
+        autre_solution(TF);
+    }
+
+    private void autre_solution(TextAsset TF)
+    {
+        List<string> liste_ponct = new List<string>();
+        liste_separators = new List<List<string>>();
+
+        bool v_skip = false;
+        bool v_tiret = false;
+        //autre solution
+        bool cond1 = false;
+        bool cond2 = false;
+        bool cond3 = false;
+        bool cond4 = false;
+
+        //recherche ponct à mettre de base
+        for(int a=0;a<TF.text.Length;a++)
+        {
+            switch(TF.text[a])
+            {
+                case '.':
+                    liste_ponct.Add(".");
+                    v_skip = true;
+                break;
+                case '!':
+                    liste_ponct[liste_ponct.Count-1]="!";
+                    v_skip = true;
+                break;
+                case '?':
+                    liste_ponct[liste_ponct.Count-1]="?";
+                    v_skip = true;
+                break;
+                case ',':
+                    liste_ponct.Add(",");
+                    v_skip = true;
+                break;
+                case ';':
+                    liste_ponct[liste_ponct.Count-1]=";";
+                    v_skip = true;
+                break;
+                case ':':
+                    liste_ponct[liste_ponct.Count-1]=":";
+                    v_skip = true;
+                break;
+                case '-':
+                    v_tiret = true;
+                    cond1 = false;
+                break;
+                case '\n':
+                    v_skip = false;
+                    cond1 = true;
+                    if(cond3)
+                    {
+                        v_skip = true;
+                        cond3 = false;
+                        cond4=true;
+                    }
+                break;
+                case '/':
+                    if(cond1){
+                        cond1 = false;
+                        cond2 = true;
+                        break;
+                    }
+                    if(cond2)
+                    {
+                        cond2 = false;
+                        cond3 = true;
+                        break;
+                    }
+                    v_tiret = false;
+                break;
+                case ' ':
+                    if(v_tiret)
+                    {
+                        v_tiret = false;
+                    }
+                    else if(v_skip)
+                    {
+                        v_skip=false;
+                    }
+                    else
+                    {
+                        liste_ponct.Add("");
+                    }
+                break;
+                default:
+                    v_tiret = false;
+                break;
+
+            }
+            if(cond4)
+            {
+                liste_separators.Add(liste_ponct);
+                liste_ponct = new List<string>();
+
+                v_skip = false;
+                v_tiret = false;
+                cond4 = false;
+            }
+        }
+        liste_separators.Add(liste_ponct);
     }
 
     private void depart_block(TextAsset TF)//Switch Land
@@ -484,7 +627,6 @@ public class scrTextManager : MonoBehaviour
             }
         }
 
-        Vector3 correctif = new Vector3(0,0,0);
         for(int a=0;a<liste_ponct.Count;a++)
         {
             switch(liste_ponct[a])
@@ -561,7 +703,6 @@ public class scrTextManager : MonoBehaviour
                 {
                     wordObj.GetComponentInChildren<TextMeshProUGUI>().text =  vrai_mots[i].Substring(1, vrai_mots[i].Length - 1);
                 }
-                Debug.Log("total "+total_width +"pw "+pw + "line "+lineWidth);
                 total_width = 0f;
                 total_height -= lineJump;
                 
@@ -614,6 +755,32 @@ public class scrTextManager : MonoBehaviour
         mauvaiseVirgule = false;
         pasbonneVirgule = false;
 
+        //verification
+        List<bool> autre_reussite = new List<bool>();//liste flag
+
+        
+        for(int a=0;a<liste_separators.Count;a++)
+        {
+            bool reussite = true;//flag
+
+            for(int b=0;b<liste_separators[a].Count;b++)
+            {
+                if(!vrai_slots_GO[b].GetComponent<scrSlot>().ponctuation.Equals(liste_separators[a][b]))reussite=false;
+            }
+            
+            autre_reussite.Add(reussite);
+        }
+
+        for(int a=0;a<autre_reussite.Count;a++)
+        {
+            if(autre_reussite[a])textreussite=true;
+        }
+
+        if(textreussite)
+        {
+            deplacement_cursor(vrai_slots_GO.Count-1);
+            return;
+        }
         //boucle de vérification
         for(int a=0;a<vrai_separators.Count;a++)
         {
@@ -717,20 +884,16 @@ public class scrTextManager : MonoBehaviour
 
             pasAssezVirgule = nb_midponct_joueur < nb_midponct_verif;
             tropVirgule = nb_midponct_joueur > nb_midponct_verif;
-
-            if(slot_joueur!=slot_verif)flag_debug=false;
         }
 
         deplacement_cursor(vrai_slots_GO.Count-1);
-
-        Debug.Log("Niveau : "+flag_debug);
     }
 
     private void deplacement_cursor(int pos)
     {
         point_reussite = !pointTropTot && !manquePoint && !mauvaisPoint;
         virgule_reussite = !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule && !pasbonneVirgule;
-        textreussite = point_reussite && virgule_reussite;
+        textreussite = (point_reussite && virgule_reussite) || textreussite;
 
         animationLog.text = "Les clients sont en train de tester votre plat...";
 
@@ -886,12 +1049,25 @@ public class scrTextManager : MonoBehaviour
 
     public void ValiderDual() {
 
-        bool dual_reussite = true;//flag
+        bool dual_reussite = false;
+        List<bool> autre_reussite = new List<bool>();//liste flag
+
         //verification
-        for(int a=0;a<vrai_slots_GO.Count;a++)
+        for(int a=0;a<liste_separators.Count;a++)
         {
-            Debug.Log(vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation);
-            if(!vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation.Equals(vrai_separators[a]))dual_reussite=false;
+            bool reussite = true;//flag
+
+            for(int b=0;b<liste_separators[a].Count;b++)
+            {
+                if(!vrai_slots_GO[b].GetComponent<scrSlot>().ponctuation.Equals(liste_separators[a][b]))reussite=false;
+            }
+            
+            autre_reussite.Add(reussite);
+        }
+
+        for(int a=0;a<autre_reussite.Count;a++)
+        {
+            if(autre_reussite[a])dual_reussite=true;
         }
 
         animationObj.GetComponent<Animator>().SetBool("Validation",true);

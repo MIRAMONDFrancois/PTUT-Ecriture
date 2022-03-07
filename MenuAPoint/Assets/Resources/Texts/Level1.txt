@@ -1,1 +1,3 @@
 Tokki attrapa la casserole. Elle la remplit d’eau et l’utilisa pour faire cuire du riz.
+//
+Tokki attrapa la casserole elle la remplit d’eau. Et l’utilisa pour faire cuire du riz.

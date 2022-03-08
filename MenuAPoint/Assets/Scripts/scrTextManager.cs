@@ -79,12 +79,16 @@ public class scrTextManager : MonoBehaviour
     public GameObject text_scaler;
     public float scaler_x;//pour affichage slot
     public float scaler_y;//pour affichage slot
+    private float size_init_x;//pour affichage slot
+    private float size_init_y;//pour affichage slot
     private float lineWidth;
     private float textFloor;
     private float spaceSize;
     private float lineJump;
     private float taillePolice;
     private float text_sol;
+    
+
 
     //list mots et ponctuations
     private List<string> vrai_nomspropres = new List<string>();//a mettre dans le globale //du détail pour vérifier nom
@@ -157,8 +161,6 @@ public class scrTextManager : MonoBehaviour
         }else
         {
             CutsWordsDual(TextFile);
-            cursorStart = new Vector3(Screen.width*debut_text_gauche-cursor.GetComponent<RectTransform>().sizeDelta.x/2,textFloor,0);
-            cursor.transform.position = cursorStart;
         }
         
         
@@ -170,17 +172,16 @@ public class scrTextManager : MonoBehaviour
         slots = new GameObject[words.Count];
         
         placesWords();
-        if(dualAnim)
-        {
-            depart_block(TextFile);
-        }
 
         if (!dualAnim) {
 
             animationLog.gameObject.SetActive(showLog);
             animationLog.text = "Les clients ont hâte de manger votre plat !";
+            cursorStart = new Vector3(Screen.width*debut_text_gauche-cursor.GetComponent<RectTransform>().sizeDelta.x/2,textFloor,0);
+            cursor.transform.position = cursorStart;
 
         } else {
+            depart_block(TextFile);
             animationObj.gameObject.SetActive(true);
             animationObj.GetComponent<Animator>().SetInteger("Niveau",globalScript.levelNum);
             animationLog.gameObject.SetActive(false);
@@ -223,21 +224,14 @@ public class scrTextManager : MonoBehaviour
             Vector3 trans = cursor.transform.position;
             trans.x += cursorSpeed;
 
-            if ( trans.x > Screen.width*(1f-marge_text_droite))
-            {   
-                trans.x = cursorStart.x;
-                trans.y -= lineJump;
-                lineCursor++;
-            }
-
             if (lineCursor >= lineToStop)
             {
                 // last line
                 if (trans.x > posToStop)
                 {
+                    Debug.Log("tran.x "+ trans.x + " postostop" + posToStop );
                     // play animations
                     movingCursor = false;
-                    
                     //prhase correcte
                     if (textreussite)
                     {
@@ -304,7 +298,14 @@ public class scrTextManager : MonoBehaviour
                     //Début animation après fin validation
                     AnimationFondu();
                 }
+            }else if ( trans.x > Screen.width*(1f-marge_text_droite))
+            {   
+                Debug.Log("tran.x "+ trans.x +"marge droite "+Screen.width*(1f-marge_text_droite));
+                trans.x = cursorStart.x;
+                trans.y -= lineJump;
+                lineCursor++;
             }
+
             // cursor gets back to original position
             cursor.transform.position = trans;
 
@@ -313,7 +314,7 @@ public class scrTextManager : MonoBehaviour
             frames++;
         }
         //anim curseur miam
-        cursor.GetComponent<Animator>().SetBool("Validation",movingCursor);
+        cursor.GetComponentInChildren<Animator>().SetBool("Validation",movingCursor);
     }
 
      private void CutsWordsDual(TextAsset TF)
@@ -697,7 +698,7 @@ public class scrTextManager : MonoBehaviour
             
             alaligne = vrai_mots[i][0].Equals('\n');
 
-            if (total_width + pw + spaceSize > lineWidth || alaligne)
+            if (total_width + pw > lineWidth || alaligne)
             {
                 if(alaligne)
                 {
@@ -736,6 +737,9 @@ public class scrTextManager : MonoBehaviour
         {
             replaceWords();
         }
+
+        //Taille Curseur
+        GameObject.Find("Curseur").GetComponent<CurseurScript>().change_taille();
     }
 
     public void vrai_valider()
@@ -912,7 +916,7 @@ public class scrTextManager : MonoBehaviour
     public void replaceWords()
     {
         //globale
-        taillePolice -= 5;
+        taillePolice -= .1f;
         lineNumber = 0;
         //fonction
         bool alaligne = false;
@@ -920,12 +924,9 @@ public class scrTextManager : MonoBehaviour
         float total_height = 0;
 
         text_scaler.SetActive(true);
-
-        float scale_x = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
-        float scale_y = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
         text_scaler.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
-        scaler_x = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth / scale_x;
-        scaler_y = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / scale_y;
+        scaler_x = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth / size_init_x;
+        scaler_y = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / size_init_y;
 
         if(dualAnim)
         {
@@ -936,8 +937,8 @@ public class scrTextManager : MonoBehaviour
             textFloor = Screen.height*debut_hauteur_normal - text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / 2;
         }
         
-        spaceSize = 1.8f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
-        lineJump = 1.2f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
+        spaceSize = 1.6f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
+        lineJump = 1.1f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
 
         text_scaler.SetActive(false);
 
@@ -1221,10 +1222,10 @@ public class scrTextManager : MonoBehaviour
     {
         cursor.transform.SetAsLastSibling();
 
-        cursor.GetComponent<Animator>().SetBool("Reussite",textreussite);
-        cursor.GetComponent<Animator>().SetBool("Maigre",pointTropTot);
-        cursor.GetComponent<Animator>().SetBool("Gros",manquePoint);
-        cursor.GetComponent<Animator>().SetBool("Mauvaise",mauvaisPoint);
+        cursor.GetComponentInChildren<Animator>().SetBool("Reussite",textreussite);
+        cursor.GetComponentInChildren<Animator>().SetBool("Maigre",pointTropTot);
+        cursor.GetComponentInChildren<Animator>().SetBool("Gros",manquePoint);
+        cursor.GetComponentInChildren<Animator>().SetBool("Mauvaise",mauvaisPoint);
         
         //delai avant passage en fond et suite de l'animation des clients
         if(!point_reussite && virgule_reussite){
@@ -1266,10 +1267,10 @@ public class scrTextManager : MonoBehaviour
 
     public void fin_animation()
     {   
-        cursor.GetComponent<Animator>().SetBool("Maigre",false);
-        cursor.GetComponent<Animator>().SetBool("Gros",false);
-        cursor.GetComponent<Animator>().SetBool("Mauvaise",false);
-        fondu.GetComponent<Animator>().SetBool("Actif",false);
+        cursor.GetComponentInChildren<Animator>().SetBool("Maigre",false);
+        cursor.GetComponentInChildren<Animator>().SetBool("Gros",false);
+        cursor.GetComponentInChildren<Animator>().SetBool("Mauvaise",false);
+        fondu.GetComponentInChildren<Animator>().SetBool("Actif",false);
 
         cursor.transform.position = cursorStart;
         
@@ -1326,6 +1327,8 @@ public class scrTextManager : MonoBehaviour
 
         text_scaler.SetActive(true);
         text_scaler.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
+        size_init_x = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
+        size_init_y = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
     
         lineWidth = Screen.width*(1f-debut_text_gauche-marge_text_droite);
 

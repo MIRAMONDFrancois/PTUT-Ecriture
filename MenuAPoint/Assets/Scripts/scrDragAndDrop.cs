@@ -25,8 +25,8 @@ public class scrDragAndDrop : MonoBehaviour
     public Collider2D prevcol;
     [HideInInspector]
     public float offset = 0;
-    public float offset_x;
-    public float offset_y;
+    public float offset_x = 0;
+    public float offset_y = 0;
 
     public GameObject textManager;
 
@@ -42,16 +42,13 @@ public class scrDragAndDrop : MonoBehaviour
         float scale_x = textManager.GetComponent<scrTextManager>().scaler_x;
         float scale_y = textManager.GetComponent<scrTextManager>().scaler_y;
 
-        Vector2 tailleponct = this.GetComponent<RectTransform>().sizeDelta;//taille origine * ratio
+        Vector2 tailleponct = this.GetComponent<RectTransform>().sizeDelta;//taille origine
 
         float potx = tailleponct[0]*Screen.width/1920*scale_x;
         float poty = tailleponct[1]*Screen.height/1080*scale_y;
 
         this.GetComponent<RectTransform>().sizeDelta=new Vector2(potx,poty);
         this.GetComponent<BoxCollider2D>().size=new Vector2(potx,poty);
-
-        offset_x = offset*Screen.width/1920;
-        offset_y = offset*Screen.height/1080;
     }
 
     private void Update()//pour suivre le déplacement de la souris

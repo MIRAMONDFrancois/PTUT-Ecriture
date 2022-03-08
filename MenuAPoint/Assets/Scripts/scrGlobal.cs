@@ -24,7 +24,7 @@ public class scrGlobal : MonoBehaviour
     public float taille_police = 4f;//1920(taille écran) * .04f = 76. -> taille avec laquelle on a conçu le jeu
     public float debut_hauteur_dual = 60f;//ça commence en bas
     public float debut_hauteur_normal = 97f;
-    public float hauteur_table = 43f;//.40 +.03 de marge pour les trucs chiants -> pq,
+    public float hauteur_table = 46f;//.43 +.03 de marge pour les trucs chiants -> pq, dépassement pot
 
     [Header("Limited Generators")]
     public int pointLimit = 0;

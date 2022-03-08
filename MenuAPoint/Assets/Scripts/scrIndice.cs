@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class scrIndice : MonoBehaviour
 {
-    private bool used = false;
+    private bool isTargeted = false;
+    private float normalScale = 1f;
+    private float upScale = 1.2f;
+    private float speedScale = 0.03f;
+
+    public bool used = false;
     public GameObject Indice;
 
     void Start()
@@ -30,5 +35,29 @@ public class scrIndice : MonoBehaviour
             
             Indice.SetActive(true);
         }
+    }
+
+    void FixedUpdate()
+    {
+        if(!used)
+        {
+            if (isTargeted && (transform.localScale.x < upScale)) {
+            Vector3 newTrans = gameObject.transform.localScale;
+            newTrans.x += speedScale;
+            newTrans.y += speedScale;
+            gameObject.transform.localScale = newTrans;
+            } 
+        }
+        if (!isTargeted && (transform.localScale.x > normalScale)){
+            Vector3 newTrans = gameObject.transform.localScale;
+            newTrans.x -= speedScale;
+            newTrans.y -= speedScale;
+            gameObject.transform.localScale = newTrans;
+        }
+        
+    }
+
+    public void SetTargeted(bool value) {
+        isTargeted = value;   
     }
 }

@@ -171,22 +171,16 @@ public class scrDragAndDrop : MonoBehaviour
         {
             case ".":
                 return "Point Gen";
-            break;
             case "!":
                 return "Exclamation Gen";
-            break;
             case "?":
                 return "Interrogation Gen";
-            break;
             case ",":
                 return "Virgule Gen";
-            break;
             case ":":
                 return "Deux Points Gen";
-            break;
             case ";":
                 return "Point Virgule Gen";
-            break;
             default:
             break;
         }

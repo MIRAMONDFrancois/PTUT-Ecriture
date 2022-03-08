@@ -172,7 +172,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 3.82}
-  m_SizeDelta: {x: 30, y: 57}
+  m_SizeDelta: {x: 37.307693, y: 45.846153}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4971209572702680372
 CanvasRenderer:
@@ -195,14 +195,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5647059, g: 0.82745105, b: 0.8862746, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 9403929f48fab854990ec23aeed75d65, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -269,6 +269,7 @@ MonoBehaviour:
   ponct: ;
   canBeMoved: 1
   canBeDeleted: 1
+  estsortie: 0
   dragging: 0
   willSnap: 0
   ogPos: {x: 0, y: 0, z: 0}
@@ -276,6 +277,8 @@ MonoBehaviour:
   col: {fileID: 0}
   prevcol: {fileID: 0}
   offset: 8
+  offset_x: 0
+  offset_y: 0
   textManager: {fileID: 0}
 --- !u!61 &5312262488581225123
 BoxCollider2D:

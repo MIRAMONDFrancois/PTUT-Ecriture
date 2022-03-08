@@ -320,7 +320,7 @@ public class scrTextManager : MonoBehaviour
             {
                 tempsPassé++;
 
-                if(GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices >= 1)
+                if(GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices >= 1 && GameObject.Find("Global").GetComponent<scrGlobal>().levelNum>=3 )
                 {
                     if(tempsPassé == 60)//60 -> 1 sec
                     {

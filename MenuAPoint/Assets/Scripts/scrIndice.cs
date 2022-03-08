@@ -30,11 +30,8 @@ public class scrIndice : MonoBehaviour
 
     public void level3unlocked()
     {
-        if(GameObject.Find("Global").GetComponent<scrGlobal>().levelNum > 3)
-        {
-            
-            Indice.SetActive(true);
-        }
+        if (GameObject.Find("Global").GetComponent<scrGlobal>().levelNum <= 3)
+            Indice.SetActive(false);
     }
 
     void FixedUpdate()

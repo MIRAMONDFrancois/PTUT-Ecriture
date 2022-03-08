@@ -304,7 +304,6 @@ public class scrTextManager : MonoBehaviour
                 }
             }else if ( trans.x > Screen.width*(1f-marge_text_droite))
             {   
-                Debug.Log("tran.x "+ trans.x +"marge droite "+Screen.width*(1f-marge_text_droite));
                 trans.x = cursorStart.x;
                 trans.y -= lineJump;
                 lineCursor++;
@@ -322,17 +321,17 @@ public class scrTextManager : MonoBehaviour
                 tempsPassé++;
 
                 if(GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices >= 1)
-            {
-                if(tempsPassé == 60)//60 -> 1 sec
                 {
-                    GameObject.Find("Indice").GetComponent<scrIndice>().SetTargeted(true);
+                    if(tempsPassé == 60)//60 -> 1 sec
+                    {
+                        GameObject.Find("Indice").GetComponent<scrIndice>().SetTargeted(true);
+                    }
+                    else if(tempsPassé == 70)
+                    {
+                        GameObject.Find("Indice").GetComponent<scrIndice>().SetTargeted(false);
+                        tempsPassé = 0;
+                    }
                 }
-                else if(tempsPassé == 70)
-                {
-                    GameObject.Find("Indice").GetComponent<scrIndice>().SetTargeted(false);
-                    tempsPassé = 0;
-                }
-            }
             }
             
             
@@ -766,6 +765,7 @@ public class scrTextManager : MonoBehaviour
 
     public void vrai_valider()
     {
+        anim_joue = true;
         //var de vérification
         int nb_midponct_joueur = 0; //pour savoir si trop ou pas assez
         int nb_midponct_verif = 0;
@@ -1298,6 +1298,7 @@ public class scrTextManager : MonoBehaviour
         fondu.GetComponentInChildren<Animator>().SetBool("Actif",false);
 
         cursor.transform.position = cursorStart;
+        anim_joue = textreussite;
         
         //reset
         client_virgule.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0);

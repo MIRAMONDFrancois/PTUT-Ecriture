@@ -4,4 +4,4 @@ Le texte correct est:
 
 ----------------------------------------------
 
-Terminé en 2 secondes avec 0 erreur(s).
+Terminé en 6 secondes avec 0 erreur(s).

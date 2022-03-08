@@ -9,7 +9,7 @@ public class scrGlobal : MonoBehaviour
     public int levelNum;
 
     [Header("Unlocked Levels")]
-    public  List<bool> levelunlocked = new List<bool>();
+    public List<bool> levelunlocked = new List<bool>();
     
     [Header("Base Text File")]
     public TextAsset file;
@@ -49,7 +49,6 @@ public class scrGlobal : MonoBehaviour
         for (int i = 1; i<= 15; i++){
             levelunlocked.Add(false);
         }
-        
     }
     void Awake() {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Global");

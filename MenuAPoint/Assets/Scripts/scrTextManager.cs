@@ -74,6 +74,9 @@ public class scrTextManager : MonoBehaviour
     public bool canBeDeleted;
     public GameObject animationObj;
 
+    //indice
+    private int tempsPassé = 0;
+    private bool anim_joue = false;
 
     // Text pos
     public GameObject text_scaler;
@@ -87,8 +90,6 @@ public class scrTextManager : MonoBehaviour
     private float lineJump;
     private float taillePolice;
     private float text_sol;
-    
-
 
     //list mots et ponctuations
     private List<string> vrai_nomspropres = new List<string>();//a mettre dans le globale //du détail pour vérifier nom
@@ -177,6 +178,9 @@ public class scrTextManager : MonoBehaviour
 
             animationLog.gameObject.SetActive(showLog);
             animationLog.text = "Les clients ont hâte de manger votre plat !";
+
+            //Taille Curseur
+             GameObject.Find("Curseur").GetComponent<CurseurScript>().change_taille();
             cursorStart = new Vector3(Screen.width*debut_text_gauche-cursor.GetComponent<RectTransform>().sizeDelta.x/2,textFloor,0);
             cursor.transform.position = cursorStart;
 
@@ -312,6 +316,26 @@ public class scrTextManager : MonoBehaviour
         } else {
             // counts frames (for the timer) when the cursor isn't moving, to be fair
             frames++;
+            
+            if(!anim_joue)
+            {
+                tempsPassé++;
+
+                if(GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices >= 1)
+            {
+                if(tempsPassé == 60)//60 -> 1 sec
+                {
+                    GameObject.Find("Indice").GetComponent<scrIndice>().SetTargeted(true);
+                }
+                else if(tempsPassé == 70)
+                {
+                    GameObject.Find("Indice").GetComponent<scrIndice>().SetTargeted(false);
+                    tempsPassé = 0;
+                }
+            }
+            }
+            
+            
         }
         //anim curseur miam
         cursor.GetComponentInChildren<Animator>().SetBool("Validation",movingCursor);
@@ -738,13 +762,10 @@ public class scrTextManager : MonoBehaviour
             replaceWords();
         }
 
-        //Taille Curseur
-        GameObject.Find("Curseur").GetComponent<CurseurScript>().change_taille();
     }
 
     public void vrai_valider()
     {
-        bool flag_debug = true;
         //var de vérification
         int nb_midponct_joueur = 0; //pour savoir si trop ou pas assez
         int nb_midponct_verif = 0;
@@ -1050,6 +1071,7 @@ public class scrTextManager : MonoBehaviour
 
     public void ValiderDual() {
 
+        anim_joue = true;
         bool dual_reussite = false;
         List<bool> autre_reussite = new List<bool>();//liste flag
 
@@ -1083,8 +1105,11 @@ public class scrTextManager : MonoBehaviour
             }
 
             GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[GameObject.Find("Global").GetComponent<scrGlobal>().levelNum] = true;
+        }else
+        {
+            Invoke("dual_anim_reset",1f);
         }
-        Invoke("dual_anim_reset",1f);
+        
     }
 
     public void showIndice()
@@ -1286,6 +1311,7 @@ public class scrTextManager : MonoBehaviour
     {
         animationObj.GetComponent<Animator>().SetBool("Validation",false);
         animationObj.GetComponent<Animator>().SetBool("Reussite",false);
+        anim_joue = false;
     }
 
     private Vector2 quel_pot(string pot)

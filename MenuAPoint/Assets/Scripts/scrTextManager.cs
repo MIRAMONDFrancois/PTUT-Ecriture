@@ -311,6 +311,10 @@ public class scrTextManager : MonoBehaviour
         } else {
             // counts frames (for the timer) when the cursor isn't moving, to be fair
             frames++;
+            if(frames == 10800)//60 -> 1sec
+            {
+                GameObject.Find("Indice").GetComponent<scrIndice>().limite = true;
+            } 
             
         }
         //anim curseur miam

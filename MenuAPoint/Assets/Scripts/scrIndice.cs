@@ -5,18 +5,21 @@ using UnityEngine.UI;
 
 public class scrIndice : MonoBehaviour
 {
-    private bool isTargeted = false;
-    private float normalScale = 1f;
-    private float upScale = 1.2f;
+    public bool used = false;
+    //private float normalScale = 1f;
+    //private float upScale = 1.2f;
     private float speedScale = 0.04f;
 
+    public bool limite = false;
     private int limiteScale = 5;//(upScale - normalScale) / speedScale -> 5 frames
     private int frames_mouse_over = 0;
-
-    public bool used = false;
-    public bool limite = false;
     private int change = 1;
+
     private int frames = 0;
+    
+    
+
+    
     
 
     
@@ -233,7 +236,7 @@ public class scrIndice : MonoBehaviour
                 Indice5.transform.localScale = new Vector2(Indice5.transform.localScale.x-speedScale,Indice5.transform.localScale.y-speedScale);
             break;
             case 15:
-                frames = -60;
+                frames = -300;//60 -> 1sec
             break;
 
         }

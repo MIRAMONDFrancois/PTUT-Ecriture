@@ -17,12 +17,6 @@ public class scrIndice : MonoBehaviour
 
     private int frames = 0;
     
-    
-
-    
-    
-
-    
     public GameObject Indice;
     public GameObject Indice1;
     public GameObject Indice2;

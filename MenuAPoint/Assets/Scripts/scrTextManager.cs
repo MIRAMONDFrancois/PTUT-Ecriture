@@ -229,7 +229,6 @@ public class scrTextManager : MonoBehaviour
                 // last line
                 if (trans.x > posToStop)
                 {
-                    Debug.Log("tran.x "+ trans.x + " postostop" + posToStop );
                     // play animations
                     movingCursor = false;
                     //prhase correcte
@@ -1045,8 +1044,8 @@ public class scrTextManager : MonoBehaviour
 
     public void ValiderClick()
     {
-        if (!dualAnim) vrai_valider();
-        else ValiderDual();
+        if (!dualAnim)vrai_valider();
+        else Invoke("ValiderDual",.2f);
     }
 
     public void ValiderDual() {

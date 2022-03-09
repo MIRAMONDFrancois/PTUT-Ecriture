@@ -70,7 +70,7 @@ public class scrDragAndDrop : MonoBehaviour
             if (!dragging) dragging = true;
             // might help for "depth" collision
             transform.SetAsLastSibling();
-
+            
             if (col != null)
             {
                 col.GetComponent<scrSlot>().isUsed = false;
@@ -82,7 +82,6 @@ public class scrDragAndDrop : MonoBehaviour
 
             Vector2 taillePot = this.GetComponent<RectTransform>().sizeDelta;
             textManager.GetComponent<scrTextManager>().ShowSlots(taillePot,this.tag);
-
         }
     }
 
@@ -101,6 +100,8 @@ public class scrDragAndDrop : MonoBehaviour
                 prevcol = col;
                 
                 textManager.GetComponent<scrTextManager>().majuscule(tag,col.GetComponent<scrSlot>().INDEX);
+                estsortie = 1;
+                GameObject.Find("PopSound").GetComponent<SFX_Script>().pop_block();
             } else
             {
                 // WILL NOT SNAP TO A SLOT
@@ -129,7 +130,6 @@ public class scrDragAndDrop : MonoBehaviour
             textManager.GetComponent<scrTextManager>().HideSlots();
             ogPos = snapPos; // this becomes the "last viable position"
 
-
         }
     }
 
@@ -153,7 +153,12 @@ public class scrDragAndDrop : MonoBehaviour
     {
         if (dragging && canBeMoved)
         {
-            estsortie--;
+            
+            if(collision.CompareTag("Slot") && collision.GetComponent<scrSlot>().isUsed == false)
+            {
+                estsortie--;
+            }
+
             if (collision.CompareTag("Slot") && estsortie==0)
             {
                 willSnap = false;

@@ -102,7 +102,7 @@ public class scrBlockGenerator : MonoBehaviour
             obj.GetComponent<scrDragAndDrop>().canBeDeleted = true;
 
             obj.GetComponent<scrDragAndDrop>().StartDragUI();
- 
+            
             affichage(-1);
         }
         

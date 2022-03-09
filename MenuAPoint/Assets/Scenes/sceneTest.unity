@@ -555,6 +555,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   Indice: {fileID: 151188498}
+  Indice1: {fileID: 1111081794}
+  Indice2: {fileID: 1472259049}
+  Indice3: {fileID: 1880980522}
+  Indice4: {fileID: 11794309}
+  Indice5: {fileID: 1025567725}
 --- !u!1 &232300287
 GameObject:
   m_ObjectHideFlags: 0

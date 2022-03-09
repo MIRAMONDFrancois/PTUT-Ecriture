@@ -74,10 +74,6 @@ public class scrTextManager : MonoBehaviour
     public bool canBeDeleted;
     public GameObject animationObj;
 
-    //indice
-    private int tempsPassé = 0;
-    private bool anim_joue = false;
-
     // Text pos
     public GameObject text_scaler;
     public float scaler_x;//pour affichage slot
@@ -315,25 +311,6 @@ public class scrTextManager : MonoBehaviour
         } else {
             // counts frames (for the timer) when the cursor isn't moving, to be fair
             frames++;
-            
-            if(!anim_joue)
-            {
-                tempsPassé++;
-
-                if(GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices >= 1 && GameObject.Find("Global").GetComponent<scrGlobal>().levelNum>=3 )
-                {
-                    if(tempsPassé == 60)//60 -> 1 sec
-                    {
-                        GameObject.Find("Indice").GetComponent<scrIndice>().SetTargeted(true);
-                    }
-                    else if(tempsPassé == 70)
-                    {
-                        GameObject.Find("Indice").GetComponent<scrIndice>().SetTargeted(false);
-                        tempsPassé = 0;
-                    }
-                }
-            }
-            
             
         }
         //anim curseur miam
@@ -765,7 +742,6 @@ public class scrTextManager : MonoBehaviour
 
     public void vrai_valider()
     {
-        anim_joue = true;
         //var de vérification
         int nb_midponct_joueur = 0; //pour savoir si trop ou pas assez
         int nb_midponct_verif = 0;
@@ -1071,7 +1047,6 @@ public class scrTextManager : MonoBehaviour
 
     public void ValiderDual() {
 
-        anim_joue = true;
         bool dual_reussite = false;
         List<bool> autre_reussite = new List<bool>();//liste flag
 
@@ -1298,7 +1273,6 @@ public class scrTextManager : MonoBehaviour
         fondu.GetComponentInChildren<Animator>().SetBool("Actif",false);
 
         cursor.transform.position = cursorStart;
-        anim_joue = textreussite;
         
         //reset
         client_virgule.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0);
@@ -1312,7 +1286,6 @@ public class scrTextManager : MonoBehaviour
     {
         animationObj.GetComponent<Animator>().SetBool("Validation",false);
         animationObj.GetComponent<Animator>().SetBool("Reussite",false);
-        anim_joue = false;
     }
 
     private Vector2 quel_pot(string pot)

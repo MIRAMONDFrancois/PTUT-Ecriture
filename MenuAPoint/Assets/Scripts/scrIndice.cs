@@ -11,10 +11,16 @@ public class scrIndice : MonoBehaviour
 
     public bool used = false;
     public GameObject Indice;
+    public GameObject Indice1;
+    public GameObject Indice2;
+    public GameObject Indice3;
+    public GameObject Indice4;
+    public GameObject Indice5;
 
     void Start()
     {
         level3unlocked();
+        affichageIndices();
     }
 
     public void decrementIndice()
@@ -25,6 +31,44 @@ public class scrIndice : MonoBehaviour
 
             used = true;
             GameObject.Find("GameManager").GetComponent<scrTextManager>().showIndice();
+        }
+
+        affichageIndices();
+    }
+
+    public void affichageIndices()
+    {
+        switch (GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices)
+        {
+            case 0:
+                Indice1.SetActive(false);
+                Indice2.SetActive(false);
+                Indice3.SetActive(false);
+                Indice4.SetActive(false);
+                Indice5.SetActive(false);
+                break;
+            case 1:
+                Indice2.SetActive(false);
+                Indice3.SetActive(false);
+                Indice4.SetActive(false);
+                Indice5.SetActive(false);
+                break;
+            case 2:
+                Indice3.SetActive(false);
+                Indice4.SetActive(false);
+                Indice5.SetActive(false);
+                break;
+            case 3:
+                Indice4.SetActive(false);
+                Indice5.SetActive(false);
+                break;
+            case 4:
+                Indice5.SetActive(false);
+                break;
+            case 5:
+                break;
+            default:
+                throw new System.Exception("Erreur indice");
         }
     }
 

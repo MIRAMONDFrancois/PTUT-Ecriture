@@ -786,15 +786,26 @@ public class scrTextManager : MonoBehaviour
             return;
         }
         //boucle de vérification
+        bool arret_premier_point = false;
         for(int a=0;a<vrai_separators.Count;a++)
         {
             string slot_joueur = vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation;
             string slot_verif = vrai_separators[a];
 
+            if(arret_premier_point)
+            {
+                if(slot_joueur.Equals(".") || slot_joueur.Equals("?") || slot_joueur.Equals("!"))
+                {
+                    deplacement_cursor(a);
+                    return;
+                }
+            }
             
             if(!slot_joueur.Equals(slot_verif))
             {
-                //slot sans ponctuation 
+                arret_premier_point = true;
+
+                //slot sans ponctuation
                 if(slot_joueur.Equals(""))
                 {
                     //au lieu de mid ponct
@@ -864,7 +875,7 @@ public class scrTextManager : MonoBehaviour
                         pointTropTot = (true != manquePoint);
                         nb_midponct_verif++;
                     }
-                    else
+                    else// mauvais point
                     {
                         mauvaisPoint = true;
                     }
@@ -904,7 +915,6 @@ public class scrTextManager : MonoBehaviour
         lineToStop = vrai_slots_GO[pos].GetComponent<scrSlot>().ligne;
         posToStop = vrai_slots_GO[pos].transform.position.x-(cursor.transform.GetComponent<RectTransform>().sizeDelta.x/4);
         
-
         movingCursor = true;
         canTouchPonct = false;
         cursor.transform.position = cursorStart;

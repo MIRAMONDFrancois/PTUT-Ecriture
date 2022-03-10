@@ -220,7 +220,7 @@ MonoBehaviour:
   carottePrefab: {fileID: 2061966765227026314, guid: 11f15687b9c050445820c259ebeba96a,
     type: 3}
   respawnTime: 0.5
-  nb_carottes: 20
+  nb_carottes: 10
 --- !u!1 &753941999
 GameObject:
   m_ObjectHideFlags: 0

@@ -155,9 +155,11 @@ public class scrTextManager : MonoBehaviour
         if(dualAnim)
         {
             CutsWordsDual(CorrectFile);
+            GameObject.Find("Canvas").GetComponent<Image>().sprite = Resources.Load<Sprite>("background_animation");
         }else
         {
             CutsWordsDual(TextFile);
+            GameObject.Find("Canvas").GetComponent<Image>().sprite = Resources.Load<Sprite>("background03");
         }
         
         

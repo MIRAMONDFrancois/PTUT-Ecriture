@@ -23,8 +23,6 @@ public class CarotteBehavour : MonoBehaviour
     //Ombre
     public float ombre_x;
     public float ombre_y;
-
-    public List<Component> components;
     
 
     void Start()
@@ -241,7 +239,7 @@ public class CarotteBehavour : MonoBehaviour
         if(deltaRotation == 0)
         {
             decalage = sensCarotte/2;
-            speed = speed *1.5f;
+            speed = speed * 1.5f;
         }
 
         rb.velocity = new Vector2(decalage*50,-speed*50);
@@ -249,138 +247,130 @@ public class CarotteBehavour : MonoBehaviour
 
     private void ombre_init()
     {
+        ombre_x = 50f;
+        ombre_y = -20f;
+
         switch(attribut)
         {
             case "minuscule":
-                ombre_x = 25;
-                ombre_y = 25;
+                ombre_x = ombre_x/2f;
+                ombre_y = ombre_y/2f;
             break;
             case "petit":
-                ombre_x = 50;
-                ombre_y = 50;
+                ombre_x = ombre_x/1.5f;
+                ombre_y = ombre_y/1.5f;
             break;
             case "normal":
-                ombre_x = 100;
-                ombre_y = 100;
             break;
             case "grand":
-                ombre_x = 150;
-                ombre_y = 150;
+                ombre_x = ombre_x*1.5f;
+                ombre_y = ombre_y*1.5f;
             break;
             case "immense":
-                ombre_x = 200;
-                ombre_y = 200;
+                ombre_x = ombre_x*2f;
+                ombre_y = ombre_y*2f;
             break;
         }
+
     }
 
     private void ombre()
     {
         
         float angle = transform.localEulerAngles.z;
-        bool x_100 = false;
-        float x = 100;
-        float y = 100f;
+
+        float x = ombre_x;
+        float y = ombre_y;
+
         float diff = 0f;
-        float x_cent = 100f/45f;
-        float y_cent = 50f/45f;
-        float x_plus = 1f;
-        float y_plus = 1f;
+
+        float x_reach = 0f;
+        float y_reach = 0f;
 
         if(angle < 45)
         {
-            x_100 = false;
-            
             diff = angle;
-            x = 100f;
-            y = 100f;
-            x_plus = 1f;
-            y_plus = -1f;
+
+            x = ombre_x;
+            y = ombre_y;
+
+            x_reach = (-ombre_y - ombre_x)/45f;
+            y_reach = (-ombre_x - ombre_y)/45f;
 
         }else if(angle < 90)
         {
-            x_100 = false;
-            x_plus = -1f;
-            y_plus = -1f;
-
             diff = angle-45f;
-            x = 150f;
-            y = 0f;
+
+            x = -ombre_y;
+            y = -ombre_x;
+
+            x_reach = (ombre_y - -ombre_y)/45f;
+            y_reach = (-ombre_x - -ombre_x)/45f;
 
         }
         else if(angle < 135)
         {
-            x_100 = true;
-            x_plus = -1f;
-            y_plus = -1f;
-
             diff = angle-90f;
-            x = 100f;
-            y = -100f;
+
+            x = ombre_y;
+            y = -ombre_x;
             
+            x_reach = (-ombre_x - ombre_y)/45f;
+            y_reach = (ombre_y - -ombre_x)/45f;
         }
         else if(angle < 180)
         {
-            x_100 = true;
-            x_plus = -1f;
-            y_plus = 1f;
-
             diff = angle-135f;
-            x = 0f;
-            y = -150f;
-            
+
+            x = -ombre_x;
+            y = ombre_y;
+
+            x_reach = (-ombre_x - -ombre_x)/45f;
+            y_reach = (-ombre_y - ombre_y)/45f;
         }
         else if(angle < 225)
         {
-            x_100 = false;
-            x_plus = -1f;
-            y_plus = 1f;
-
             diff = angle-180f;
-            x = -100f;
-            y = -100f;
 
+            x = -ombre_x;
+            y = -ombre_y;
+
+            x_reach = (ombre_y - -ombre_x)/45f;
+            y_reach = (ombre_x - -ombre_y)/45f;
         }
         else if(angle < 270)
         {
-            x_100 = false;
-            x_plus = 1f;
-            y_plus = 1f;
-
             diff = angle-225f;
-            x = -150f;
-            y = 0f;
-            
+
+            x = ombre_y;
+            y = ombre_x;
+
+            x_reach = (-ombre_y - ombre_y)/45f;
+            y_reach = (ombre_x - ombre_x)/45f;
         }
         else if(angle < 315)
         {
-            x_100 = true;
-            x_plus = 1f;
-            y_plus = 1f;
-
             diff = angle-270f;
-            x = -100f;
-            y = 100f;
+
+            x = -ombre_y;
+            y = ombre_x;
+
+            x_reach = (ombre_x - -ombre_y)/45f;
+            y_reach = (-ombre_y - ombre_x)/45f;
         }
         else if(angle < 360)
         {
-            x_100 = true;
-            x_plus = 1f;
-            y_plus = -1f;
-
             diff = angle-315f;
-            x = 0f;
-            y = 150f;
+
+            x = ombre_x;
+            y = -ombre_y;
+
+            x_reach = (ombre_x - ombre_x)/45f;
+            y_reach = (ombre_y - -ombre_y)/45f;
         }
 
-        if(!x_100)
-        {
-            x_cent = 50f/45f;
-            y_cent = 100f/45f; 
-        }
-
-        x = x + (diff * x_cent * x_plus);
-        y = y + (diff * y_cent * y_plus);
+        x = x + (diff * x_reach);
+        y = y + (diff * y_reach);
 
         
         GetComponent<Shadow>().effectDistance = new Vector2(x,y);

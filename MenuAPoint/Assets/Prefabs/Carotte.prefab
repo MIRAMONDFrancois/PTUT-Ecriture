@@ -38,7 +38,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 38.8, y: -39.7}
+  m_AnchoredPosition: {x: 90.6, y: -18.8}
   m_SizeDelta: {x: 124.4, y: 216}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2061966765227026318
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 100, y: 100}
+  m_EffectDistance: {x: -50, y: -20}
   m_UseGraphicAlpha: 1
 --- !u!50 &2061966765227026316
 Rigidbody2D:
@@ -134,8 +134,8 @@ MonoBehaviour:
   deltaRotation: 0
   speed: 10
   couleur: 0
-  x_100: 0
-  components: []
+  ombre_x: 0
+  ombre_y: 0
 --- !u!73398921 &1583286097079215767
 VFXRenderer:
   m_ObjectHideFlags: 0

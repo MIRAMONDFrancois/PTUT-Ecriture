@@ -21,7 +21,8 @@ public class CarotteBehavour : MonoBehaviour
     //Couleur
     public float couleur;
     //Ombre
-    public bool x_100;
+    public float ombre_x;
+    public float ombre_y;
 
     public List<Component> components;
     
@@ -34,6 +35,7 @@ public class CarotteBehavour : MonoBehaviour
         orientation();
         rotation();
         deplacement();
+        ombre_init();
         ombre();
         
         if(premierplan)
@@ -224,7 +226,7 @@ public class CarotteBehavour : MonoBehaviour
             case "immense":
                 speed = Random.Range(18f,20f);
             break;
-            }
+        }
 
         if(premierplan)
         {
@@ -245,11 +247,39 @@ public class CarotteBehavour : MonoBehaviour
         rb.velocity = new Vector2(decalage*50,-speed*50);
     }
 
+    private void ombre_init()
+    {
+        switch(attribut)
+        {
+            case "minuscule":
+                ombre_x = 25;
+                ombre_y = 25;
+            break;
+            case "petit":
+                ombre_x = 50;
+                ombre_y = 50;
+            break;
+            case "normal":
+                ombre_x = 100;
+                ombre_y = 100;
+            break;
+            case "grand":
+                ombre_x = 150;
+                ombre_y = 150;
+            break;
+            case "immense":
+                ombre_x = 200;
+                ombre_y = 200;
+            break;
+        }
+    }
+
     private void ombre()
     {
         
         float angle = transform.localEulerAngles.z;
-        float x = 100f;
+        bool x_100 = false;
+        float x = 100;
         float y = 100f;
         float diff = 0f;
         float x_cent = 100f/45f;

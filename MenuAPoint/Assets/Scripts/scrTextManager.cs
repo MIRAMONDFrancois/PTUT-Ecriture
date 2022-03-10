@@ -818,15 +818,6 @@ public class scrTextManager : MonoBehaviour
                     {
 
                         manquePoint = true;
-
-                        if(nb_midponct_verif>nb_midponct_joueur)
-                        {
-                            pasAssezVirgule = true;
-                        }
-                        else if(nb_midponct_verif<nb_midponct_joueur)
-                        {
-                            tropVirgule = true;
-                        }
                     }
                 }
                 //slot mid ponctuation
@@ -844,14 +835,6 @@ public class scrTextManager : MonoBehaviour
                         manquePoint = true;
                         mauvaiseVirgule = true;
                         
-                        if(nb_midponct_verif>nb_midponct_joueur)
-                        {
-                            pasAssezVirgule = true;
-                        }
-                        else if(nb_midponct_verif<nb_midponct_joueur)
-                        {
-                            tropVirgule = true;
-                        }
                     }
                     //mais mauvaise mid ponctuation
                     else
@@ -873,7 +856,6 @@ public class scrTextManager : MonoBehaviour
                     else if(slot_verif.Equals(",") || slot_verif.Equals(":") || slot_verif.Equals(";"))
                     {
                         pointTropTot = (true != manquePoint);
-                        nb_midponct_verif++;
                     }
                     else// mauvais point
                     {
@@ -881,14 +863,8 @@ public class scrTextManager : MonoBehaviour
                     }
 
                     //verification nb mid ponct
-                    if(nb_midponct_verif>nb_midponct_joueur)
-                    {
-                        pasAssezVirgule = true;
-                    }
-                    else if(nb_midponct_verif<nb_midponct_joueur)
-                    {
-                        tropVirgule = true;
-                    }
+                    pasAssezVirgule = nb_midponct_joueur < nb_midponct_verif;
+                    tropVirgule = nb_midponct_joueur > nb_midponct_verif;
 
                     
                     deplacement_cursor(a);
@@ -1055,7 +1031,7 @@ public class scrTextManager : MonoBehaviour
     public void ValiderClick()
     {
         if (!dualAnim)vrai_valider();
-        else Invoke("ValiderDual",.2f);
+        else ValiderDual();
     }
 
     public void ValiderDual() {
@@ -1235,9 +1211,11 @@ public class scrTextManager : MonoBehaviour
     {
         cursor.transform.SetAsLastSibling();
 
+
+        //ManquePoint > PointTropTot > MauvaisPoint
         cursor.GetComponentInChildren<Animator>().SetBool("Reussite",textreussite);
-        cursor.GetComponentInChildren<Animator>().SetBool("Maigre",pointTropTot);
         cursor.GetComponentInChildren<Animator>().SetBool("Gros",manquePoint);
+        cursor.GetComponentInChildren<Animator>().SetBool("Maigre",pointTropTot);
         cursor.GetComponentInChildren<Animator>().SetBool("Mauvaise",mauvaisPoint);
         
         //delai avant passage en fond et suite de l'animation des clients
@@ -1260,12 +1238,14 @@ public class scrTextManager : MonoBehaviour
 
         client_virgule.SetActive(true);       
 
+        // > MauvaiseVirgule > PasBonneVirgule
         client_virgule.GetComponent<Animator>().SetBool("Actif",true);
+        client_virgule.GetComponent<Animator>().SetBool("Reussite",textreussite);
         client_virgule.GetComponent<Animator>().SetBool("Feu",tropVirgule);
         client_virgule.GetComponent<Animator>().SetBool("Berk",pasAssezVirgule);
         client_virgule.GetComponent<Animator>().SetBool("Confu",mauvaiseVirgule);
         client_virgule.GetComponent<Animator>().SetBool("Mauvaise",pasbonneVirgule);
-        client_virgule.GetComponent<Animator>().SetBool("Reussite",textreussite);
+        
 
         
         //Invoke("fin_animation",2);

@@ -38,7 +38,7 @@ public class CarotteBehavour : MonoBehaviour
         
         if(premierplan)
         {
-            this.transform.SetParent(GameObject.Find("Canvas").transform);
+            this.transform.SetParent(GameObject.Find("DerriereMenu").transform);
         }else if(tokkiplan)
         {
             this.transform.SetParent(GameObject.Find("Tokki").transform);

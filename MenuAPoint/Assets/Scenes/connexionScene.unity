@@ -1300,9 +1300,9 @@ MonoBehaviour:
   debut_text_gauche: 10
   marge_text_droite: 10
   taille_police: 4
-  debut_hauteur_dual: 60
+  debut_hauteur_dual: 53
   debut_hauteur_normal: 97
-  hauteur_table: 46
+  hauteur_table: 36
   pointLimit: 0
   virguleLimit: 0
   exclamationLimit: 0

@@ -142,6 +142,7 @@ public class scrTextManager : MonoBehaviour
         marge_text_droite = globalScript.marge_text_droite/100f;
         taille_police = globalScript.taille_police/100f;
         debut_hauteur_dual = globalScript.debut_hauteur_dual/100f;
+        Debug.Log("coucou start");
         debut_hauteur_normal = globalScript.debut_hauteur_normal/100f;
         hauteur_table = globalScript.hauteur_table/100f;
 
@@ -919,6 +920,7 @@ public class scrTextManager : MonoBehaviour
         if(dualAnim)
         {
             textFloor = Screen.height*debut_hauteur_dual - text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / 2;
+            Debug.Log("coucou replace");
         }
         else
         {
@@ -1330,6 +1332,7 @@ public class scrTextManager : MonoBehaviour
         if(dualAnim)
         {
             textFloor = Screen.height*debut_hauteur_dual - text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / 2;
+            Debug.Log("coucou");
         }else
         {
             textFloor = Screen.height*debut_hauteur_normal - text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / 2;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class scrGlobal : MonoBehaviour
 {
@@ -44,9 +45,16 @@ public class scrGlobal : MonoBehaviour
     public bool tutoChecked;
     public int nbIndices = 5;
 
-    public void Start(){
+    public void Start()
+    {
         setLevelUnlocked();
+
+        //Creation du Dossier RESULTATS
+        if (!Directory.Exists("Assets/Resources/RESULTATS")) {
+            Directory.CreateDirectory ("Assets/Resources/RESULTATS");
+        }
     }
+
     void Awake() {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Global");
 

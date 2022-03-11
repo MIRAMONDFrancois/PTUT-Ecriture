@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class scrMenu : MonoBehaviour 
 {   
     //pour le prenom
-    public TextMeshProUGUI user_name;
+    public TMP_InputField user_nom;
+    public TMP_InputField user_prenom;
+
     public TMP_InputField userInput_Field;
 
     // pour le mdp 
@@ -29,17 +33,11 @@ public class scrMenu : MonoBehaviour
     private int Inblvl;
     private string Snblvl;
     
-
-    
     
     public void SetName(){
-        scrGlobal truc = GameObject.Find("Global").GetComponent<scrGlobal>(); 
-        user_name.text = userInput_Field.text;
-        var leNom = user_name.text;
-        leNom = leNom.Replace(" ","");
-        leNom = leNom.Replace("\n","");
-        truc.playerName = leNom;
-        //Debug.Log("["+truc.playerName+"]"); // retour à la ligne de morts
+        scrGlobal truc = GameObject.Find("Global").GetComponent<scrGlobal>();
+
+        truc.playerName = user_prenom.text+"_"+user_nom.text;
     }
 
     public void Enterpwd(){
@@ -75,7 +73,45 @@ public class scrMenu : MonoBehaviour
 
     public void LoadMenu()
     {
+        scrGlobal truc = GameObject.Find("Global").GetComponent<scrGlobal>();
+
+
+        //Nom deja present ou creation
+        if (Directory.Exists("Assets/Resources/RESULTATS/"+truc.playerName))
+        {
+            init_valeur();  
+        }else
+        {
+            Directory.CreateDirectory ("Assets/Resources/RESULTATS/"+truc.playerName);
+        }
+
         SceneManager.LoadScene("menuScene");
+    }
+
+    private void init_valeur()
+    {
+        scrGlobal truc = GameObject.Find("Global").GetComponent<scrGlobal>();
+
+        TextAsset save = Resources.Load("RESULTATS/"+truc.playerName+"/Save") as TextAsset;
+
+        bool saut = false;
+        string numero = "";
+
+        for(int a=0;a<save.text.Length;a++)
+        {
+            numero += save.text[a];
+
+            if(save.text[a].Equals('\n'))
+            {
+                int valeur;
+                int.TryParse(numero, out valeur);
+                truc.levelunlocked[valeur]=true;
+                
+                numero = "";
+            }
+
+            
+        }
     }
 
 }

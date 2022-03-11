@@ -210,9 +210,6 @@ public class scrTextManager : MonoBehaviour
         }
         recapContent = "Fichier de " + pn + " sur le niveau " + ln + ".\nLe texte correct est:\n" + correctText + "\n";
         recapContent += "\n----------------------------------------------\n";
-        //System.IO.File.WriteAllText(fullFolderName + "/NiveauX.txt", pn + " est un.e gentil.le élève.");
-        // way to get the text:
-        //Debug.Log(System.IO.File.ReadAllText("./DOSSIER/" + pn + ".txt"));
 
 
         HideSlots();
@@ -290,7 +287,6 @@ public class scrTextManager : MonoBehaviour
                         if (manquePoint) { recap += " trop lourd."; recapContent += "- manque d'un point\n"; }
                         if (mauvaisPoint) { recap += " étrange."; recapContent += "- mauvais point\n"; }
                         animationLog.text = recap;
-
                         // data recap
                         ButtonLayer.SetActive(true);
 
@@ -795,14 +791,7 @@ public class scrTextManager : MonoBehaviour
             string slot_joueur = vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation;
             string slot_verif = vrai_separators[a];
 
-            if(arret_premier_point)
-            {
-                if(slot_joueur.Equals(".") || slot_joueur.Equals("?") || slot_joueur.Equals("!"))
-                {
-                    deplacement_cursor(a);
-                    return;
-                }
-            }
+            
             
             if(!slot_joueur.Equals(slot_verif))
             {
@@ -869,7 +858,6 @@ public class scrTextManager : MonoBehaviour
                     pasAssezVirgule = nb_midponct_joueur < nb_midponct_verif;
                     tropVirgule = nb_midponct_joueur > nb_midponct_verif;
 
-                    
                     deplacement_cursor(a);
 
                     return;
@@ -878,8 +866,16 @@ public class scrTextManager : MonoBehaviour
 
             pasAssezVirgule = nb_midponct_joueur < nb_midponct_verif;
             tropVirgule = nb_midponct_joueur > nb_midponct_verif;
-        }
 
+            if(arret_premier_point)
+            {
+                if(slot_joueur.Equals(".") || slot_joueur.Equals("?") || slot_joueur.Equals("!"))
+                {
+                    deplacement_cursor(a);
+                    return;
+                }
+            }
+        }
         deplacement_cursor(vrai_slots_GO.Count-1);
     }
 
@@ -1165,7 +1161,7 @@ public class scrTextManager : MonoBehaviour
 
     public void texte_data()
     {
-        if(textreussite)
+        /*if(textreussite)
         {
             recapContent += "\nTerminé en " + frames/60 + " secondes avec " + errorNum + " erreur(s).";
             scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
@@ -1177,6 +1173,11 @@ public class scrTextManager : MonoBehaviour
             recapContent += currentText + "\n";
             recapContent += "\n----------------------------------------------\n";
             errorNum++;
+
+        }*/
+
+        if(textreussite)
+        {
 
         }
     }

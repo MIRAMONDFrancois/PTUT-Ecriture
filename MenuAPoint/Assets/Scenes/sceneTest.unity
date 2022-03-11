@@ -2034,11 +2034,11 @@ MonoBehaviour:
   playerName: 
   levelNum: 5
   levelunlocked: 
-  file: {fileID: 4900000, guid: 1313f9a9cb3168a4f9a7e2250f8dfc29, type: 3}
+  file: {fileID: 4900000, guid: fed3d83418b3d90499a1c41bfc6eb695, type: 3}
   isSpecial: 0
   specialFile: {fileID: 0}
-  debut_text_gauche: 10
-  marge_text_droite: 10
+  debut_text_gauche: 9
+  marge_text_droite: 11
   taille_police: 4
   debut_hauteur_dual: 53
   debut_hauteur_normal: 97
@@ -2049,7 +2049,7 @@ MonoBehaviour:
   interrogationLimit: -1
   deuxpointsLimit: -1
   pointvirguleLimit: -1
-  nivAntiOubli: 1
+  nivAntiOubli: 0
   animTextFile: {fileID: 4900000, guid: 3a308e7fa09058841b76dcd0d56e2395, type: 3}
   canBeMoved: 1
   canBeDeleted: 1
@@ -6044,7 +6044,7 @@ MonoBehaviour:
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
-    m_LineSpacing: 1
+    m_LineSpacing: 1.2
   m_Text: "<Rappel des animations jou\xE9es>"
 --- !u!222 &2065556286
 CanvasRenderer:

@@ -1297,8 +1297,8 @@ MonoBehaviour:
   file: {fileID: 4900000, guid: b3307c36e54e1cd419403a75fe92816e, type: 3}
   isSpecial: 0
   specialFile: {fileID: 0}
-  debut_text_gauche: 10
-  marge_text_droite: 10
+  debut_text_gauche: 9
+  marge_text_droite: 11
   taille_police: 4
   debut_hauteur_dual: 53
   debut_hauteur_normal: 97

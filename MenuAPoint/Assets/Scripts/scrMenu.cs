@@ -94,7 +94,6 @@ public class scrMenu : MonoBehaviour
 
         TextAsset save = Resources.Load("RESULTATS/"+truc.playerName+"/Save") as TextAsset;
 
-        bool saut = false;
         string numero = "";
 
         for(int a=0;a<save.text.Length;a++)
@@ -106,7 +105,7 @@ public class scrMenu : MonoBehaviour
                 int valeur;
                 int.TryParse(numero, out valeur);
                 truc.levelunlocked[valeur]=true;
-                
+
                 numero = "";
             }
 

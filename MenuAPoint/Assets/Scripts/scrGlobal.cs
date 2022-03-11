@@ -45,10 +45,7 @@ public class scrGlobal : MonoBehaviour
     public int nbIndices = 5;
 
     public void Start(){
-        levelunlocked.Add(true);
-        for (int i = 1; i<= 15; i++){
-            levelunlocked.Add(false);
-        }
+        setLevelUnlocked();
     }
     void Awake() {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Global");
@@ -59,5 +56,14 @@ public class scrGlobal : MonoBehaviour
         }
 
         DontDestroyOnLoad(this.gameObject);
+    }
+
+    public void setLevelUnlocked()
+    {
+        levelunlocked.Add(true);
+        for (int i = 1; i <= 15; i++)
+        {
+            levelunlocked.Add(false);
+        }
     }
 }

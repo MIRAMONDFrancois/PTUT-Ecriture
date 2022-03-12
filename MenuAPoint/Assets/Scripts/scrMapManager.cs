@@ -15,11 +15,7 @@ public class scrMapManager : MonoBehaviour
     public Scene maScene;
     public string sceneName;
     public GameObject boutons;
-    //public string selectText;
     public TextAsset text;
-    //public scrTextManager test;
-    //public scrGlobal globalScript;
-    //public TextAsset filename;
     public GameObject[] levelTab;
 
     void Start()
@@ -221,7 +217,7 @@ public class scrMapManager : MonoBehaviour
         {
             bool niv_next = GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[a+1];
             bool niv_now = GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[a];
-
+            Debug.Log("Niveau next : " + niv_next + " && Niveau now : " + niv_now);
             boutons.transform.GetChild(a).GetComponent<Button>().interactable=niv_now;
             
             if(niv_now)

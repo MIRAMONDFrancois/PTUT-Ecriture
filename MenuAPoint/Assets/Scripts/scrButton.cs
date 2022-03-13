@@ -1,14 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class scrButton : MonoBehaviour
 {
     private bool isTargeted;
     private float normalScale = 1f;
     private float upScale = 1.2f;
     private float speedScale = 0.03f;
-
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +33,10 @@ public class scrButton : MonoBehaviour
     }
 
     public void SetTargeted(bool value) {
-        isTargeted = value;   
+        if(this.GetComponent<Button>().interactable)
+        {   
+            isTargeted = value;
+        }
+           
     }
 }

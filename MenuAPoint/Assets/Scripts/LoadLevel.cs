@@ -11,9 +11,21 @@ public class LoadLevel : MonoBehaviour
 
     public void LoadThisLevel()
     {
+        if(nameLevel.Equals("synopsisScene"))nameLevel="MapScene";
+
         SceneManager.LoadScene(nameLevel);
-    
     }
+
+    public void intro()
+    {
+        GameObject.Find("Global").GetComponent<scrGlobal>().SetIntro();
+        GameObject.Find("Global").GetComponent<scrGlobal>().intro = true;
+    }
+    public void tuto()
+    {
+        GameObject.Find("Global").GetComponent<scrGlobal>().SetTuto();
+    }
+
     public void QuitGame()
     {
         Debug.Log("quit");  

@@ -25,13 +25,8 @@ public class scrTextManager : MonoBehaviour
     public bool showLog;
     public Text animationLog;
 
-    [Header("Position Text (en pourcentage)")]
-    public float debut_text_gauche;
-    public float marge_text_droite; 
+    [Header("Taille Police Debut")]
     public float taille_police;
-    public float debut_hauteur_dual;
-    public float debut_hauteur_normal;
-    public float hauteur_table;
     
 
 
@@ -45,6 +40,7 @@ public class scrTextManager : MonoBehaviour
     private float lineNumber = 0;
     private float posToStop;
     private Vector3 cursorStart;
+    private List<float> listeToStop;
 
     // Words
     private List<string> s; // list of words and separators
@@ -75,7 +71,9 @@ public class scrTextManager : MonoBehaviour
     public GameObject animationObj;
 
     // Text pos
-    public GameObject text_scaler;
+    public GameObject text_scalerUL;
+    public GameObject text_scalerUL_Dual;
+    public GameObject text_scalerDR;
     public float scaler_x;//pour affichage slot
     public float scaler_y;//pour affichage slot
     private float size_init_x;//pour affichage slot
@@ -113,8 +111,11 @@ public class scrTextManager : MonoBehaviour
     private bool virgule_reussite = false;
 
     // Data Export
+    private scrGlobal globalScript;
     private string fullFolderName;
     private string recapContent;
+    private string recapitulatif;
+    private int essaie;
     private int frames;
     private int errorNum;
 
@@ -126,7 +127,7 @@ public class scrTextManager : MonoBehaviour
         vrai_nomspropres.Add("Pesto");
 
         // DATA IMPORT
-        scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
+        globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
 
         TextFile = globalScript.file;
         CorrectFile = globalScript.animTextFile;
@@ -137,14 +138,6 @@ public class scrTextManager : MonoBehaviour
         interrogationLimit = globalScript.interrogationLimit;
         deuxpointsLimit = globalScript.deuxpointsLimit;
         pointvirguleLimit = globalScript.pointvirguleLimit;
-
-        debut_text_gauche = globalScript.debut_text_gauche/100f;
-        marge_text_droite = globalScript.marge_text_droite/100f;
-        taille_police = globalScript.taille_police/100f;
-        debut_hauteur_dual = globalScript.debut_hauteur_dual/100f;
-        Debug.Log("coucou start");
-        debut_hauteur_normal = globalScript.debut_hauteur_normal/100f;
-        hauteur_table = globalScript.hauteur_table/100f;
 
         init_taille_texte(); 
 
@@ -179,38 +172,21 @@ public class scrTextManager : MonoBehaviour
             animationLog.text = "Les clients ont hâte de manger votre plat !";
 
             //Taille Curseur
-             GameObject.Find("Curseur").GetComponent<CurseurScript>().change_taille();
-            cursorStart = new Vector3(Screen.width*debut_text_gauche-cursor.GetComponent<RectTransform>().sizeDelta.x/2,textFloor,0);
+            GameObject.Find("Curseur").GetComponent<CurseurScript>().change_taille();
+            cursorStart = new Vector3(cursor.transform.position.x,textFloor,0);
+            
             cursor.transform.position = cursorStart;
 
         } else {
             depart_block(TextFile);
+            canTouchPonct = false;
+            ButtonLayer.SetActive(false);
+            
             animationObj.gameObject.SetActive(true);
             animationObj.GetComponent<Animator>().SetInteger("Niveau",globalScript.levelNum);
             animationLog.gameObject.SetActive(false);
-        } 
-
-        // DATA EXPORT
-        string pn = globalScript.playerName;
-        int ln = globalScript.levelNum;
-        string folderName = System.DateTime.Now.Day + "-" + System.DateTime.Now.Month + "-" + System.DateTime.Now.Year;
-        fullFolderName = "./RESULTATS/" + folderName + "/" + pn;
-
-        if (!Directory.Exists ("./RESULTATS")) {
-            Directory.CreateDirectory ("./RESULTATS");
-            Debug.Log("created result folder");
+            Invoke("boutonlayer_anim",5f);//problem
         }
-        if (!Directory.Exists ("./RESULTATS/" + folderName)) {
-            Directory.CreateDirectory ("./RESULTATS/" + folderName);
-            Debug.Log("created date folder");
-        }
-        if (!Directory.Exists (fullFolderName)) {
-            Directory.CreateDirectory (fullFolderName);
-            Debug.Log("created player folder");
-        }
-        recapContent = "Fichier de " + pn + " sur le niveau " + ln + ".\nLe texte correct est:\n" + correctText + "\n";
-        recapContent += "\n----------------------------------------------\n";
-
 
         HideSlots();
     }
@@ -224,6 +200,7 @@ public class scrTextManager : MonoBehaviour
             Vector3 trans = cursor.transform.position;
             trans.x += cursorSpeed;
 
+            //arret deplacement curseur
             if (lineCursor >= lineToStop)
             {
                 // last line
@@ -257,7 +234,6 @@ public class scrTextManager : MonoBehaviour
                         }
 
                         // Unlocks next level
-                        scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
                         globalScript.levelunlocked[globalScript.levelNum] = true;
                     }
                     // recap phrase for the animation recall
@@ -292,11 +268,10 @@ public class scrTextManager : MonoBehaviour
 
                         canTouchPonct = true;
                     }
-                    texte_data();
                     //Début animation après fin validation
                     AnimationFondu();
                 }
-            }else if ( trans.x > Screen.width*(1f-marge_text_droite))
+            }else if ( trans.x > listeToStop[lineCursor])
             {   
                 trans.x = cursorStart.x;
                 trans.y -= lineJump;
@@ -308,7 +283,8 @@ public class scrTextManager : MonoBehaviour
 
         } else {
             // counts frames (for the timer) when the cursor isn't moving, to be fair
-            frames++;
+            if(!textreussite)frames++;
+
             if(frames == 10800)//60 -> 1sec
             {
                 GameObject.Find("Indice").GetComponent<scrIndice>().limite = true;
@@ -402,7 +378,6 @@ public class scrTextManager : MonoBehaviour
                         break;
                     }
                     //lettre
-                    Debug.Log("coucou");
                     v_mots += TF.text[i];
 
                     if(toLower)
@@ -663,6 +638,7 @@ public class scrTextManager : MonoBehaviour
 
         vrai_slots_GO = new List<GameObject>();
         vrai_mots_GO = new List<GameObject>();
+        listeToStop = new List<float>();
         
 
         //taille police
@@ -706,6 +682,9 @@ public class scrTextManager : MonoBehaviour
                 {
                     wordObj.GetComponentInChildren<TextMeshProUGUI>().text =  vrai_mots[i].Substring(1, vrai_mots[i].Length - 1);
                 }
+
+                listeToStop.Add(vrai_slots_GO[i-1].transform.position.x);
+
                 total_width = 0f;
                 total_height -= lineJump;
                 
@@ -713,12 +692,10 @@ public class scrTextManager : MonoBehaviour
             }
 
             //positions des mots et slots
-            
-
             total_width+=pw/2;
-            wordObj.transform.position = new Vector3(Screen.width*debut_text_gauche+total_width, textFloor + total_height, 0);
+            wordObj.transform.position = new Vector3((text_scalerUL.transform.position.x-text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().preferredWidth)+total_width, textFloor + total_height, 0);
             total_width+=spaceSize/2+pw/2;
-            slot.transform.position = new Vector3(Screen.width*debut_text_gauche+total_width, textFloor + total_height, 0);
+            slot.transform.position = new Vector3((text_scalerUL.transform.position.x-text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().preferredWidth)+total_width, textFloor + total_height, 0);
             slot.transform.GetComponent<scrSlot>().ligne=lineNumber;
             slot.transform.GetComponent<scrSlot>().INDEX=i;
             slot.transform.GetComponent<scrSlot>().pos_origine=slot.transform.position;
@@ -730,10 +707,9 @@ public class scrTextManager : MonoBehaviour
 
             vrai_slots_GO.Add(slot);
             vrai_mots_GO.Add(wordObj);
-            
-            
-
         } // end of word placement
+
+        listeToStop.Add(vrai_slots_GO[vrai_slots_GO.Count-1].transform.position.x);
 
         if(vrai_mots_GO[vrai_mots_GO.Count-1].transform.position.y < text_sol)
         {
@@ -888,14 +864,14 @@ public class scrTextManager : MonoBehaviour
         animationLog.text = "Les clients sont en train de tester votre plat...";
 
         lineToStop = vrai_slots_GO[pos].GetComponent<scrSlot>().ligne;
-        posToStop = vrai_slots_GO[pos].transform.position.x-(cursor.transform.GetComponent<RectTransform>().sizeDelta.x/4);
+        text_scalerUL.SetActive(true);
+        posToStop = vrai_slots_GO[pos].transform.position.x-text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
+        text_scalerUL.SetActive(false);
         
         movingCursor = true;
-        canTouchPonct = false;
         cursor.transform.position = cursorStart;
         lineCursor = 0;
         cursor.transform.SetAsLastSibling();
-        ButtonLayer.SetActive(false);
     }
 
     public void replaceWords()
@@ -903,30 +879,41 @@ public class scrTextManager : MonoBehaviour
         //globale
         taillePolice -= .1f;
         lineNumber = 0;
+        listeToStop = new List<float>();
         //fonction
         bool alaligne = false;
         float total_width = 0;
         float total_height = 0;
 
-        text_scaler.SetActive(true);
-        text_scaler.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
-        scaler_x = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth / size_init_x;
-        scaler_y = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / size_init_y;
+        text_scalerUL.SetActive(true);
+        text_scalerUL_Dual.SetActive(true);
+        text_scalerDR.SetActive(true);
+
+        text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
+        text_scalerUL_Dual.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
+        text_scalerDR.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
+
+        scaler_x = text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().preferredWidth / size_init_x;
+        scaler_y = text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / size_init_y;
 
         if(dualAnim)
         {
-            textFloor = Screen.height*debut_hauteur_dual - text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / 2;
-            Debug.Log("coucou replace");
-        }
-        else
-        {
-            textFloor = Screen.height*debut_hauteur_normal - text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / 2;
-        }
-        
-        spaceSize = 1.6f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
-        lineJump = 1.1f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
+            textFloor = text_scalerUL_Dual.transform.position.y-text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
 
-        text_scaler.SetActive(false);
+        }else
+        {
+            textFloor = text_scalerUL.transform.position.y-text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
+        }
+
+        text_sol = text_scalerDR.transform.position.y+text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().preferredHeight/2;
+
+        spaceSize = 1.6f*text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
+
+        lineJump = 1.1f*text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
+
+        text_scalerUL.SetActive(false);
+        text_scalerUL_Dual.SetActive(false);
+        text_scalerDR.SetActive(false);
 
         for(int a=0;a<vrai_mots_GO.Count;a++)
         {
@@ -943,6 +930,7 @@ public class scrTextManager : MonoBehaviour
                 {
                     vrai_mots_GO[a].GetComponentInChildren<TextMeshProUGUI>().text =  vrai_mots[a].Substring(1, vrai_mots[a].Length - 1);
                 }
+                listeToStop.Add(vrai_slots_GO[a-1].transform.position.x);
 
                 total_width = 0f;
                 total_height -= lineJump;
@@ -951,14 +939,16 @@ public class scrTextManager : MonoBehaviour
             }
 
             total_width+=pw/2;
-            vrai_mots_GO[a].transform.position = new Vector3(Screen.width*debut_text_gauche+total_width, textFloor + total_height, 0);
+            vrai_mots_GO[a].transform.position = new Vector3((text_scalerUL.transform.position.x-text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().preferredWidth)+total_width, textFloor + total_height, 0);
             total_width+=spaceSize/2+pw/2;
-            vrai_slots_GO[a].transform.position = new Vector3(Screen.width*debut_text_gauche+total_width, textFloor + total_height, 0);
+            vrai_slots_GO[a].transform.position = new Vector3((text_scalerUL.transform.position.x-text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().preferredWidth)+total_width, textFloor + total_height, 0);
             vrai_slots_GO[a].transform.GetComponent<scrSlot>().ligne=lineNumber;
             vrai_slots_GO[a].transform.GetComponent<scrSlot>().pos_origine=vrai_slots_GO[a].transform.position;
             total_width+=spaceSize/2;
             
         }
+
+        listeToStop.Add(vrai_slots_GO[vrai_slots_GO.Count-1].transform.position.x);
 
         if(vrai_mots_GO[vrai_mots_GO.Count-1].transform.position.y < text_sol)
         {
@@ -1030,13 +1020,22 @@ public class scrTextManager : MonoBehaviour
 
     public void ValiderClick()
     {
+        ButtonLayer.SetActive(false);
+        canTouchPonct = false;
+
         if (!dualAnim)vrai_valider();
         else ValiderDual();
+
+        if(!textreussite)
+        {
+            texte_data("Erreur");
+            return;
+        }
     }
 
     public void ValiderDual() {
 
-        bool dual_reussite = false;
+        textreussite = false;
         List<bool> autre_reussite = new List<bool>();//liste flag
 
         //verification
@@ -1054,30 +1053,30 @@ public class scrTextManager : MonoBehaviour
 
         for(int a=0;a<autre_reussite.Count;a++)
         {
-            if(autre_reussite[a])dual_reussite=true;
+            if(autre_reussite[a])textreussite=true;
         }
 
         animationObj.GetComponent<Animator>().SetBool("Validation",true);
-        animationObj.GetComponent<Animator>().SetBool("Reussite",dual_reussite);
+        animationObj.GetComponent<Animator>().SetBool("Reussite",textreussite);
         
-        if(dual_reussite)
+        if(textreussite)
         {
-            ButtonLayer.SetActive(true);
-            ButtonLayer.transform.GetChild(0).gameObject.SetActive(true);
-            for (int i = 1; i < ButtonLayer.transform.childCount; i++) {
-                ButtonLayer.transform.GetChild(i).gameObject.SetActive(false);
-            }
+            Invoke("boutonlayer_anim",animationObj.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+            globalScript.levelunlocked[globalScript.levelNum]=true;
+            globalScript.nbIndices++;
 
-            GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[GameObject.Find("Global").GetComponent<scrGlobal>().levelNum] = true;
         }else
         {
             Invoke("dual_anim_reset",1f);
+            Invoke("boutonlayer_anim",animationObj.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
         }
         
     }
 
     public void showIndice()
     {
+        texte_data("Indice");
+
         for(int a=0;a<vrai_separators.Count;a++)
         {
             if(!vrai_separators[a].Equals(""))
@@ -1136,53 +1135,71 @@ public class scrTextManager : MonoBehaviour
         }
     }
 
-    public void whole_text()
+    public void texte_joueur()
     {
         currentText = "";
-        string text_or_GO = "";
+
         for(int a=0;a<vrai_mots_GO.Count;a++)
         {
+            string slotText = vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation;
 
-            if(vrai_mots[a].ToLower().Equals(vrai_mots_GO[a].GetComponentInChildren<TextMeshProUGUI>().text.ToLower()))
+            if(vrai_mots[a][0].Equals('\n'))
             {
-                text_or_GO = vrai_mots_GO[a].GetComponentInChildren<TextMeshProUGUI>().text;
+                currentText += "\n";
+            }
+
+            currentText += vrai_mots_GO[a].GetComponentInChildren<TextMeshProUGUI>().text;
+            
+
+            if(slotText.Equals("") || slotText.Equals(",") || slotText.Equals("."))
+            {
+                currentText += slotText+" ";
             }else
             {
-                text_or_GO = vrai_mots[a];
+                currentText += " "+slotText+" ";
             }
-
-            if(!(vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation.Equals(",") || vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation.Equals(".")))
-            {
-                text_or_GO += " ";
-            }
-            currentText +=  text_or_GO + vrai_slots_GO[a].GetComponent<scrSlot>().ponctuation + " ";
         }
     }
 
-    public void texte_data()
+    public void texte_data(string etat)//Retour(Retour) Valider(Reussite, Erreur) Indice(Indice)
     {
-        /*if(textreussite)
+        switch(etat)
         {
-            recapContent += "\nTerminé en " + frames/60 + " secondes avec " + errorNum + " erreur(s).";
-            scrGlobal globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
-            System.IO.File.WriteAllText(fullFolderName + "/Niveau"+globalScript.levelNum+".txt", recapContent);
+            case "Retour":
+                recapitulatif += "--- "+etat+" après "+frames/60 +" secondes. pour un total de "+(frames+globalScript.GetChrono())/60+" secondes. ---";
+                globalScript.SetTexteFichier(recapitulatif);
 
-        }else
-        {
-            whole_text();
-            recapContent += currentText + "\n";
-            recapContent += "\n----------------------------------------------\n";
-            errorNum++;
+                globalScript.SetRetour(frames);
+            return;
+            case "Indice":
+                recapitulatif += "--- "+etat+" après "+frames/60 +" secondes. ---\n";
+            return;
+            case "Erreur":
+                recapitulatif += "--- "+etat+" après "+frames/60 +" secondes. ---\n";
+                texte_joueur();
+                recapitulatif += currentText+"\n\n";
+            return;
+            case "Reussite":
+                recapitulatif += "--- "+etat+" après "+frames/60 +" secondes. pour un total de "+(frames+globalScript.GetChrono())/60+" secondes. ---\n";
+                texte_joueur();
+                recapitulatif += currentText;
+                globalScript.SetTexteFichier(recapitulatif);
 
-        }*/
-
-        if(textreussite)
-        {
-
+                globalScript.SetReussite(frames);
+            return;
         }
     }
 
     public void GoToMap() {
+        
+        if(textreussite)
+        {
+            texte_data("Reussite");
+        }else
+        {
+            texte_data("Retour");
+        }
+
         SceneManager.LoadScene("MapScene");
     }
 
@@ -1286,11 +1303,25 @@ public class scrTextManager : MonoBehaviour
         animationObj.GetComponent<Animator>().SetBool("Reussite",false);
     }
 
+    private void boutonlayer_anim()
+    {
+        ButtonLayer.SetActive(true);
+        if(textreussite)
+        {
+            ButtonLayer.transform.GetChild(0).gameObject.SetActive(true);
+            for (int i = 1; i < ButtonLayer.transform.childCount; i++) {
+                ButtonLayer.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+        canTouchPonct = true;
+    }
+
     private Vector2 quel_pot(string pot)
     {
         float ratio_x = Screen.width / 1920f*scaler_x;
         float ratio_y = Screen.height / 1080f*scaler_y;
 
+        //décalage position slot
         if(pot == "init"){
             return new Vector2 (0*ratio_x,0*ratio_y);
         }
@@ -1319,34 +1350,40 @@ public class scrTextManager : MonoBehaviour
 
     public void init_taille_texte()
     {
-        taillePolice = Screen.width*taille_police;
+        taillePolice = taille_police;//Faut commencer avec une valeur
         scaler_x = 1;
         scaler_y = 1;
 
-        text_scaler.SetActive(true);
-        text_scaler.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
-        size_init_x = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
-        size_init_y = text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
+        text_scalerUL.SetActive(true);
+        text_scalerUL_Dual.SetActive(true);
+        text_scalerDR.SetActive(true);
+
+        text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
+        text_scalerUL_Dual.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
+        text_scalerDR.GetComponentInChildren<TextMeshProUGUI>().fontSize=taillePolice;
+
+        size_init_x = text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
+        size_init_y = text_scalerUL.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
     
-        lineWidth = Screen.width*(1f-debut_text_gauche-marge_text_droite);
+        lineWidth = (text_scalerDR.transform.position.x-text_scalerUL.transform.position.x)+size_init_x;
 
         if(dualAnim)
         {
-            textFloor = Screen.height*debut_hauteur_dual - text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / 2;
-            Debug.Log("coucou");
+            textFloor = text_scalerUL_Dual.transform.position.y-size_init_y;
+
         }else
         {
-            textFloor = Screen.height*debut_hauteur_normal - text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight / 2;
+            textFloor = text_scalerUL.transform.position.y-size_init_y;
         }
         
-        text_sol = Screen.height*hauteur_table;
-            
-        spaceSize = 1.6f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredWidth;
+        text_sol = text_scalerDR.transform.position.y+size_init_y/2;
 
-        lineJump = 1.1f*text_scaler.GetComponentInChildren<TextMeshProUGUI>().preferredHeight;
+        spaceSize = 1.6f*size_init_x;
 
-        
+        lineJump = 1.1f*size_init_y;
 
-        text_scaler.SetActive(false);
+        text_scalerUL.SetActive(false);
+        text_scalerUL_Dual.SetActive(false);
+        text_scalerDR.SetActive(false);
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class scrIndice : MonoBehaviour
 {
+    private scrGlobal script;
     public bool used = false;
     //private float normalScale = 1f;
     //private float upScale = 1.2f;
@@ -26,23 +27,36 @@ public class scrIndice : MonoBehaviour
 
     void Start()
     {
+        script = GameObject.Find("Global").GetComponent<scrGlobal>();
+
         level3unlocked();
         affichageIndices();
+
+        if(script.GetIndice())
+        {
+            used=true;
+        }
     }
 
     public void decrementIndice()
     {
-        if (GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices > 0 && !used)
+        
+        if (script.nbIndices > 0)
         {
-            GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices--;
-
-            used = true;
+            if(!used)
+            {
+                script.nbIndices--;
+                used = true;
+                script.SetIndice();
+            }
+            
             GameObject.Find("GameManager").GetComponent<scrTextManager>().showIndice();
+            
         }
 
         affichageIndices();
 
-        for(int a=0;a<GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices;a++)
+        for(int a=0;a<script.nbIndices;a++)
         {
             transform.GetChild(a).GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1);
             transform.GetChild(a).localScale = new Vector2(1f,1f);
@@ -51,7 +65,7 @@ public class scrIndice : MonoBehaviour
 
     public void affichageIndices()
     {
-        switch (GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices)
+        switch (script.nbIndices)
         {
             case 0:
                 Indice1.SetActive(false);
@@ -87,7 +101,7 @@ public class scrIndice : MonoBehaviour
 
     public void level3unlocked()
     {
-        if (GameObject.Find("Global").GetComponent<scrGlobal>().levelNum <= 3)
+        if (script.levelNum <= 3)
             Indice.SetActive(false);
     }
 

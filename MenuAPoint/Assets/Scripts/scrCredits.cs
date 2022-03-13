@@ -17,5 +17,4 @@ public class scrCredits : MonoBehaviour
         TextFin.text = "Benjamin, \n Brayan, \n François, \n Gabriel, \n Hugo, \n Julie. \n" +
             "Avec le soutien de Véronique Paolacci.";
     }
-
 }

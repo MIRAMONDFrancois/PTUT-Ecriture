@@ -11,8 +11,11 @@ public class scrMenu : MonoBehaviour
     //pour le prenom
     public TMP_InputField user_nom;
     public TMP_InputField user_prenom;
+    private bool nom;
+    private bool prenom;
 
     public TMP_InputField userInput_Field;
+    public Button bouton;
 
     // pour le mdp 
     public TMP_InputField userpwdInput_Field;
@@ -33,11 +36,37 @@ public class scrMenu : MonoBehaviour
     private int Inblvl;
     private string Snblvl;
     
-    
+    void FixedUpdate()
+    {
+        if(user_prenom.text=="")
+        {
+            prenom = false;
+        }else
+        {
+            prenom = true;
+        }
+
+        if(user_nom.text=="")
+        {
+            nom = false;
+        }else
+        {
+            nom = true;
+        }
+
+        if(prenom && nom)
+        {
+            bouton.interactable = true;
+        }else
+        {
+            bouton.interactable = false;
+        }
+    }
+
     public void SetName(){
         scrGlobal truc = GameObject.Find("Global").GetComponent<scrGlobal>();
 
-        truc.playerName = user_prenom.text+"_"+user_nom.text;
+        truc.playerName = user_prenom.text+user_nom.text;
     }
 
     public void Enterpwd(){
@@ -73,44 +102,8 @@ public class scrMenu : MonoBehaviour
 
     public void LoadMenu()
     {
-        scrGlobal truc = GameObject.Find("Global").GetComponent<scrGlobal>();
-
-
-        //Nom deja present ou creation
-        if (Directory.Exists("Assets/Resources/RESULTATS/"+truc.playerName))
-        {
-            init_valeur();  
-        }else
-        {
-            Directory.CreateDirectory ("Assets/Resources/RESULTATS/"+truc.playerName);
-        }
+        GameObject.Find("Global").GetComponent<scrGlobal>().ChargeJoueur();
 
         SceneManager.LoadScene("menuScene");
     }
-
-    private void init_valeur()
-    {
-        scrGlobal truc = GameObject.Find("Global").GetComponent<scrGlobal>();
-
-        TextAsset save = Resources.Load("RESULTATS/"+truc.playerName+"/Save") as TextAsset;
-
-        string numero = "";
-
-        for(int a=0;a<save.text.Length;a++)
-        {
-            numero += save.text[a];
-
-            if(save.text[a].Equals('\n'))
-            {
-                int valeur;
-                int.TryParse(numero, out valeur);
-                truc.levelunlocked[valeur]=true;
-
-                numero = "";
-            }
-
-            
-        }
-    }
-
 }

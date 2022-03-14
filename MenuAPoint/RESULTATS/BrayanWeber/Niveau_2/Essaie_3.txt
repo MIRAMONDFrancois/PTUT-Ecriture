@@ -1,0 +1,16 @@
+--- Erreur après 3 secondes. ---
+Pour, son anniversaire. Pesto le frère de Tokki offrit une poêle à Tokki 
+
+--- Erreur après 8 secondes. ---
+Pour, son anniversaire Pesto le frère de Tokki offrit une poêle à Tokki 
+
+--- Erreur après 16 secondes. ---
+Pour son anniversaire Pesto, le frère de Tokki, offrit une poêle à Tokki 
+
+--- Erreur après 20 secondes. ---
+Pour son anniversaire, Pesto, le frère de Tokki, offrit une poêle à Tokki 
+
+--- Erreur après 24 secondes. ---
+Pour son anniversaire, Pesto, le frère de Tokki, offrit une poêle à. Tokki 
+
+--- Retour après 28 secondes. pour un total de 39 secondes. ---

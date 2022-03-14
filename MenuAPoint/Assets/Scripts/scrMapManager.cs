@@ -21,11 +21,13 @@ public class scrMapManager : MonoBehaviour
     void Start()
     {
         Invoke("activerBouttons",.1f);
+        GameObject.Find("Global").GetComponent<scrGlobal>().timestamps += "Map Start : "+GameObject.Find("Global").GetComponent<scrGlobal>().SWTime();
         //checkLevelActuel();//mettre au valider reussi du dernier niveau
     }
 
     public void LoadNewScene()
     {
+        GameObject.Find("Global").GetComponent<scrGlobal>().timestamps += "Load Jeu : "+GameObject.Find("Global").GetComponent<scrGlobal>().SWTime();
         SceneManager.LoadScene(sceneName);
     }
 
@@ -37,6 +39,7 @@ public class scrMapManager : MonoBehaviour
     private void LevelSetBaseValues(int levelNum, TextAsset TextFile) {
         GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = levelNum;
         GameObject.Find("Global").GetComponent<scrGlobal>().file = TextFile;
+
     }
     
     private void LevelSetLimitedGen(int pointLimit, int virguleLimit, int exclamationLimit,int interrogationLimit,int deuxpointsLimit,int pointvirguleLimit) {
@@ -57,6 +60,7 @@ public class scrMapManager : MonoBehaviour
 
     public void selectLevel()
     {
+        GameObject.Find("Global").GetComponent<scrGlobal>().timestamps += "Select Level : "+GameObject.Find("Global").GetComponent<scrGlobal>().SWTime();
         int levelActuel = 0;
         switch(EventSystem.current.currentSelectedGameObject.name)
         {
@@ -193,7 +197,6 @@ public class scrMapManager : MonoBehaviour
         {
             bool niv_next = GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[a+1];
             bool niv_now = GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[a];
-            Debug.Log("Niveau next : " + niv_next + " && Niveau now : " + niv_now);
             boutons.transform.GetChild(a).GetComponent<Button>().interactable=niv_now;
             
             if(niv_now)

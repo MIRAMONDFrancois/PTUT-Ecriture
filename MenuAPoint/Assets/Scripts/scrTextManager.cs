@@ -123,11 +123,15 @@ public class scrTextManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+
         vrai_nomspropres.Add("Tokki");
         vrai_nomspropres.Add("Pesto");
 
         // DATA IMPORT
         globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
+
+        globalScript.timestamps += "Start : "+globalScript.SWTime();
 
         TextFile = globalScript.file;
         CorrectFile = globalScript.animTextFile;
@@ -139,7 +143,10 @@ public class scrTextManager : MonoBehaviour
         deuxpointsLimit = globalScript.deuxpointsLimit;
         pointvirguleLimit = globalScript.pointvirguleLimit;
 
+        globalScript.timestamps += "Set valeur : "+globalScript.SWTime();
+
         init_taille_texte(); 
+        globalScript.timestamps += "Init Texte : "+globalScript.SWTime();
 
         canTouchPonct = true;
         s = new List<string>();
@@ -155,7 +162,7 @@ public class scrTextManager : MonoBehaviour
             CutsWordsDual(TextFile);
             GameObject.Find("Fond").GetComponent<Image>().sprite = Resources.Load<Sprite>("background03");
         }
-        
+        globalScript.timestamps += "CutWords"+globalScript.SWTime();
         
 
         // creates separators list
@@ -165,6 +172,7 @@ public class scrTextManager : MonoBehaviour
         slots = new GameObject[words.Count];
         
         placesWords();
+        globalScript.timestamps += "Places Words : "+globalScript.SWTime();
 
         if (!dualAnim) {
 
@@ -187,8 +195,9 @@ public class scrTextManager : MonoBehaviour
             animationLog.gameObject.SetActive(false);
             Invoke("boutonlayer_anim",5f);//problem
         }
-
+        globalScript.timestamps += "if else Dual : "+globalScript.SWTime();
         HideSlots();
+        globalScript.SWEnd();
     }
 
     // Update is called once per frame

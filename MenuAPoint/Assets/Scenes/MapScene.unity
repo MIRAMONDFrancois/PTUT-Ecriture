@@ -3639,14 +3639,7 @@ MonoBehaviour:
   levelNum: 0
   levelunlocked: 
   file: {fileID: 0}
-  isSpecial: 0
-  specialFile: {fileID: 0}
-  debut_text_gauche: 10
-  marge_text_droite: 10
   taille_police: 4
-  debut_hauteur_dual: 60
-  debut_hauteur_normal: 97
-  hauteur_table: 46
   pointLimit: 0
   virguleLimit: 0
   exclamationLimit: 0
@@ -3658,6 +3651,7 @@ MonoBehaviour:
   canBeMoved: 0
   canBeDeleted: 0
   tutoChecked: 0
+  intro: 0
   nbIndices: 5
 --- !u!4 &2107711006
 Transform:

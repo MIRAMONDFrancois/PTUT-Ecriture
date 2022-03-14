@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System.Diagnostics;
 
 public class scrGlobal : MonoBehaviour
 {
@@ -40,9 +41,33 @@ public class scrGlobal : MonoBehaviour
     public bool intro = false;//Synopsis
     public int nbIndices = 2;//Map pour Jeu
 
-    public void Start()
+    //test chrono
+    private Stopwatch timer;
+    public string timestamps;
+    
+    public void SWStart()
+    {
+        timer.Start();
+        timestamps = "";
+        
+    }
+    public string SWTime()
+    {
+        return string.Format("{0}\n", timer.ElapsedMilliseconds);
+    }
+    public void SWEnd()
+    {
+        timestamps += "Fin : "+SWTime();
+        timer.Stop();
+        File.WriteAllText("./chrono.txt", timestamps);
+    }
+    //fin test chrono
+
+    void Start()
     {
         setLevelUnlocked();
+        timer = new Stopwatch();
+        
     }
 
     void Awake() {
@@ -67,8 +92,9 @@ public class scrGlobal : MonoBehaviour
 
     private Joueurs GetPlayer()
     {
-        TextAsset jsonFile = Resources.Load("donnees") as TextAsset;
-        data = JsonUtility.FromJson<Donnees>(jsonFile.text);
+        //TextAsset jsonFile = Resources.Load("donnees") as TextAsset;
+        string jsonFile = File.ReadAllText(Application.streamingAssetsPath + "/donnees.json");
+        data = JsonUtility.FromJson<Donnees>(jsonFile);
 
         foreach(Joueurs j in data.donnees)
         {
@@ -87,7 +113,8 @@ public class scrGlobal : MonoBehaviour
 
         data.donnees.Add(j);
         string json = JsonUtility.ToJson(data);
-        File.WriteAllText("Assets/Resources/donnees.json", json);
+        //File.WriteAllText("Assets/Resources/donnees.json", json);
+        File.WriteAllText(Application.streamingAssetsPath+"/donnees.json", json);
 
         Directory.CreateDirectory ("./RESULTATS/"+playerName);
 
@@ -114,14 +141,15 @@ public class scrGlobal : MonoBehaviour
     {
         player.intro = true;
         string json = JsonUtility.ToJson(data);
-        File.WriteAllText("Assets/Resources/donnees.json", json);
+        File.WriteAllText(Application.streamingAssetsPath+"/donnees.json", json);
     }
 
     public void SetTuto()
     {
         player.tuto = true;
         string json = JsonUtility.ToJson(data);
-        File.WriteAllText("Assets/Resources/donnees.json", json);
+        File.WriteAllText(Application.streamingAssetsPath+"/donnees.json", json);
+        
     }
     //Pour Jeu. SceneTest [scrTextManager]
     public int GetChrono()
@@ -142,7 +170,7 @@ public class scrGlobal : MonoBehaviour
         player.indiceRestant = nbIndices;
                 
         string json = JsonUtility.ToJson(data);
-        File.WriteAllText("Assets/Resources/donnees.json", json);
+        File.WriteAllText(Application.streamingAssetsPath+"/donnees.json", json);
     }
 
     //Data en .txt dans Resultats. SceneTest [scrTextManager]
@@ -162,7 +190,7 @@ public class scrGlobal : MonoBehaviour
         
         string json = JsonUtility.ToJson(data);
 
-        File.WriteAllText("Assets/Resources/donnees.json", json);
+        File.WriteAllText(Application.streamingAssetsPath+"/donnees.json", json);
     }
 
     public void SetRetour(int frame)
@@ -172,6 +200,6 @@ public class scrGlobal : MonoBehaviour
         
         string json = JsonUtility.ToJson(data);
 
-        File.WriteAllText("Assets/Resources/donnees.json", json);
+        File.WriteAllText(Application.streamingAssetsPath+"/donnees.json", json);
     }
 }

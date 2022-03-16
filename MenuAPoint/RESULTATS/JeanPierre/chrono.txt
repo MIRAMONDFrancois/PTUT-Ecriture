@@ -1,0 +1,32 @@
+Load Map : 2433
+Load Map : 3883
+Map Start : 4101
+Select Level : 5615
+Load Jeu : 5617
+Start : 6662
+Set valeur : 6662
+Init Texte : 6677
+CutWords6685
+Places Words : 6719
+if else Dual : 6720
+Fin : 6721
+Map Start : 6721
+Select Level : 6721
+Load Jeu : 6721
+Start : 6721
+Set valeur : 6721
+Init Texte : 6721
+CutWords6721
+Places Words : 6721
+if else Dual : 6721
+Fin : 6721
+Map Start : 6721
+Select Level : 6721
+Load Map : 6721
+Start : 6721
+Set valeur : 6721
+Init Texte : 6721
+CutWords6721
+Places Words : 6721
+if else Dual : 6721
+Fin : 6721

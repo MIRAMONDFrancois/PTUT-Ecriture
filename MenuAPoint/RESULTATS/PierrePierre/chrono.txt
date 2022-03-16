@@ -1,12 +1,10 @@
-Load Map : 2290
-Load Map : 3121
-Map Start : 3362
-Select Level : 4510
-Load Jeu : 4512
-Start : 5625
-Set valeur : 5625
-Init Texte : 5640
-CutWords5648
-Places Words : 5701
-if else Dual : 5702
-Fin : 5704
+Map Start : 1192
+Select Level : 2478
+Load Jeu : 2481
+Start : 3557
+Set valeur : 3557
+Init Texte : 3573
+CutWords3585
+Places Words : 3895
+if else Dual : 3896
+Fin : 3899

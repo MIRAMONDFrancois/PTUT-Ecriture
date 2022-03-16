@@ -191,7 +191,8 @@ public class scrTextManager : MonoBehaviour
             ButtonLayer.SetActive(false);
             
             animationObj.gameObject.SetActive(true);
-            animationObj.GetComponent<Animator>().SetInteger("Niveau",globalScript.levelNum);
+            animationObj.GetComponent<SelectionAnimation>().SelectAnimation(false,globalScript.levelNum);
+            
             animationLog.gameObject.SetActive(false);
             Invoke("boutonlayer_anim",5f);//problem
         }
@@ -1067,19 +1068,18 @@ public class scrTextManager : MonoBehaviour
             if(autre_reussite[a])textreussite=true;
         }
 
-        animationObj.GetComponent<Animator>().SetBool("Validation",true);
-        animationObj.GetComponent<Animator>().SetBool("Reussite",textreussite);
+        animationObj.GetComponent<SelectionAnimation>().SelectAnimation(textreussite,globalScript.levelNum);
         
         if(textreussite)
         {
-            Invoke("boutonlayer_anim",animationObj.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+            Invoke("boutonlayer_anim",6);//timing a changer
             globalScript.levelunlocked[globalScript.levelNum]=true;
             globalScript.nbIndices++;
 
         }else
         {
-            Invoke("dual_anim_reset",1f);
-            Invoke("boutonlayer_anim",animationObj.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+            //Invoke("dual_anim_reset",1f);
+            Invoke("boutonlayer_anim",6);//timing a changer
         }
         
     }
@@ -1209,6 +1209,11 @@ public class scrTextManager : MonoBehaviour
             texte_data("Retour");
         }
 
+        if(globalScript.levelNum==15)
+        {
+            SceneManager.LoadScene("endScene");
+            return;
+        }
         SceneManager.LoadScene("MapScene");
     }
 

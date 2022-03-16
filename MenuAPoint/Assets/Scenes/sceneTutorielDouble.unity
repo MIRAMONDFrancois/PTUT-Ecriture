@@ -365,6 +365,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: 
   levelNum: 0
+  debug: {fileID: 0}
   levelunlocked: 
   file: {fileID: 4900000, guid: b3307c36e54e1cd419403a75fe92816e, type: 3}
   taille_police: 4
@@ -381,6 +382,7 @@ MonoBehaviour:
   tutoChecked: 0
   intro: 0
   nbIndices: 5
+  timestamps: 
 --- !u!4 &389472676
 Transform:
   m_ObjectHideFlags: 0
@@ -658,7 +660,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96

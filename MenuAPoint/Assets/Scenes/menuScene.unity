@@ -342,16 +342,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: 
   levelNum: 0
+  debug: {fileID: 0}
   levelunlocked: 
   file: {fileID: 4900000, guid: b3307c36e54e1cd419403a75fe92816e, type: 3}
-  isSpecial: 0
-  specialFile: {fileID: 0}
-  debut_text_gauche: 10
-  marge_text_droite: 10
   taille_police: 4
-  debut_hauteur_dual: 60
-  debut_hauteur_normal: 97
-  hauteur_table: 43
   pointLimit: 0
   virguleLimit: 0
   exclamationLimit: 0
@@ -363,7 +357,9 @@ MonoBehaviour:
   canBeMoved: 0
   canBeDeleted: 0
   tutoChecked: 0
+  intro: 0
   nbIndices: 5
+  timestamps: 
 --- !u!4 &51599186
 Transform:
   m_ObjectHideFlags: 0
@@ -2355,8 +2351,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cf8a67b75621224ab44948123f58502, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  user_name: {fileID: 218975942}
+  user_nom: {fileID: 0}
+  user_prenom: {fileID: 0}
   userInput_Field: {fileID: 884467088}
+  bouton: {fileID: 0}
   userpwdInput_Field: {fileID: 0}
   userNbInput_Field: {fileID: 884467088}
   password: {fileID: 0}
@@ -3240,7 +3238,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 28136561}
-        m_MethodName: LoadThisLevel
+        m_MethodName: intro
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4998,8 +4996,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cf8a67b75621224ab44948123f58502, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  user_name: {fileID: 81204953}
+  user_nom: {fileID: 0}
+  user_prenom: {fileID: 0}
   userInput_Field: {fileID: 1985221642}
+  bouton: {fileID: 0}
   userpwdInput_Field: {fileID: 1985221642}
   userNbInput_Field: {fileID: 0}
   password: {fileID: 1523164927}

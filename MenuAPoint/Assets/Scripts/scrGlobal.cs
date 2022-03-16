@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using System.IO;
 using System.Diagnostics;
 
@@ -11,6 +12,9 @@ public class scrGlobal : MonoBehaviour
     public int levelNum;//Connexion
     private Donnees data;
     private Joueurs player;
+    private string chemin_json;
+    private string chemin_txt;
+    public TextMeshProUGUI debug;
 
     [Header("Unlocked Levels")]
     public List<bool> levelunlocked = new List<bool>();//Map
@@ -44,9 +48,10 @@ public class scrGlobal : MonoBehaviour
     //test chrono
     private Stopwatch timer;
     public string timestamps;
-    
+
     public void SWStart()
     {
+        
         timer.Start();
         timestamps = "";
         
@@ -59,15 +64,30 @@ public class scrGlobal : MonoBehaviour
     {
         timestamps += "Fin : "+SWTime();
         timer.Stop();
-        File.WriteAllText("./chrono.txt", timestamps);
+        File.WriteAllText(chemin_txt+"/chrono.txt", timestamps);
     }
     //fin test chrono
 
     void Start()
     {
+        #if UNITY_EDITOR
+            chemin_json = Application.streamingAssetsPath + "/donnees.json";
+            chemin_txt = "./Resultats";
+        #elif UNITY_ANDROID
+            chemin_json = Application.persistentDataPath + "/donnees.json";
+            chemin_txt = Application.persistentDataPath + "/Resultats";
+            if(chemin_json.Equals(""))
+            {
+                File.WriteAllText(chemin_json, "{\"donnees\": []}");
+            }
+        
+        #else
+            chemin_json = Application.streamingAssetsPath + "/donnees.json";
+            chemin_txt = "./Resultats";
+        #endif
+        debug.text = chemin_json;
         setLevelUnlocked();
         timer = new Stopwatch();
-        
     }
 
     void Awake() {
@@ -92,15 +112,16 @@ public class scrGlobal : MonoBehaviour
 
     private Joueurs GetPlayer()
     {
-        //TextAsset jsonFile = Resources.Load("donnees") as TextAsset;
-        string jsonFile = File.ReadAllText(Application.streamingAssetsPath + "/donnees.json");
-        data = JsonUtility.FromJson<Donnees>(jsonFile);
+        string jsonFile = File.ReadAllText(chemin_json);
+        chemin_txt += "/"+playerName;
 
+        data = JsonUtility.FromJson<Donnees>(jsonFile);
         foreach(Joueurs j in data.donnees)
         {
+            
             if(j.joueur.Equals(playerName))return j;
         }
-
+        
         return CreationJoueur();
     }
 
@@ -113,10 +134,9 @@ public class scrGlobal : MonoBehaviour
 
         data.donnees.Add(j);
         string json = JsonUtility.ToJson(data);
-        //File.WriteAllText("Assets/Resources/donnees.json", json);
-        File.WriteAllText(Application.streamingAssetsPath+"/donnees.json", json);
+        File.WriteAllText(chemin_json, json);
 
-        Directory.CreateDirectory ("./RESULTATS/"+playerName);
+        Directory.CreateDirectory (chemin_txt);
 
         return j;
     }
@@ -141,14 +161,14 @@ public class scrGlobal : MonoBehaviour
     {
         player.intro = true;
         string json = JsonUtility.ToJson(data);
-        File.WriteAllText(Application.streamingAssetsPath+"/donnees.json", json);
+        File.WriteAllText(chemin_json, json);
     }
 
     public void SetTuto()
     {
         player.tuto = true;
         string json = JsonUtility.ToJson(data);
-        File.WriteAllText(Application.streamingAssetsPath+"/donnees.json", json);
+        File.WriteAllText(chemin_json, json);
         
     }
     //Pour Jeu. SceneTest [scrTextManager]
@@ -170,13 +190,13 @@ public class scrGlobal : MonoBehaviour
         player.indiceRestant = nbIndices;
                 
         string json = JsonUtility.ToJson(data);
-        File.WriteAllText(Application.streamingAssetsPath+"/donnees.json", json);
+        File.WriteAllText(chemin_json, json);
     }
 
     //Data en .txt dans Resultats. SceneTest [scrTextManager]
     public void SetTexteFichier(string recap)
     {
-        string chemin = "./RESULTATS/"+playerName+"/"+"Niveau_"+levelNum;
+        string chemin = chemin_txt+"/Niveau_"+levelNum;
         Directory.CreateDirectory (chemin);
 
         File.WriteAllText(chemin+"/Essaie_"+player.essaies[levelNum-1]+".txt",recap);
@@ -190,7 +210,7 @@ public class scrGlobal : MonoBehaviour
         
         string json = JsonUtility.ToJson(data);
 
-        File.WriteAllText(Application.streamingAssetsPath+"/donnees.json", json);
+        File.WriteAllText(chemin_json, json);
     }
 
     public void SetRetour(int frame)
@@ -200,6 +220,6 @@ public class scrGlobal : MonoBehaviour
         
         string json = JsonUtility.ToJson(data);
 
-        File.WriteAllText(Application.streamingAssetsPath+"/donnees.json", json);
+        File.WriteAllText(chemin_json, json);
     }
 }

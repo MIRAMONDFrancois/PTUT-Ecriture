@@ -1035,10 +1035,12 @@ public class scrTextManager : MonoBehaviour
         if (!dualAnim)vrai_valider();
         else ValiderDual();
 
-        if(!textreussite)
+        if(textreussite)
+        {
+            texte_data("Reussite");
+        }else
         {
             texte_data("Erreur");
-            return;
         }
     }
 
@@ -1187,6 +1189,7 @@ public class scrTextManager : MonoBehaviour
                 recapitulatif += "--- "+etat+" après "+frames/60 +" secondes. ---\n";
                 texte_joueur();
                 recapitulatif += currentText+"\n\n";
+                globalScript.SetTexteFichier(recapitulatif);
             return;
             case "Reussite":
                 recapitulatif += "--- "+etat+" après "+frames/60 +" secondes. pour un total de "+(frames+globalScript.GetChrono())/60+" secondes. ---\n";
@@ -1201,10 +1204,7 @@ public class scrTextManager : MonoBehaviour
 
     public void GoToMap() {
         
-        if(textreussite)
-        {
-            texte_data("Reussite");
-        }else
+        if(!textreussite)
         {
             texte_data("Retour");
         }

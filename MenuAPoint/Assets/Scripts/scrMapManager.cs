@@ -193,7 +193,7 @@ public class scrMapManager : MonoBehaviour
     void activerBouttons()
     {
         //le script global contient 1 élément en plus
-        for(int a=0;a<boutons.transform.childCount;a++)
+        for(int a=0;a<boutons.transform.childCount-1;a++)
         {
             bool niv_next = GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[a+1];
             bool niv_now = GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[a];

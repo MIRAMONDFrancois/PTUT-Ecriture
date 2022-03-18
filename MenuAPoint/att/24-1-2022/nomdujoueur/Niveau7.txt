@@ -1,7 +1,0 @@
-Fichier de nomdujoueur sur le niveau 7.
-Le texte correct est:
-Par réflexe, Steeve fit un bond de côté. le balai le frôla en giflant l’air comme un fouet.
-
-----------------------------------------------
-
-Terminé en 4 secondes avec 0 erreur(s).

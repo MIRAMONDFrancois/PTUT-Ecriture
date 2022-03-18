@@ -1,5 +1,0 @@
---- Erreur après 9 secondes. ---
-Le food truck de Tokki ne se détache pas comme prévu. 
-
---- Reussite après 20 secondes. pour un total de 20 secondes. ---
-Le food truck de Tokki ne se détache pas, comme prévu. 

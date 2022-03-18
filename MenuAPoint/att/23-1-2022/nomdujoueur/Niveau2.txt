@@ -1,7 +1,0 @@
-Fichier de nomdujoueur sur le niveau 2.
-Le texte correct est:
-Je suis un placeholder.
-
-----------------------------------------------
-
-Terminé en 1 secondes avec 0 erreur(s).

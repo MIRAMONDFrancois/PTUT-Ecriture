@@ -76,15 +76,17 @@ public class scrGlobal : MonoBehaviour
         #elif UNITY_ANDROID
             chemin_json = Application.persistentDataPath + "/donnees.json";
             chemin_txt = Application.persistentDataPath + "/Resultats";
-            if(chemin_json.Equals(""))
-            {
-                File.WriteAllText(chemin_json, "{\"donnees\": []}");
-            }
         
         #else
             chemin_json = Application.streamingAssetsPath + "/donnees.json";
             chemin_txt = "./Resultats";
         #endif
+
+        if(!File.Exists(chemin_json))
+        {
+            File.WriteAllText(chemin_json, "{\"donnees\": []}");
+        }
+        
         debug.text = chemin_json;
         setLevelUnlocked();
         timer = new Stopwatch();

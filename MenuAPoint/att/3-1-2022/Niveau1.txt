@@ -1,7 +1,0 @@
-Fichier de  sur le niveau 1.
-Le texte correct est:
-Le tigre tourne en rond. Il fait des va-et-vient incessants derrière les grilles de sa cage.
-
-----------------------------------------------
-
-Terminé en 4 secondes avec 0 erreur(s).

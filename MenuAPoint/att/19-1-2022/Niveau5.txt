@@ -1,7 +1,0 @@
-Fichier de  sur le niveau 5.
-Le texte correct est:
-Phrase, une. Phrase : deux ! Phrase ; trois ?
-
-----------------------------------------------
-
-Terminé en 20 secondes avec 0 erreur(s).

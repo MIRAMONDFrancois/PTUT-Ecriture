@@ -1,7 +1,0 @@
---- Erreur après 2 secondes. ---
-Tokki attrapa. La casserole elle la remplit d’eau et l’utilisa pour faire cuire du riz 
-
---- Erreur après 6 secondes. ---
-Tokki attrapa la casserole elle. La remplit d’eau et l’utilisa pour faire cuire du riz 
-
---- Retour après 21 secondes. pour un total de 25 secondes. ---

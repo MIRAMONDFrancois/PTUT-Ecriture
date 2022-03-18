@@ -1,7 +1,0 @@
-Fichier de  sur le niveau 1.
-Le texte correct est:
-
-
-----------------------------------------------
-
-Terminé en 9 secondes avec 0 erreur(s).

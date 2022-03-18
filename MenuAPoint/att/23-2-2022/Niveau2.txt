@@ -1,9 +1,0 @@
-Fichier de  sur le niveau 2.
-Le texte correct est:
-- Depuis quand le chien est-il parti ?
-- Il est parti après le déjeuner.
-- Cherchons-le ensemble et appelle-le.
-
-----------------------------------------------
-
-Terminé en 12 secondes avec 0 erreur(s).

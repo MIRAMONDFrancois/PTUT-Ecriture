@@ -126,15 +126,20 @@ public class scrTextManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-
         vrai_nomspropres.Add("Tokki");
         vrai_nomspropres.Add("Pesto");
 
         // DATA IMPORT
         globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
 
-        TextFile = globalScript.file;
+        if(globalScript.FromGameBuilder)
+        {
+            TextFile = globalScript.GameBuilderText;
+        }else
+        {
+            TextFile = globalScript.file;
+        }
+        
         CorrectFile = globalScript.animTextFile;
         dualAnim = globalScript.nivAntiOubli;
         pointLimit = globalScript.pointLimit;

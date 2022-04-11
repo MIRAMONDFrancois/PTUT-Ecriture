@@ -44,6 +44,11 @@ public class scrGlobal : MonoBehaviour
     public bool intro = false;//Synopsis
     public int nbIndices = 0;//Map pour Jeu
 
+
+    //From GameBuilder
+    public bool FromGameBuilder;
+    public TextAsset GameBuilderText;
+
     void Start()
     {
         #if UNITY_EDITOR
@@ -63,7 +68,7 @@ public class scrGlobal : MonoBehaviour
             File.WriteAllText(chemin_json, "{\"donnees\": []}");
         }
         
-        debug.text = chemin_json;
+        debug.text = Application.persistentDataPath;
         setLevelUnlocked();
     }
 

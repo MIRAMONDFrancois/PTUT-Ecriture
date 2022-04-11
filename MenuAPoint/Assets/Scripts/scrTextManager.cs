@@ -1364,6 +1364,11 @@ public class scrTextManager : MonoBehaviour
 
     public void init_taille_texte()
     {
+        
+        float widthScreenRatio = Screen.width * taille_police / 1920;
+        float heightScreenRatio = Screen.height * taille_police / 1080;
+        taille_police = Mathf.Min(widthScreenRatio,heightScreenRatio);
+        print(taille_police + " "+Screen.width + " "+Screen.height);
         taillePolice = taille_police;//Faut commencer avec une valeur
         scaler_x = 1;
         scaler_y = 1;

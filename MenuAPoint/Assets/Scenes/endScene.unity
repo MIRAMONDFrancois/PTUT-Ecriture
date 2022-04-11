@@ -155,7 +155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.16243, y: 44}
   m_SizeDelta: {x: 3000, y: 2000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &451823937
@@ -294,7 +294,7 @@ MonoBehaviour:
   carottePrefab: {fileID: 2061966765227026314, guid: 11f15687b9c050445820c259ebeba96a,
     type: 3}
   respawnTime: 0.5
-  nb_carottes: 10
+  nb_carottes: 5
 --- !u!1 &753941999
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,8 +329,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -67}
-  m_SizeDelta: {x: 200, y: 400}
+  m_AnchoredPosition: {x: -0.16247, y: -47}
+  m_SizeDelta: {x: 221.5617, y: 443.1234}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &753942001
 MonoBehaviour:
@@ -505,8 +505,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4.3, y: -91.665}
-  m_SizeDelta: {x: 1342.1885, y: 511.32965}
+  m_AnchoredPosition: {x: 0.10094, y: 84.335}
+  m_SizeDelta: {x: 1920.1233, y: 511.32965}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1017872518
 MonoBehaviour:
@@ -542,8 +542,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b4aac3487c778ce45acdf2c3c755efaa, type: 2}
+  m_sharedMaterial: {fileID: -2065807089818645997, guid: b4aac3487c778ce45acdf2c3c755efaa,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -603,7 +604,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: 347.2585}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -651,8 +652,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -369.5}
-  m_SizeDelta: {x: 0, y: 341}
+  m_AnchoredPosition: {x: -0.08117676, y: -397.4}
+  m_SizeDelta: {x: -0.4873047, y: 285.177}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1064808163
 MonoBehaviour:
@@ -667,7 +668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1035,7 +1036,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000011444, y: 264}
+  m_AnchoredPosition: {x: -0.16244, y: 440}
   m_SizeDelta: {x: 1920, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1684631114
@@ -1059,8 +1060,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Bravo ! Vous avez termin\xE9 le jeu !"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b4aac3487c778ce45acdf2c3c755efaa, type: 2}
+  m_sharedMaterial: {fileID: -2065807089818645997, guid: b4aac3487c778ce45acdf2c3c755efaa,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

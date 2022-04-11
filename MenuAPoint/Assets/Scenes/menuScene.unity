@@ -358,7 +358,7 @@ MonoBehaviour:
   canBeDeleted: 0
   tutoChecked: 0
   intro: 0
-  nbIndices: 5
+  nbIndices: 0
   timestamps: 
 --- !u!4 &51599186
 Transform:

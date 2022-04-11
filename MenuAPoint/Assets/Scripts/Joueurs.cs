@@ -7,7 +7,7 @@ public class Joueurs
 {
      //Globales
     public string joueur;
-    public int indiceRestant = 2;
+    public int indiceRestant = 0;
     public bool intro = false;
     public bool tuto = false;
 

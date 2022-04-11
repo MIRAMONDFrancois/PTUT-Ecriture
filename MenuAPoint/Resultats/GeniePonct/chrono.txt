@@ -1,0 +1,10 @@
+Map Start : 732
+Select Level : 1814
+Load Jeu : 1815
+Start : 1947
+Set valeur : 1947
+Init Texte : 1952
+CutWords1954
+Places Words : 1971
+if else Dual : 1971
+Fin : 1972

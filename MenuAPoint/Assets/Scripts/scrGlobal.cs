@@ -43,7 +43,7 @@ public class scrGlobal : MonoBehaviour
     [Header("Phases de tuto et fin de jeu")]
     public bool tutoChecked = false;//Tuto
     public bool intro = false;//Synopsis
-    public int nbIndices = 2;//Map pour Jeu
+    public int nbIndices = 0;//Map pour Jeu
 
     //test chrono
     private Stopwatch timer;

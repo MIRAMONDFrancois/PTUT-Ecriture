@@ -199,7 +199,7 @@ public class scrGlobal : MonoBehaviour
     public void SetTexteFichier(string recap)
     {
         string chemin = chemin_txt+"/Niveau_"+levelNum;
-        Directory.CreateDirectory (chemin);
+        Directory.CreateDirectory(chemin);
 
         File.WriteAllText(chemin+"/Essaie_"+player.essaies[levelNum-1]+".txt",recap);
     }

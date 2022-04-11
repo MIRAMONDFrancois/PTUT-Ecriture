@@ -1,0 +1,5 @@
+--- Erreur après 12 secondes. ---
+C’est le jour du grand concours, Tokki espère gagner le grand prix. Une super spatule ! 
+
+--- Reussite après 20 secondes. pour un total de 20 secondes. ---
+C’est le jour du grand concours. Tokki espère gagner le grand prix, une super spatule ! 

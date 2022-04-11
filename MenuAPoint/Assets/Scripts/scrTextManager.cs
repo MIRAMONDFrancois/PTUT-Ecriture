@@ -1077,7 +1077,10 @@ public class scrTextManager : MonoBehaviour
         
         if(textreussite)
         {
+            
+
             Invoke("boutonlayer_anim",6);//timing a changer
+            if(globalScript.levelunlocked[globalScript.levelNum])return;
             globalScript.levelunlocked[globalScript.levelNum]=true;
             globalScript.nbIndices++;
 

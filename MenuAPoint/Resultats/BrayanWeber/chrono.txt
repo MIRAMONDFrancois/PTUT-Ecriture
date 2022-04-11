@@ -1,10 +1,60 @@
-Map Start : 596
-Select Level : 3206
-Load Jeu : 3206
-Start : 3333
-Set valeur : 3333
-Init Texte : 3338
-CutWords3340
-Places Words : 3347
-if else Dual : 3352
-Fin : 3352
+Map Start : 777
+Select Level : 5463
+Load Jeu : 5464
+Start : 5594
+Set valeur : 5594
+Init Texte : 5598
+CutWords5600
+Places Words : 5619
+if else Dual : 5619
+Fin : 5620
+Map Start : 5620
+Select Level : 5620
+Load Jeu : 5620
+Start : 5620
+Set valeur : 5620
+Init Texte : 5620
+CutWords5620
+Places Words : 5620
+if else Dual : 5620
+Fin : 5620
+Map Start : 5620
+Select Level : 5620
+Load Jeu : 5620
+Start : 5620
+Set valeur : 5620
+Init Texte : 5620
+CutWords5620
+Places Words : 5620
+if else Dual : 5620
+Fin : 5620
+Map Start : 5620
+Select Level : 5620
+Load Jeu : 5620
+Start : 5620
+Set valeur : 5620
+Init Texte : 5620
+CutWords5620
+Places Words : 5620
+if else Dual : 5620
+Fin : 5620
+Map Start : 5620
+Select Level : 5620
+Load Jeu : 5620
+Start : 5620
+Set valeur : 5620
+Init Texte : 5620
+CutWords5620
+Places Words : 5620
+if else Dual : 5620
+Fin : 5620
+Map Start : 5620
+Select Level : 5620
+Load Jeu : 5620
+Start : 5620
+Set valeur : 5620
+Init Texte : 5620
+CutWords5620
+Places Words : 5620
+if else Dual : 5620
+Fin : 5620

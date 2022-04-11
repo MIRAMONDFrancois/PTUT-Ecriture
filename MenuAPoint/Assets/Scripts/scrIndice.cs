@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class scrIndice : MonoBehaviour
 {
     private scrGlobal script;
+    private scrTextManager scriptText;
     public bool used = false;
     //private float normalScale = 1f;
     //private float upScale = 1.2f;
@@ -28,13 +29,21 @@ public class scrIndice : MonoBehaviour
     void Start()
     {
         script = GameObject.Find("Global").GetComponent<scrGlobal>();
+        scriptText = GameObject.Find("GameManager").GetComponent<scrTextManager>();
 
+        //events
+        scriptText.OnTextLoad = Init;
+    }
+
+    void Init()
+    {
         level3unlocked();
         affichageIndices();
 
         if(script.GetIndice())
         {
             used=true;
+            scriptText.showIndice();
         }
     }
 
@@ -50,7 +59,7 @@ public class scrIndice : MonoBehaviour
                 script.SetIndice();
             }
             
-            GameObject.Find("GameManager").GetComponent<scrTextManager>().showIndice();
+            scriptText.showIndice();
             
         }
 

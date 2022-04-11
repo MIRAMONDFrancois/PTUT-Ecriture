@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿//using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,6 +29,8 @@ public class scrTextManager : MonoBehaviour
     [Header("Taille Police Debut")]
     public float taille_police;
     
+    //Events
+    public System.Action OnTextLoad;
 
 
     // Cursor
@@ -199,6 +202,8 @@ public class scrTextManager : MonoBehaviour
         globalScript.timestamps += "if else Dual : "+globalScript.SWTime();
         HideSlots();
         globalScript.SWEnd();
+
+        OnTextLoad?.Invoke();
     }
 
     // Update is called once per frame
@@ -1368,7 +1373,6 @@ public class scrTextManager : MonoBehaviour
         float widthScreenRatio = Screen.width * taille_police / 1920;
         float heightScreenRatio = Screen.height * taille_police / 1080;
         taille_police = Mathf.Min(widthScreenRatio,heightScreenRatio);
-        print(taille_police + " "+Screen.width + " "+Screen.height);
         taillePolice = taille_police;//Faut commencer avec une valeur
         scaler_x = 1;
         scaler_y = 1;

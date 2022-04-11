@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.IO;
-using System.Diagnostics;
 
 public class scrGlobal : MonoBehaviour
 {
@@ -45,29 +44,6 @@ public class scrGlobal : MonoBehaviour
     public bool intro = false;//Synopsis
     public int nbIndices = 0;//Map pour Jeu
 
-    //test chrono
-    private Stopwatch timer;
-    public string timestamps;
-
-    public void SWStart()
-    {
-        
-        timer.Start();
-        timestamps = "";
-        
-    }
-    public string SWTime()
-    {
-        return string.Format("{0}\n", timer.ElapsedMilliseconds);
-    }
-    public void SWEnd()
-    {
-        timestamps += "Fin : "+SWTime();
-        timer.Stop();
-        File.WriteAllText(chemin_txt+"/chrono.txt", timestamps);
-    }
-    //fin test chrono
-
     void Start()
     {
         #if UNITY_EDITOR
@@ -89,7 +65,6 @@ public class scrGlobal : MonoBehaviour
         
         debug.text = chemin_json;
         setLevelUnlocked();
-        timer = new Stopwatch();
     }
 
     void Awake() {
@@ -99,7 +74,6 @@ public class scrGlobal : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-
         DontDestroyOnLoad(this.gameObject);
     }
 
@@ -115,7 +89,7 @@ public class scrGlobal : MonoBehaviour
     private Joueurs GetPlayer()
     {
         string jsonFile = File.ReadAllText(chemin_json);
-        chemin_txt += "/"+playerName;
+        //chemin_txt += "/"+playerName;
 
         data = JsonUtility.FromJson<Donnees>(jsonFile);
         foreach(Joueurs j in data.donnees)
@@ -138,7 +112,7 @@ public class scrGlobal : MonoBehaviour
         string json = JsonUtility.ToJson(data);
         File.WriteAllText(chemin_json, json);
 
-        Directory.CreateDirectory (chemin_txt);
+        Directory.CreateDirectory (chemin_txt + "/"+playerName);
 
         return j;
     }
@@ -198,7 +172,7 @@ public class scrGlobal : MonoBehaviour
     //Data en .txt dans Resultats. SceneTest [scrTextManager]
     public void SetTexteFichier(string recap)
     {
-        string chemin = chemin_txt+"/Niveau_"+levelNum;
+        string chemin = chemin_txt+"/"+playerName+"/Niveau_"+levelNum;
         Directory.CreateDirectory(chemin);
 
         File.WriteAllText(chemin+"/Essaie_"+player.essaies[levelNum-1]+".txt",recap);

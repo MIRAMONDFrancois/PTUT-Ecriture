@@ -11,9 +11,6 @@ public class LoadLevel : MonoBehaviour
 
     public void LoadThisLevel()
     {
-        
-        GameObject.Find("Global").GetComponent<scrGlobal>().timestamps += "Load Map : "+GameObject.Find("Global").GetComponent<scrGlobal>().SWTime();
-
         SceneManager.LoadScene(nameLevel);
     }
 

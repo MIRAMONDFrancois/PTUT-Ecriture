@@ -134,8 +134,6 @@ public class scrTextManager : MonoBehaviour
         // DATA IMPORT
         globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
 
-        globalScript.timestamps += "Start : "+globalScript.SWTime();
-
         TextFile = globalScript.file;
         CorrectFile = globalScript.animTextFile;
         dualAnim = globalScript.nivAntiOubli;
@@ -146,10 +144,7 @@ public class scrTextManager : MonoBehaviour
         deuxpointsLimit = globalScript.deuxpointsLimit;
         pointvirguleLimit = globalScript.pointvirguleLimit;
 
-        globalScript.timestamps += "Set valeur : "+globalScript.SWTime();
-
         init_taille_texte(); 
-        globalScript.timestamps += "Init Texte : "+globalScript.SWTime();
 
         canTouchPonct = true;
         s = new List<string>();
@@ -165,8 +160,6 @@ public class scrTextManager : MonoBehaviour
             CutsWordsDual(TextFile);
             GameObject.Find("Fond").GetComponent<Image>().sprite = Resources.Load<Sprite>("background03");
         }
-        globalScript.timestamps += "CutWords"+globalScript.SWTime();
-        
 
         // creates separators list
         separators = new string[words.Count];
@@ -175,7 +168,6 @@ public class scrTextManager : MonoBehaviour
         slots = new GameObject[words.Count];
         
         placesWords();
-        globalScript.timestamps += "Places Words : "+globalScript.SWTime();
 
         if (!dualAnim) {
 
@@ -199,9 +191,7 @@ public class scrTextManager : MonoBehaviour
             animationLog.gameObject.SetActive(false);
             Invoke("boutonlayer_anim",5f);//problem
         }
-        globalScript.timestamps += "if else Dual : "+globalScript.SWTime();
         HideSlots();
-        globalScript.SWEnd();
 
         OnTextLoad?.Invoke();
     }

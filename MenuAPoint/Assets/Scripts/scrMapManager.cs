@@ -21,13 +21,11 @@ public class scrMapManager : MonoBehaviour
     void Start()
     {
         Invoke("activerBouttons",.1f);
-        GameObject.Find("Global").GetComponent<scrGlobal>().timestamps += "Map Start : "+GameObject.Find("Global").GetComponent<scrGlobal>().SWTime();
         //checkLevelActuel();//mettre au valider reussi du dernier niveau
     }
 
     public void LoadNewScene()
     {
-        GameObject.Find("Global").GetComponent<scrGlobal>().timestamps += "Load Jeu : "+GameObject.Find("Global").GetComponent<scrGlobal>().SWTime();
         SceneManager.LoadScene(sceneName);
     }
 
@@ -60,7 +58,6 @@ public class scrMapManager : MonoBehaviour
 
     public void selectLevel()
     {
-        GameObject.Find("Global").GetComponent<scrGlobal>().timestamps += "Select Level : "+GameObject.Find("Global").GetComponent<scrGlobal>().SWTime();
         int levelActuel = 0;
         switch(EventSystem.current.currentSelectedGameObject.name)
         {

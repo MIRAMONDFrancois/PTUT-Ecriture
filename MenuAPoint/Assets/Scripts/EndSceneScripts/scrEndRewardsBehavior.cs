@@ -39,63 +39,43 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
         switch (name)
         {
             case "Casserole":
-                if (scrSlotsRewards.nameSlot != "SlotCasserole")
-                    rectTransform.anchoredPosition = initialPosition;
-                if (!scrSlotsRewards.pointerIsOnSlot)
+                if (scrSlotsRewards.nameSlot != "SlotCasserole" || !scrSlotsRewards.pointerIsOnSlot)
                     rectTransform.anchoredPosition = initialPosition;
                 break;
             case "Cuillere":
-                if (scrSlotsRewards.nameSlot != "SlotCuillere")
-                    rectTransform.anchoredPosition = initialPosition;
-                if (!scrSlotsRewards.pointerIsOnSlot)
+                if (scrSlotsRewards.nameSlot != "SlotCuillere" || !scrSlotsRewards.pointerIsOnSlot)
                     rectTransform.anchoredPosition = initialPosition;
                 break;
             case "Couteau":
-                if (scrSlotsRewards.nameSlot != "SlotCouteau")
-                    rectTransform.anchoredPosition = initialPosition;
-                if (!scrSlotsRewards.pointerIsOnSlot)
+                if (scrSlotsRewards.nameSlot != "SlotCouteau" || !scrSlotsRewards.pointerIsOnSlot)
                     rectTransform.anchoredPosition = initialPosition;
                 break;
             case "Fouet":
-                if (scrSlotsRewards.nameSlot != "SlotFouet")
-                    rectTransform.anchoredPosition = initialPosition;
-                if (!scrSlotsRewards.pointerIsOnSlot)
+                if (scrSlotsRewards.nameSlot != "SlotFouet" || !scrSlotsRewards.pointerIsOnSlot)
                     rectTransform.anchoredPosition = initialPosition;
                 break;
             case "Louche":
-                if (scrSlotsRewards.nameSlot != "SlotLouche")
-                    rectTransform.anchoredPosition = initialPosition;
-                if (!scrSlotsRewards.pointerIsOnSlot)
+                if (scrSlotsRewards.nameSlot != "SlotLouche" || !scrSlotsRewards.pointerIsOnSlot)
                     rectTransform.anchoredPosition = initialPosition;
                 break;
             case "Passoire":
-                if (scrSlotsRewards.nameSlot != "SlotPassoire")
-                    rectTransform.anchoredPosition = initialPosition;
-                if (!scrSlotsRewards.pointerIsOnSlot)
+                if (scrSlotsRewards.nameSlot != "SlotPassoire" || !scrSlotsRewards.pointerIsOnSlot)
                     rectTransform.anchoredPosition = initialPosition;
                 break;
             case "Poele":
-                if (scrSlotsRewards.nameSlot != "SlotPoele")
-                    rectTransform.anchoredPosition = initialPosition;
-                if (!scrSlotsRewards.pointerIsOnSlot)
+                if (scrSlotsRewards.nameSlot != "SlotPoele" || !scrSlotsRewards.pointerIsOnSlot)
                     rectTransform.anchoredPosition = initialPosition;
                 break;
             case "Rouleau":
-                if (scrSlotsRewards.nameSlot != "SlotRouleau")
-                    rectTransform.anchoredPosition = initialPosition;
-                if (!scrSlotsRewards.pointerIsOnSlot)
+                if (scrSlotsRewards.nameSlot != "SlotRouleau" || !scrSlotsRewards.pointerIsOnSlot)
                     rectTransform.anchoredPosition = initialPosition;
                 break;
             case "Rape":
-                if (scrSlotsRewards.nameSlot != "SlotRape")
-                    rectTransform.anchoredPosition = initialPosition;
-                if (!scrSlotsRewards.pointerIsOnSlot)
+                if (scrSlotsRewards.nameSlot != "SlotRape" || !scrSlotsRewards.pointerIsOnSlot)
                     rectTransform.anchoredPosition = initialPosition;
                 break;
             case "Spatule":
-                if (scrSlotsRewards.nameSlot != "SlotSpatule")
-                    rectTransform.anchoredPosition = initialPosition;
-                if (!scrSlotsRewards.pointerIsOnSlot)
+                if (scrSlotsRewards.nameSlot != "SlotSpatule" || !scrSlotsRewards.pointerIsOnSlot)
                     rectTransform.anchoredPosition = initialPosition;
                 break;
             default:

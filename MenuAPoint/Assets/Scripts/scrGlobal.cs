@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.IO;
+using Newtonsoft.Json;
 
 public class scrGlobal : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class scrGlobal : MonoBehaviour
     private Joueurs player;
     private string chemin_json;
     private string chemin_txt;
+    private string chemin_bonus;
     public TextMeshProUGUI debug;
 
     [Header("Unlocked Levels")]
@@ -65,10 +67,11 @@ public class scrGlobal : MonoBehaviour
 
         if(!File.Exists(chemin_json))
         {
-            File.WriteAllText(chemin_json, "{\"donnees\": []}");
+            File.WriteAllText(chemin_json, "{\"donnees\": [],\"niveauxBonus\": []}");
         }
-        
         debug.text = Application.persistentDataPath;
+        
+        SetNiveauxBonus();
         setLevelUnlocked();
     }
 
@@ -93,13 +96,8 @@ public class scrGlobal : MonoBehaviour
 
     private Joueurs GetPlayer()
     {
-        string jsonFile = File.ReadAllText(chemin_json);
-        //chemin_txt += "/"+playerName;
-
-        data = JsonUtility.FromJson<Donnees>(jsonFile);
         foreach(Joueurs j in data.donnees)
         {
-            
             if(j.joueur.Equals(playerName))return j;
         }
         
@@ -112,12 +110,20 @@ public class scrGlobal : MonoBehaviour
         Joueurs j = new Joueurs();
 
         j.joueur = playerName;
+        int nbniveauxbonus = data.niveauxBonus.Count;
 
+        //Dictionary<string, Objet> objets = JsonConvert.DeserializeObject<Dictionary<string, Objet>>(jsonTextFile.text);
+        for(int a=0;a<nbniveauxbonus;a++)
+        {
+            j.niveauxBonusFinis.Add(data.niveauxBonus[a],false);
+            j.indiceBonus.Add(data.niveauxBonus[a],false);
+            j.essaiesBonus.Add(data.niveauxBonus[a],1);
+            j.chronoNiveauBonus.Add(data.niveauxBonus[a],0);
+        }
+        
         data.donnees.Add(j);
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(chemin_json, json);
-
-        Directory.CreateDirectory (chemin_txt + "/"+playerName);
+        WriteInJson();
+        Directory.CreateDirectory (chemin_txt + "/" +playerName);
 
         return j;
     }
@@ -141,15 +147,13 @@ public class scrGlobal : MonoBehaviour
     public void SetIntro()
     {
         player.intro = true;
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(chemin_json, json);
+        WriteInJson();
     }
 
     public void SetTuto()
     {
         player.tuto = true;
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(chemin_json, json);
+        WriteInJson();
         
     }
     //Pour Jeu. SceneTest [scrTextManager]
@@ -170,8 +174,7 @@ public class scrGlobal : MonoBehaviour
         player.indiceNiveau[levelNum-1]=true;
         player.indiceRestant = nbIndices;
                 
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(chemin_json, json);
+        WriteInJson();
     }
 
     //Data en .txt dans Resultats. SceneTest [scrTextManager]
@@ -189,9 +192,7 @@ public class scrGlobal : MonoBehaviour
         player.chronoNiveau[levelNum-1] = frame;
         player.essaies[levelNum-1]++;
         
-        string json = JsonUtility.ToJson(data);
-
-        File.WriteAllText(chemin_json, json);
+        WriteInJson();
     }
 
     public void SetRetour(int frame)
@@ -199,8 +200,41 @@ public class scrGlobal : MonoBehaviour
         player.chronoNiveau[levelNum-1] += frame;
         player.essaies[levelNum-1]++;
         
-        string json = JsonUtility.ToJson(data);
+        WriteInJson();
+    }
 
+    public void NewBonusLevel(string nom)
+    {
+        if(File.Exists(chemin_bonus+"/"+nom))
+        {
+
+        }
+        data.niveauxBonus.Add(nom);
+    }
+
+    public void SetNiveauxBonus()
+    {
+        chemin_bonus = Application.persistentDataPath + "/NiveauxBonus";
+        string [] files = System.IO.Directory.GetFiles(chemin_bonus);
+        string jsonFile = File.ReadAllText(chemin_json);
+        data = JsonConvert.DeserializeObject<Donnees>(jsonFile);
+        data.niveauxBonus = new List<string>();
+
+        foreach (string file in files)
+        {
+            if(file.Contains("txt"))
+            {  
+                string[] arr = file.Split('\\');
+                data.niveauxBonus.Add(arr[1]);
+            }
+        }
+
+        WriteInJson();
+    }
+
+    public void WriteInJson()
+    {
+        string json = JsonConvert.SerializeObject(data);
         File.WriteAllText(chemin_json, json);
     }
 }

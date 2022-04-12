@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Joueurs
 {
-     //Globales
+    //Globales
     public string joueur;
     public int indiceRestant = 0;
     public bool intro = false;
@@ -17,4 +17,9 @@ public class Joueurs
     public int[] essaies = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
     public int[] chronoNiveau = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
+    //NiveauBonus
+    public Dictionary<string, bool> niveauxBonusFinis = new Dictionary<string, bool>();
+    public Dictionary<string, bool> indiceBonus = new Dictionary<string, bool>();
+    public Dictionary<string, int> essaiesBonus = new Dictionary<string, int>();
+    public Dictionary<string, int> chronoNiveauBonus = new Dictionary<string, int>();
 }

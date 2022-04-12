@@ -28,55 +28,206 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
 
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+        switch (name)
+        {
+            case "Casserole":
+                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[0])
+                {
+                    rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+                }
+                break;
+            case "Cuillere":
+                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[1])
+                {
+                    rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+                }
+                break;
+            case "Couteau":
+
+                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[2])
+                {
+                    rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+                }
+                break;
+            case "Fouet":
+
+                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[3])
+                {
+                    rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+                }
+                break;
+            case "Louche":
+                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[4])
+                {
+                    rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+                }
+                break;
+            case "Passoire":
+                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[5])
+                {
+                    rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+                }
+                break;
+            case "Poele":
+                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[6])
+                {
+                    rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+                }
+                break;
+            case "Rouleau":
+                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[7])
+                {
+                    rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+                }
+                break;
+            case "Rape":
+                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[8])
+                {
+                    rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+                }
+                break;
+            case "Spatule":
+                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[9])
+                {
+                    rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+                }
+                break;
+            default:
+                throw new System.Exception("Element not found");
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         canvasGroup.alpha = 1.0f;
-        canvasGroup.blocksRaycasts = true;
+        //canvasGroup.blocksRaycasts = true;
         Debug.Log(scrSlotsRewards.nameSlot);
         switch (name)
         {
             case "Casserole":
-                if (scrSlotsRewards.nameSlot != "SlotCasserole" || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotCasserole" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[0] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                {
                     rectTransform.anchoredPosition = initialPosition;
+                    canvasGroup.blocksRaycasts = true;
+                }
+
+                if (rectTransform.anchoredPosition != initialPosition)
+                {
+                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
+                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[0] = false;
+                }
+
                 break;
             case "Cuillere":
-                if (scrSlotsRewards.nameSlot != "SlotCuillere" || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotCuillere" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[1] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                {
                     rectTransform.anchoredPosition = initialPosition;
+                    canvasGroup.blocksRaycasts = true;
+                }
+                if (rectTransform.anchoredPosition != initialPosition)
+                {
+                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
+                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[1] = false;
+                }
                 break;
             case "Couteau":
-                if (scrSlotsRewards.nameSlot != "SlotCouteau" || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotCouteau" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[2] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                {
                     rectTransform.anchoredPosition = initialPosition;
+                    canvasGroup.blocksRaycasts = true;
+                }
+                if (rectTransform.anchoredPosition != initialPosition)
+                {
+                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
+                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[2] = false;
+                }
                 break;
             case "Fouet":
-                if (scrSlotsRewards.nameSlot != "SlotFouet" || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotFouet" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[3] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                {
                     rectTransform.anchoredPosition = initialPosition;
+                    canvasGroup.blocksRaycasts = true;
+                }
+                if (rectTransform.anchoredPosition != initialPosition)
+                {
+                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
+                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[3] = false;
+                }
+
                 break;
             case "Louche":
-                if (scrSlotsRewards.nameSlot != "SlotLouche" || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotLouche" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[4] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                {
                     rectTransform.anchoredPosition = initialPosition;
+                    canvasGroup.blocksRaycasts = true;
+                }
+                if (rectTransform.anchoredPosition != initialPosition)
+                {
+                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
+                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[4] = false;
+                }
+
                 break;
             case "Passoire":
-                if (scrSlotsRewards.nameSlot != "SlotPassoire" || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotPassoire" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[5] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                {
                     rectTransform.anchoredPosition = initialPosition;
+                    canvasGroup.blocksRaycasts = true;
+                }
+                if (rectTransform.anchoredPosition != initialPosition)
+                {
+                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
+                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[5] = false;
+                }
                 break;
             case "Poele":
-                if (scrSlotsRewards.nameSlot != "SlotPoele" || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotPoele" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[6] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                {
                     rectTransform.anchoredPosition = initialPosition;
+                    canvasGroup.blocksRaycasts = true;
+                }
+                if (rectTransform.anchoredPosition != initialPosition)
+                {
+                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
+                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[6] = false;
+                }
                 break;
             case "Rouleau":
-                if (scrSlotsRewards.nameSlot != "SlotRouleau" || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotRouleau" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[7] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                {
                     rectTransform.anchoredPosition = initialPosition;
+                    canvasGroup.blocksRaycasts = true;
+                }
+                if (rectTransform.anchoredPosition != initialPosition)
+                {
+                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
+                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[7] = false;
+                }
                 break;
             case "Rape":
-                if (scrSlotsRewards.nameSlot != "SlotRape" || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotRape" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[8] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                {
                     rectTransform.anchoredPosition = initialPosition;
+                    canvasGroup.blocksRaycasts = true;
+                }
+                if (rectTransform.anchoredPosition != initialPosition)
+                {
+                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
+                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[8] = false;
+                }
                 break;
             case "Spatule":
-                if (scrSlotsRewards.nameSlot != "SlotSpatule" || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotSpatule") || !scrSlotsRewards.pointerIsOnSlot)
+                {
                     rectTransform.anchoredPosition = initialPosition;
+                    canvasGroup.blocksRaycasts = true;
+                }
+                if (rectTransform.anchoredPosition != initialPosition)
+                {
+                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
+                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[9] = false;
+                    canvasGroup.blocksRaycasts = true;
+                }
                 break;
             default:
                 throw new System.Exception("Element not found");

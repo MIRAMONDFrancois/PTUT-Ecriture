@@ -1118,7 +1118,7 @@ public class scrTextManager : MonoBehaviour
             }
 
             vrai_slots_GO[i].GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = taillePot;
-            vrai_slots_GO[i].GetComponentInChildren<BoxCollider2D>().size = taillePot*2f;
+            vrai_slots_GO[i].GetComponentInChildren<BoxCollider2D>().size = taillePot*1.25f;
             
             Vector3 V3_slot = vrai_slots_GO[i].GetComponentInChildren<RectTransform>().position;
             vrai_slots_GO[i].GetComponentInChildren<RectTransform>().position = new Vector3(V3_slot.x+slot_pos.x,V3_slot.y+slot_pos.y,V3_slot.z);

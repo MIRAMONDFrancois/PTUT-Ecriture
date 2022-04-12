@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 public class scrGlobal : MonoBehaviour
 {
     [Header("General Informations")]
+    //public static scrGlobal Instance;
     public string playerName;//Connexion
     public int levelNum;//Connexion
     private Donnees data;
@@ -83,6 +84,12 @@ public class scrGlobal : MonoBehaviour
             Destroy(this.gameObject);
         }
         DontDestroyOnLoad(this.gameObject);
+        /*if(Instance != null)
+        {
+            Destroy(this);
+        }
+
+        Instance = this;*/
     }
 
     public void setLevelUnlocked()
@@ -209,6 +216,11 @@ public class scrGlobal : MonoBehaviour
 
         }
         //data.niveauxBonus.Add(nom);
+    }
+
+    public Donnees GetData()
+    {
+        return data;
     }
 
     public void SetNiveauxBonus()

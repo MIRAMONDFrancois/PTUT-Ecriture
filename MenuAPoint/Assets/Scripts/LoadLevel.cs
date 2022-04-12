@@ -14,6 +14,12 @@ public class LoadLevel : MonoBehaviour
         SceneManager.LoadScene(nameLevel);
     }
 
+    public void LoadBonusLevel(bool play)
+    {
+        GameObject.Find("Global").GetComponent<scrGlobal>().FromGameBuilder = play;
+        SceneManager.LoadScene(nameLevel);
+    }
+
     public void intro()
     {
         if(GameObject.Find("Global").GetComponent<scrGlobal>().intro)nameLevel = "MapScene";

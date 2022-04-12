@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BonusLevelManager : MonoBehaviour
 {
@@ -9,11 +10,18 @@ public class BonusLevelManager : MonoBehaviour
     public RectTransform Content;
     public Scrollbar ScrollBarValue;
 
+    private Donnees _data;
+
     void Start()
     {
-        for(int a=0;a<52;a++)
+        _data = GameObject.Find("Global").GetComponent<scrGlobal>().GetData();
+
+        foreach(NiveauxBonus niveauBonus in _data.niveauxBonus)
         {
             GameObject niveau = Instantiate(NivBonusPrefab);
+            niveau.GetComponentInChildren<TextMeshProUGUI>().text = niveauBonus.nom;
+
+
             niveau.transform.SetParent(Content.transform);
             niveau.transform.localScale = Vector3.one;
         }

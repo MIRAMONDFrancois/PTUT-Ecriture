@@ -11,11 +11,6 @@ public class OpenFiles : MonoBehaviour
     public TMP_InputField TextToEdit;
     [SerializeField] private Button _valider;
 
-    public void OpenFolderAcces()
-    {
-        EditorUtility.RevealInFinder(Application.persistentDataPath);
-    }
-
     public void OpenFileBrowser()
     {   
         string path = EditorUtility.OpenFilePanel("Sélectionner un fichier .txt", "", "txt");

@@ -11,12 +11,21 @@ public class LoadLevel : MonoBehaviour
 
     public void LoadThisLevel()
     {
+        scrGlobal.Instance.FromBonusLevel = false;
+        scrGlobal.Instance.FromGameBuilder = false;
+
         SceneManager.LoadScene(nameLevel);
     }
 
-    public void LoadBonusLevel(bool play)
+    public void LoadBonusLevel()
     {
-        scrGlobal.Instance.FromGameBuilder = play;
+        scrGlobal.Instance.FromBonusLevel = true;
+        SceneManager.LoadScene(nameLevel);
+    }
+
+    public void LoadBuilderLevel()
+    {
+        scrGlobal.Instance.FromGameBuilder = true;
         SceneManager.LoadScene(nameLevel);
     }
 
@@ -27,6 +36,8 @@ public class LoadLevel : MonoBehaviour
         scrGlobal.Instance.SetIntro();
         scrGlobal.Instance.intro = true;
 
+        scrGlobal.Instance.FromBonusLevel = false;
+        scrGlobal.Instance.FromGameBuilder = false;
         SceneManager.LoadScene(nameLevel);
     }
     public void tuto()

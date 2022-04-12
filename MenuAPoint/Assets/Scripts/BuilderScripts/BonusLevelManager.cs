@@ -1,32 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class BonusLevelManager : MonoBehaviour
 {
-    public GameObject NivBonusPrefab;
-    public RectTransform Content;
-    public Scrollbar ScrollBarValue;
-
-    private Donnees _data;
+    public GameObject[] buttons;
 
     void Start()
     {
-        _data = scrGlobal.Instance.GetData();
-
-        foreach(NiveauxBonus niveauBonus in _data.niveauxBonus)
+        if(scrGlobal.Instance.FromBonusLevel)
         {
-            GameObject niveau = Instantiate(NivBonusPrefab);
-            niveau.GetComponentInChildren<TextMeshProUGUI>().text = niveauBonus.nom;
-
-
-            niveau.transform.SetParent(Content.transform);
-            niveau.transform.localScale = Vector3.one;
+            buttons[0].SetActive(true);
+        }else
+        {
+            buttons[1].SetActive(true);
+            buttons[2].SetActive(true);
         }
 
-        ScrollBarValue.value = 1f;
-
+        #if (UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN ||UNITY_EDITOR)
+            buttons[3].SetActive(true);
+        #endif
     }
+
+    public void OpenFolder()
+    {
+        Application.OpenURL(Application.persistentDataPath +"/NiveauxBonus");
+    } 
 }

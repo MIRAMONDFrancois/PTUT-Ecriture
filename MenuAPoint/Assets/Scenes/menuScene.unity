@@ -1665,7 +1665,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level:
     m_Handle: 0
-  nameLevel: GameBuilder
+  nameLevel: AccesBonus
 --- !u!114 &627788250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1708,7 +1708,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 627788251}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 627788249}
+        m_MethodName: LoadBonusLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &627788251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4697,7 +4708,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1605547488}
-        m_MethodName: LoadThisLevel
+        m_MethodName: LoadBuilderLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

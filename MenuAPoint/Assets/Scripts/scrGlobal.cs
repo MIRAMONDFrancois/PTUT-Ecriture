@@ -48,8 +48,9 @@ public class scrGlobal : MonoBehaviour
     public int nbIndices = 0;//Map pour Jeu
 
 
-    //From GameBuilder
+    //GameBuilder
     public bool FromGameBuilder;
+    public bool FromBonusLevel;
     public TextAsset GameBuilderText;
 
     void Start()

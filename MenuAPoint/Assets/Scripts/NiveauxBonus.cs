@@ -5,15 +5,11 @@ using UnityEngine;
 [System.Serializable]
 public class NiveauxBonus
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public string nom;
+    public int[] extraPonct = {0,0,0,0,0,0};
 
-    // Update is called once per frame
-    void Update()
+    public NiveauxBonus(string nom)
     {
-        
+        this.nom = nom;
     }
 }

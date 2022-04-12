@@ -112,13 +112,12 @@ public class scrGlobal : MonoBehaviour
         j.joueur = playerName;
         int nbniveauxbonus = data.niveauxBonus.Count;
 
-        //Dictionary<string, Objet> objets = JsonConvert.DeserializeObject<Dictionary<string, Objet>>(jsonTextFile.text);
         for(int a=0;a<nbniveauxbonus;a++)
         {
-            j.niveauxBonusFinis.Add(data.niveauxBonus[a],false);
-            j.indiceBonus.Add(data.niveauxBonus[a],false);
-            j.essaiesBonus.Add(data.niveauxBonus[a],1);
-            j.chronoNiveauBonus.Add(data.niveauxBonus[a],0);
+            j.niveauxBonusFinis.Add(data.niveauxBonus[a].nom,false);
+            j.indiceBonus.Add(data.niveauxBonus[a].nom,false);
+            j.essaiesBonus.Add(data.niveauxBonus[a].nom,1);
+            j.chronoNiveauBonus.Add(data.niveauxBonus[a].nom,0);
         }
         
         data.donnees.Add(j);
@@ -209,7 +208,7 @@ public class scrGlobal : MonoBehaviour
         {
 
         }
-        data.niveauxBonus.Add(nom);
+        //data.niveauxBonus.Add(nom);
     }
 
     public void SetNiveauxBonus()
@@ -218,14 +217,14 @@ public class scrGlobal : MonoBehaviour
         string [] files = System.IO.Directory.GetFiles(chemin_bonus);
         string jsonFile = File.ReadAllText(chemin_json);
         data = JsonConvert.DeserializeObject<Donnees>(jsonFile);
-        data.niveauxBonus = new List<string>();
+        data.niveauxBonus = new List<NiveauxBonus>();
 
         foreach (string file in files)
         {
             if(file.Contains("txt"))
             {  
                 string[] arr = file.Split('\\');
-                data.niveauxBonus.Add(arr[1]);
+                data.niveauxBonus.Add(new NiveauxBonus(arr[1]));
             }
         }
 

@@ -16,8 +16,8 @@ public class ResetGame : MonoBehaviour
 
     public void resetGame()
     {
-        GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked.Clear();
-        GameObject.Find("Global").GetComponent<scrGlobal>().setLevelUnlocked();
+        scrGlobal.Instance.levelunlocked.Clear();
+        scrGlobal.Instance.setLevelUnlocked();
     }
     
 }

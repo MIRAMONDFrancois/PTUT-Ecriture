@@ -64,9 +64,7 @@ public class scrMenu : MonoBehaviour
     }
 
     public void SetName(){
-        scrGlobal truc = GameObject.Find("Global").GetComponent<scrGlobal>();
-
-        truc.playerName = user_prenom.text+user_nom.text;
+        scrGlobal.Instance.playerName = user_prenom.text+user_nom.text;
     }
 
     public void Enterpwd(){
@@ -86,14 +84,11 @@ public class scrMenu : MonoBehaviour
 
     }
     public void Setlvl(){
-        scrGlobal truc2 = GameObject.Find("Global").GetComponent<scrGlobal>(); 
         Snblvl = userNbInput_Field.text;
-
-        
         
         int.TryParse(Snblvl, out Inblvl);
         for (int i = 0; i < Inblvl; i++ ){
-            truc2.levelunlocked[i] = true;
+            scrGlobal.Instance.levelunlocked[i] = true;
         }
         
 
@@ -102,7 +97,7 @@ public class scrMenu : MonoBehaviour
 
     public void LoadMenu()
     {
-        GameObject.Find("Global").GetComponent<scrGlobal>().ChargeJoueur();
+        scrGlobal.Instance.ChargeJoueur();
 
         SceneManager.LoadScene("menuScene");
     }

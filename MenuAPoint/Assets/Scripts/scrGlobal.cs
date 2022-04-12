@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 public class scrGlobal : MonoBehaviour
 {
     [Header("General Informations")]
-    //public static scrGlobal Instance;
+    public static scrGlobal Instance;
     public string playerName;//Connexion
     public int levelNum;//Connexion
     private Donnees data;
@@ -77,19 +77,19 @@ public class scrGlobal : MonoBehaviour
     }
 
     void Awake() {
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("Global");
+        /*GameObject[] objs = GameObject.FindGameObjectsWithTag("Global");
 
         if (objs.Length > 1)
         {
             Destroy(this.gameObject);
         }
-        DontDestroyOnLoad(this.gameObject);
-        /*if(Instance != null)
+        DontDestroyOnLoad(this.gameObject);*/
+        if(Instance != null)
         {
             Destroy(this);
         }
 
-        Instance = this;*/
+        Instance = this;
     }
 
     public void setLevelUnlocked()

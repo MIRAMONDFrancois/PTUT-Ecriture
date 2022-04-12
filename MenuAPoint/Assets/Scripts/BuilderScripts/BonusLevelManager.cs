@@ -14,7 +14,7 @@ public class BonusLevelManager : MonoBehaviour
 
     void Start()
     {
-        _data = GameObject.Find("Global").GetComponent<scrGlobal>().GetData();
+        _data = scrGlobal.Instance.GetData();
 
         foreach(NiveauxBonus niveauBonus in _data.niveauxBonus)
         {

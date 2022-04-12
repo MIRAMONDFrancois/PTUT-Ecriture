@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class scrIndice : MonoBehaviour
 {
-    private scrGlobal script;
     private scrTextManager scriptText;
     public bool used = false;
     //private float normalScale = 1f;
@@ -28,7 +27,6 @@ public class scrIndice : MonoBehaviour
 
     void Start()
     {
-        script = GameObject.Find("Global").GetComponent<scrGlobal>();
         scriptText = GameObject.Find("GameManager").GetComponent<scrTextManager>();
 
         //events
@@ -40,7 +38,7 @@ public class scrIndice : MonoBehaviour
         level3unlocked();
         affichageIndices();
 
-        if(script.GetIndice())
+        if(scrGlobal.Instance.GetIndice())
         {
             used=true;
             scriptText.showIndice();
@@ -50,13 +48,13 @@ public class scrIndice : MonoBehaviour
     public void decrementIndice()
     {
         
-        if (script.nbIndices > 0)
+        if (scrGlobal.Instance.nbIndices > 0)
         {
             if(!used)
             {
-                script.nbIndices--;
+                scrGlobal.Instance.nbIndices--;
                 used = true;
-                script.SetIndice();
+                scrGlobal.Instance.SetIndice();
             }
             
             scriptText.showIndice();
@@ -65,7 +63,7 @@ public class scrIndice : MonoBehaviour
 
         affichageIndices();
 
-        for(int a=0;a<script.nbIndices;a++)
+        for(int a=0;a<scrGlobal.Instance.nbIndices;a++)
         {
             transform.GetChild(a).GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1);
             transform.GetChild(a).localScale = new Vector2(1f,1f);
@@ -74,7 +72,7 @@ public class scrIndice : MonoBehaviour
 
     public void affichageIndices()
     {
-        switch (script.nbIndices)
+        switch (scrGlobal.Instance.nbIndices)
         {
             case 0:
                 Indice1.SetActive(false);
@@ -110,7 +108,7 @@ public class scrIndice : MonoBehaviour
 
     public void level3unlocked()
     {
-        if (script.levelNum <= 3)
+        if (scrGlobal.Instance.levelNum <= 3)
             Indice.SetActive(false);
     }
 

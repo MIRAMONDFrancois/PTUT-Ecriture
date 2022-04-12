@@ -14,7 +14,7 @@ public class scrEnd : MonoBehaviour
 
     public void checkIndices()
     {
-        switch (GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices)
+        switch (scrGlobal.Instance.nbIndices)
         {
             case 0:
                 TextFin.text = "Grâce à votre aide, Tokki est devenue une cuisinière surprenante !";

@@ -23,8 +23,8 @@ public class OpenFiles : MonoBehaviour
         {
             TextAsset textAsset = new TextAsset(File.ReadAllText(path));
             TextToEdit.text = textAsset.text;
-            GameObject.Find("Global").GetComponent<scrGlobal>().FromGameBuilder = true;
-            GameObject.Find("Global").GetComponent<scrGlobal>().GameBuilderText = textAsset;
+            scrGlobal.Instance.FromGameBuilder = true;
+            scrGlobal.Instance.GameBuilderText = textAsset;
         }
     }
 

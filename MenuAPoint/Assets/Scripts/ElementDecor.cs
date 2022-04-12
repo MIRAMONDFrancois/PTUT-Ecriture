@@ -9,7 +9,8 @@ public class ElementDecor : MonoBehaviour
     void Start()
     {
         //1-2-4-5-7-9-10-12-13-15
-        List<bool> elements = GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked;
+        //List<bool> elements = GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked;
+        List<bool> elements = scrGlobal.Instance.levelunlocked;
         bool verif;
         int outil = -1;
 

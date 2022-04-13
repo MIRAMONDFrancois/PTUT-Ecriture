@@ -46,5 +46,7 @@ public class BonusReussite : MonoBehaviour
 
         scrGlobal.Instance.GameBuilderText = new TextAsset(File.ReadAllText(scrGlobal.Instance.chemin_bonus+"/"+TextCorrect.text));
 
+        scrGlobal.Instance.NameBuilderText = TextCorrect.text;
+
     }
 }

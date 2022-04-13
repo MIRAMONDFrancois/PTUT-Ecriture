@@ -32,7 +32,6 @@ public class scrTextManager : MonoBehaviour
     //Events
     public System.Action OnTextLoad;
 
-
     // Cursor
     private bool movingCursor;
     [HideInInspector]
@@ -129,7 +128,7 @@ public class scrTextManager : MonoBehaviour
         vrai_nomspropres.Add("Pesto");
 
         // DATA IMPORT
-        if(scrGlobal.Instance.FromGameBuilder)
+        if(scrGlobal.Instance.FromGameBuilder || scrGlobal.Instance.FromBonusLevel)
         {
             TextFile = scrGlobal.Instance.GameBuilderText;
         }else
@@ -139,12 +138,7 @@ public class scrTextManager : MonoBehaviour
         
         CorrectFile = scrGlobal.Instance.animTextFile;
         dualAnim = scrGlobal.Instance.nivAntiOubli;
-        pointLimit = scrGlobal.Instance.pointLimit;
-        virguleLimit = scrGlobal.Instance.virguleLimit;
-        exclamationLimit = scrGlobal.Instance.exclamationLimit;
-        interrogationLimit = scrGlobal.Instance.interrogationLimit;
-        deuxpointsLimit = scrGlobal.Instance.deuxpointsLimit;
-        pointvirguleLimit = scrGlobal.Instance.pointvirguleLimit;
+        
 
         init_taille_texte(); 
 
@@ -230,13 +224,19 @@ public class scrTextManager : MonoBehaviour
                                 animationLog.text = "Ce plat était vraiment au point !";
                                 break;
                         }
-                        // writes on the .txt
                         
                         
                         // Hides all buttons and shows the "continue" one, which is the first child
                         ButtonLayer.SetActive(true);
-                        ButtonLayer.transform.GetChild(0).gameObject.SetActive(true);
-                        for (int i = 1; i < ButtonLayer.transform.childCount; i++) {
+                        if(scrGlobal.Instance.FromGameBuilder)
+                        {
+                            ButtonLayer.transform.GetChild(1).gameObject.SetActive(true);
+                        }else
+                        {
+                            ButtonLayer.transform.GetChild(0).gameObject.SetActive(true);
+                        }
+                        
+                        for (int i = 2; i < ButtonLayer.transform.childCount; i++) {
                             ButtonLayer.transform.GetChild(i).gameObject.SetActive(false);
                         }
 
@@ -1203,7 +1203,12 @@ public class scrTextManager : MonoBehaviour
     }
 
     public void GoToMap() {
-        
+        if(scrGlobal.Instance.FromGameBuilder)
+        {
+            SceneManager.LoadScene("GameBuilder");
+            return;
+        }
+
         if(!textreussite)
         {
             texte_data("Retour");

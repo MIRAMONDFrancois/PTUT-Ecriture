@@ -29,6 +29,12 @@ public class LoadLevel : MonoBehaviour
         SceneManager.LoadScene(nameLevel);
     }
 
+    public void FinishBuilder()
+    {
+        scrGlobal.Instance.CreateTexteBuilder();
+        SceneManager.LoadScene(nameLevel);
+    }
+
     public void intro()
     {
         if(scrGlobal.Instance.intro)nameLevel = "MapScene";

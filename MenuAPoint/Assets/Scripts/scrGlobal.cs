@@ -52,6 +52,7 @@ public class scrGlobal : MonoBehaviour
     public bool FromGameBuilder;
     public bool FromBonusLevel;
     public TextAsset GameBuilderText;
+    public string NameBuilderText;
 
     void Start()
     {
@@ -169,18 +170,24 @@ public class scrGlobal : MonoBehaviour
     //Pour Jeu. SceneTest [scrTextManager]
     public int GetChrono()
     {
+        if(FromGameBuilder)return 0;
+
         return player.chronoNiveau[levelNum-1];
     }
 
     //Pour Indice. SceneTest [scrIndice]
     public bool GetIndice()
-    { 
+    {
+        if(FromGameBuilder)return false;
+
         return player.indiceNiveau[levelNum-1];
     }
 
     //Pour Indice. SceneTest [scrIndice]
     public void SetIndice()
     {
+        if(FromGameBuilder)return;
+        
         player.indiceNiveau[levelNum-1]=true;
         player.indiceRestant = nbIndices;
                 
@@ -190,14 +197,38 @@ public class scrGlobal : MonoBehaviour
     //Data en .txt dans Resultats. SceneTest [scrTextManager]
     public void SetTexteFichier(string recap)
     {
+        if(FromGameBuilder)return;
+
         string chemin = chemin_txt+"/"+playerName+"/Niveau_"+levelNum;
         Directory.CreateDirectory(chemin);
 
         File.WriteAllText(chemin+"/Essaie_"+player.essaies[levelNum-1]+".txt",recap);
     }
 
+    public void CreateTexteBuilder()
+    {
+        string[] trial = NameBuilderText.Split('.');
+
+        for(int a=0;a<trial.Length;a++)
+        {
+            print("trial "+trial[a]);
+        }
+
+        if(trial[trial.Length-1].Equals("txt"))
+        {
+            File.WriteAllText(chemin_bonus+"/"+NameBuilderText,GameBuilderText.text);
+        }else
+        {
+            File.WriteAllText(chemin_bonus+"/"+NameBuilderText+".txt",GameBuilderText.text);
+        }
+
+        
+    }
+
     public void SetReussite(int frame)
     {
+        if(FromGameBuilder)return;
+
         player.niveauxFinis[levelNum-1] = true;
         player.chronoNiveau[levelNum-1] = frame;
         player.essaies[levelNum-1]++;
@@ -211,11 +242,6 @@ public class scrGlobal : MonoBehaviour
         player.essaies[levelNum-1]++;
         
         WriteInJson();
-    }
-
-    public void NewBonusLevel(string nom)
-    {
-        //data.niveauxBonus.Add(nom);
     }
 
     public Donnees GetData()

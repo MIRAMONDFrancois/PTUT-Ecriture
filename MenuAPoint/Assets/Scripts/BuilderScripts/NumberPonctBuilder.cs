@@ -6,6 +6,7 @@ using TMPro;
 public class NumberPonctBuilder : MonoBehaviour
 {
     public TMP_InputField PonctTexte;
+    private PonctBuildEvents ponctTot;
 
     public Transform[] ListePot;
     private int[] nbPot = {0,0,0,0,0,0};
@@ -63,15 +64,28 @@ public class NumberPonctBuilder : MonoBehaviour
     {
         for(int a=0;a<ListePot.Length;a++)
         {
-            PonctBuildEvents ponctTemp = ListePot[a].GetComponent<PonctBuildEvents>();
+            ponctTot = ListePot[a].GetComponent<PonctBuildEvents>();
 
-            if(ponctTemp.InfiniteToggle)
+            if(ponctTot.InfiniteToggle)
             {
-                ponctTemp.TextTot.text = "-1";
+                ponctTot.TextTot.text = "-1";
             }else
             {
-                ponctTemp.TextTot.text = ponctTemp.IntSuppl + nbPot[a] + "";
+                ponctTot.TextTot.text = ponctTot.IntSuppl + nbPot[a] + "";
             }
         }
+    }
+
+    public void OnEssayage()
+    {
+        print(scrGlobal.Instance.NameBuilderText);
+
+        scrGlobal.Instance.GameBuilderText = new TextAsset(PonctTexte.text);
+        scrGlobal.Instance.pointLimit = ponctTot.IntSuppl + nbPot[0];
+        scrGlobal.Instance.virguleLimit = ponctTot.IntSuppl + nbPot[1];
+        scrGlobal.Instance.exclamationLimit = ponctTot.IntSuppl + nbPot[2];
+        scrGlobal.Instance.interrogationLimit = ponctTot.IntSuppl + nbPot[3];
+        scrGlobal.Instance.deuxpointsLimit = ponctTot.IntSuppl + nbPot[4];
+        scrGlobal.Instance.pointvirguleLimit = ponctTot.IntSuppl + nbPot[5];
     }
 }

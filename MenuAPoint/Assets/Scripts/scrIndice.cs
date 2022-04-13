@@ -15,6 +15,7 @@ public class scrIndice : MonoBehaviour
     private int limiteScale = 5;//(upScale - normalScale) / speedScale -> 5 frames
     private int frames_mouse_over = 0;
     private int change = 1;
+    private int _nbIndiceBuilder = 1;
 
     private int frames = 0;
     
@@ -34,7 +35,7 @@ public class scrIndice : MonoBehaviour
     }
 
     void Init()
-    {
+    {   
         level3unlocked();
         affichageIndices();
 
@@ -47,7 +48,15 @@ public class scrIndice : MonoBehaviour
 
     public void decrementIndice()
     {
-        
+        if(scrGlobal.Instance.FromGameBuilder || scrGlobal.Instance.FromBonusLevel)
+        {
+            _nbIndiceBuilder = 0;
+            affichageIndices();
+            scriptText.showIndice();
+            return;
+        }
+
+
         if (scrGlobal.Instance.nbIndices > 0)
         {
             if(!used)
@@ -72,6 +81,21 @@ public class scrIndice : MonoBehaviour
 
     public void affichageIndices()
     {
+        if(scrGlobal.Instance.FromGameBuilder || scrGlobal.Instance.FromBonusLevel)
+        {
+            if(_nbIndiceBuilder == 1)
+            {
+                Indice2.SetActive(false);
+                Indice3.SetActive(false);
+                Indice4.SetActive(false);
+                Indice5.SetActive(false);
+                return;
+            }
+
+            Indice1.SetActive(false);
+            return;
+        }
+
         switch (scrGlobal.Instance.nbIndices)
         {
             case 0:
@@ -108,6 +132,8 @@ public class scrIndice : MonoBehaviour
 
     public void level3unlocked()
     {
+        if(scrGlobal.Instance.FromGameBuilder)return;
+
         if (scrGlobal.Instance.levelNum <= 3)
             Indice.SetActive(false);
     }

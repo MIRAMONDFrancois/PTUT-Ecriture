@@ -25,5 +25,6 @@ public class BonusLevelManager : MonoBehaviour
     public void OpenFolder()
     {
         Application.OpenURL(Application.persistentDataPath +"/NiveauxBonus");
-    } 
+    }
+
 }

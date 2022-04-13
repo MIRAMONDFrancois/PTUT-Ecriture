@@ -148,6 +148,7 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
+                    rectTransform.sizeDelta = new Vector2(120, 200);
                 }
 
                 if (rectTransform.anchoredPosition != initialPosition)
@@ -162,6 +163,8 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
+                    rectTransform.sizeDelta = new Vector2(80, 200);
+                    rectTransform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
@@ -174,6 +177,8 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
+                    rectTransform.sizeDelta = new Vector2(150, 200);
+                    rectTransform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
@@ -186,6 +191,8 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
+                    rectTransform.sizeDelta = new Vector2(100, 200);
+                    rectTransform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
@@ -199,6 +206,7 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
+                    rectTransform.sizeDelta = new Vector2(100, 200);
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
@@ -212,6 +220,7 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
+                    rectTransform.sizeDelta = new Vector2(200, 200);
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
@@ -224,6 +233,7 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
+                    rectTransform.sizeDelta = new Vector2(130, 200);
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
@@ -236,6 +246,7 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
+                    rectTransform.sizeDelta = new Vector2(150, 200);
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
@@ -248,6 +259,7 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
+                    rectTransform.sizeDelta = new Vector2(150, 200);
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
@@ -260,6 +272,8 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
+                    rectTransform.sizeDelta = new Vector2(110, 200);
+                    rectTransform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {

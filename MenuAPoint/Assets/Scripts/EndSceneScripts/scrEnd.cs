@@ -7,8 +7,8 @@ public class scrEnd : MonoBehaviour
 {
     public TextMeshProUGUI textFin;
     public GameObject menuButton;
-    public TextMeshProUGUI titreUI;
-    public TextMeshProUGUI instructionsUI;
+    public GameObject boxItems;
+    public GameObject tokkiSprite;
 
     private void Start()
     {
@@ -21,8 +21,8 @@ public class scrEnd : MonoBehaviour
         {
             textFin.gameObject.SetActive(true);
             menuButton.SetActive(true);
-            titreUI.gameObject.SetActive(true);
-            instructionsUI.gameObject.SetActive(false);
+            boxItems.SetActive(false);
+            tokkiSprite.SetActive(true);
         }
     }
 
@@ -46,10 +46,10 @@ public class scrEnd : MonoBehaviour
                 textFin.text = "Grâce à votre aide, Tokki est devenue une cuisinière formidable !";
                 break;
             case 5:
-                textFin.text = "Grâce à votre aide, Tokki a réussi à réaliser son rêve ultime ; elle est devenue une excellente cuisinière";
+                textFin.text = "Grâce à votre aide, Tokki a réalisé son rêve ultime ; elle est devenue une excellente cuisinière !";
                 break;
             default:
-                throw new System.Exception("Erreur");
+                throw new System.Exception("Erreur Nombre Indices --- WTF");
         }
     }
 }

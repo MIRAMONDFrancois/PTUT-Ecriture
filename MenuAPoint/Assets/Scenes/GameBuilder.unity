@@ -783,6 +783,7 @@ GameObject:
   - component: {fileID: 1092562730}
   - component: {fileID: 1092562729}
   - component: {fileID: 1092562728}
+  - component: {fileID: 1092562732}
   m_Layer: 5
   m_Name: Valider
   m_TagString: Untagged
@@ -916,6 +917,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1092562726}
   m_CullTransparentMesh: 0
+--- !u!114 &1092562732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092562726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3051d7c7872340146a35bad536dc1de9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TextToEdit: {fileID: 740154058}
+  _valider: {fileID: 1092562729}
 --- !u!1 &1131321667
 GameObject:
   m_ObjectHideFlags: 0
@@ -1836,7 +1851,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TextToEdit: {fileID: 740154058}
   TextQuiBouge: {fileID: 1475656605}
-  _valider: {fileID: 1092562729}
 --- !u!224 &59381962698034484
 RectTransform:
   m_ObjectHideFlags: 0

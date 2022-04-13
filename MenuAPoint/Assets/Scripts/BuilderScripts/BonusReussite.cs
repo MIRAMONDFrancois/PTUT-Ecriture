@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.IO;
 
 public class BonusReussite : MonoBehaviour
 {
@@ -42,5 +43,8 @@ public class BonusReussite : MonoBehaviour
         GetComponentInParent<ScrollAreaManager>().OnNiveauSelected?.Invoke();
 
         ImageCorrecte.GetComponent<Outline>().enabled = true;
+
+        scrGlobal.Instance.GameBuilderText = new TextAsset(File.ReadAllText(scrGlobal.Instance.chemin_bonus+"/"+TextCorrect.text));
+
     }
 }

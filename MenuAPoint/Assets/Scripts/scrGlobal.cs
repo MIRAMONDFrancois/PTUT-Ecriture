@@ -15,7 +15,7 @@ public class scrGlobal : MonoBehaviour
     private Joueurs player;
     private string chemin_json;
     private string chemin_txt;
-    private string chemin_bonus;
+    public string chemin_bonus;
     public TextMeshProUGUI debug;
 
     [Header("Unlocked Levels")]

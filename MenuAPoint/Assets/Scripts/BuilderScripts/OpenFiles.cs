@@ -11,6 +11,12 @@ public class OpenFiles : MonoBehaviour
     public TMP_InputField TextToEdit;
     [SerializeField] private Button _valider;
 
+
+    void Start()
+    {
+        TextToEdit.text = scrGlobal.Instance.GameBuilderText.text;
+    }
+
     public void OpenFileBrowser()
     {   
         string path = EditorUtility.OpenFilePanel("Sélectionner un fichier .txt", "", "txt");
@@ -22,7 +28,7 @@ public class OpenFiles : MonoBehaviour
             scrGlobal.Instance.GameBuilderText = textAsset;
         }
     }
-
+    
     void FixedUpdate()
     {
         if(TextToEdit.text.Length == 0)

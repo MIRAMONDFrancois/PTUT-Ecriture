@@ -24,6 +24,45 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
     {
         canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
+        switch(name)
+        {
+            case "Casserole":
+                rectTransform.sizeDelta = new Vector2(170, 300);
+                break;
+            case "Cuillere":
+                rectTransform.sizeDelta = new Vector2(80, 260);
+                rectTransform.rotation = Quaternion.Euler(0f, 0f, -12f);
+                break;
+            case "Couteau":
+                rectTransform.sizeDelta = new Vector2(150, 210);
+                rectTransform.rotation = Quaternion.Euler(0f, 0f, 216f);
+                break;
+            case "Fouet":
+                rectTransform.sizeDelta = new Vector2(190, 375);
+                rectTransform.rotation = Quaternion.Euler(0f, 0f, 95f);
+                break;
+            case "Louche":
+                rectTransform.sizeDelta = new Vector2(200, 350);
+                break;
+            case "Passoire":
+                rectTransform.sizeDelta = new Vector2(260, 260);
+                break;
+            case "Poele":
+                rectTransform.sizeDelta = new Vector2(250, 470);
+                break;
+            case "Rouleau":
+                rectTransform.sizeDelta = new Vector2(260, 260);
+                break;
+            case "Rape":
+                rectTransform.sizeDelta = new Vector2(290, 366);
+                break;
+            case "Spatule":
+                rectTransform.sizeDelta = new Vector2(175, 300);
+                rectTransform.rotation = Quaternion.Euler(0f, 0f, 150f);
+                break;
+            default:
+                throw new System.Exception("Element not found");
+        }
     }
 
     public void OnDrag(PointerEventData eventData)

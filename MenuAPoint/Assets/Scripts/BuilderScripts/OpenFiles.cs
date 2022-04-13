@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class OpenFiles : MonoBehaviour
 {
     public TMP_InputField TextToEdit;
+    public GameObject TextQuiBouge;
     [SerializeField] private Button _valider;
 
 
@@ -33,6 +34,7 @@ public class OpenFiles : MonoBehaviour
     
     void FixedUpdate()
     {
+
         if(TextToEdit.text.Length == 0)
         {
             _valider.interactable = false;
@@ -46,5 +48,10 @@ public class OpenFiles : MonoBehaviour
         {
             _valider.interactable = false;
         }
+    }
+
+    void Update()
+    {
+        TextQuiBouge.transform.localPosition = Vector3.zero;
     }
 }

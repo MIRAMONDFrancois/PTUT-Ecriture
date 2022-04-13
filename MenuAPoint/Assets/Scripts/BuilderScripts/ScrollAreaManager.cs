@@ -51,4 +51,10 @@ public class ScrollAreaManager : MonoBehaviour
             Destroy(go);
         }
     }
+
+    public void LoadNouveau()
+    {
+        scrGlobal.Instance.GameBuilderText = null;
+        OnNiveauSelected?.Invoke();
+    }
 }

@@ -14,6 +14,8 @@ public class OpenFiles : MonoBehaviour
 
     void Start()
     {
+        if(scrGlobal.Instance.GameBuilderText == null)return;
+
         TextToEdit.text = scrGlobal.Instance.GameBuilderText.text;
     }
 

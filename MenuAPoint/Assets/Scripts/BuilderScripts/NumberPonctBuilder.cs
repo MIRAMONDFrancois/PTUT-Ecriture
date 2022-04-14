@@ -6,13 +6,14 @@ using TMPro;
 public class NumberPonctBuilder : MonoBehaviour
 {
     public TMP_InputField PonctTexte;
-    private PonctBuildEvents ponctTot;
+    private List<PonctBuildEvents> ponctTot = new List<PonctBuildEvents>();
 
     public Transform[] ListePot;
     private int[] nbPot = {0,0,0,0,0,0};
 
     void Start()
     {
+        Init();
         StartCoroutine(ComptagePonct());
     }
 
@@ -60,32 +61,49 @@ public class NumberPonctBuilder : MonoBehaviour
         
     }
 
+    private void Init()
+    {
+        NiveauxBonus bonus = scrGlobal.Instance.GetBonusLevel();
+
+        for(int a=0;a<ListePot.Length;a++)
+        {
+            ponctTot.Add(ListePot[a].GetComponent<PonctBuildEvents>());
+            
+            if(bonus.extraPonct[a] == -1)
+            {
+                ponctTot[a].PonctInfinite();
+                ponctTot[a].TextTot.text = "-1";
+            }else
+            {
+                ponctTot[a].TextTot.text = (bonus.extraPonct[a] - nbPot[a]) + "";
+            }
+        }
+    }
+
     private void ChangementNbPonct()
     {
         for(int a=0;a<ListePot.Length;a++)
         {
-            ponctTot = ListePot[a].GetComponent<PonctBuildEvents>();
-
-            if(ponctTot.InfiniteToggle)
+            if(ponctTot[a].InfiniteToggle)
             {
-                ponctTot.TextTot.text = "-1";
+                ponctTot[a].TextTot.text = "-1";
             }else
             {
-                ponctTot.TextTot.text = ponctTot.IntSuppl + nbPot[a] + "";
+                ponctTot[a].TextTot.text = ponctTot[a].IntSuppl + nbPot[a] + "";
             }
         }
     }
 
     public void OnEssayage()
     {
-        print(scrGlobal.Instance.NameBuilderText);
-
         scrGlobal.Instance.GameBuilderText = new TextAsset(PonctTexte.text);
-        scrGlobal.Instance.pointLimit = ponctTot.IntSuppl + nbPot[0];
-        scrGlobal.Instance.virguleLimit = ponctTot.IntSuppl + nbPot[1];
-        scrGlobal.Instance.exclamationLimit = ponctTot.IntSuppl + nbPot[2];
-        scrGlobal.Instance.interrogationLimit = ponctTot.IntSuppl + nbPot[3];
-        scrGlobal.Instance.deuxpointsLimit = ponctTot.IntSuppl + nbPot[4];
-        scrGlobal.Instance.pointvirguleLimit = ponctTot.IntSuppl + nbPot[5];
+
+        
+        scrGlobal.Instance.pointLimit = ponctTot[0].InfiniteToggle ? -1 : ponctTot[0].IntSuppl + nbPot[0];
+        scrGlobal.Instance.virguleLimit = ponctTot[1].InfiniteToggle ? -1 : ponctTot[1].IntSuppl + nbPot[1];
+        scrGlobal.Instance.exclamationLimit = ponctTot[2].InfiniteToggle ? -1 : ponctTot[2].IntSuppl + nbPot[2];
+        scrGlobal.Instance.interrogationLimit = ponctTot[3].InfiniteToggle ? -1 : ponctTot[3].IntSuppl + nbPot[3];
+        scrGlobal.Instance.deuxpointsLimit = ponctTot[4].InfiniteToggle ? -1 : ponctTot[4].IntSuppl + nbPot[4];
+        scrGlobal.Instance.pointvirguleLimit = ponctTot[5].InfiniteToggle ? -1 : ponctTot[5].IntSuppl + nbPot[5];
     }
 }

@@ -56,7 +56,7 @@ public class scrGlobal : MonoBehaviour
 
     void Start()
     {
-        #if UNITY_EDITOR
+        /*#if UNITY_EDITOR
             chemin_json = Application.streamingAssetsPath + "/donnees.json";
             chemin_txt = "./Resultats";
         #elif UNITY_ANDROID
@@ -74,11 +74,12 @@ public class scrGlobal : MonoBehaviour
         if(!File.Exists(chemin_json))
         {
             File.WriteAllText(chemin_json, "{\"donnees\": [],\"niveauxBonus\": []}");
-        }
+        }*/
 
         debug.text = Application.persistentDataPath;
         
-        SetNiveauxBonus();
+        //SetNiveauxBonus();
+        InitJson();
         setLevelUnlocked();
     }
 
@@ -96,6 +97,24 @@ public class scrGlobal : MonoBehaviour
         }
 
         Instance = this;
+    }
+
+    private void InitJson()
+    {
+        chemin_json = Application.persistentDataPath + "/donnees.json";
+        chemin_txt = Application.persistentDataPath + "/Resultats";
+        chemin_bonus = Application.persistentDataPath + "/NiveauxBonus";
+
+        Directory.CreateDirectory (chemin_bonus);
+
+        if(!File.Exists(chemin_json))
+        {
+            File.WriteAllText(chemin_json, "{\"donnees\": [],\"niveauxBonus\": []}");
+        }
+
+        string jsonFile = File.ReadAllText(chemin_json);
+        print(jsonFile);
+        data = JsonConvert.DeserializeObject<Donnees>(jsonFile);
     }
 
     public void setLevelUnlocked()
@@ -124,13 +143,13 @@ public class scrGlobal : MonoBehaviour
 
         j.joueur = playerName;
 
-        for(int a=0;a<data.niveauxBonus.Count;a++)
+        /*for(int a=0;a<data.niveauxBonus.Count;a++)
         {
             j.niveauxBonusFinis.Add(data.niveauxBonus[a].nom,false);
             j.indiceBonus.Add(data.niveauxBonus[a].nom,false);
             j.essaiesBonus.Add(data.niveauxBonus[a].nom,1);
             j.chronoNiveauBonus.Add(data.niveauxBonus[a].nom,0);
-        }
+        }*/
         
         data.donnees.Add(j);
         WriteInJson();
@@ -205,24 +224,44 @@ public class scrGlobal : MonoBehaviour
         File.WriteAllText(chemin+"/Essaie_"+player.essaies[levelNum-1]+".txt",recap);
     }
 
-    public void CreateTexteBuilder()
+    public NiveauxBonus GetBonusLevel()
     {
+        foreach(NiveauxBonus niveaux in data.niveauxBonus)
+        {
+            if(niveaux.nom.Equals(NameBuilderText))return niveaux;
+        }
+        
         string[] trial = NameBuilderText.Split('.');
 
-        for(int a=0;a<trial.Length;a++)
+        if(!trial[trial.Length-1].Equals("txt"))
         {
-            print("trial "+trial[a]);
+            NameBuilderText += ".txt";
         }
 
-        if(trial[trial.Length-1].Equals("txt"))
-        {
-            File.WriteAllText(chemin_bonus+"/"+NameBuilderText,GameBuilderText.text);
-        }else
-        {
-            File.WriteAllText(chemin_bonus+"/"+NameBuilderText+".txt",GameBuilderText.text);
-        }
+        NiveauxBonus niveau = new NiveauxBonus(NameBuilderText);
 
+        if(NameBuilderText.Equals("NomDuTexte.txt"))return niveau;
         
+        data.niveauxBonus.Add(niveau);
+
+        return niveau;
+    }
+
+    public void CreateTexteBuilder()
+    {
+        NiveauxBonus niveauxBonus = GetBonusLevel();
+        
+        niveauxBonus.extraPonct[0] = pointLimit;
+        niveauxBonus.extraPonct[1] = virguleLimit;
+        niveauxBonus.extraPonct[2] = exclamationLimit;
+        niveauxBonus.extraPonct[3] = interrogationLimit;
+        niveauxBonus.extraPonct[4] = deuxpointsLimit;
+        niveauxBonus.extraPonct[5] = pointvirguleLimit;
+
+        WriteInJson();
+
+        //create .txt
+        File.WriteAllText(chemin_bonus+"/"+NameBuilderText,GameBuilderText.text);
     }
 
     public void SetReussite(int frame)
@@ -268,20 +307,25 @@ public class scrGlobal : MonoBehaviour
     public void RefreshNiveauxBonus()
     {
         string [] files = System.IO.Directory.GetFiles(chemin_bonus);
-        data.niveauxBonus = new List<NiveauxBonus>();
+        List<NiveauxBonus> newBonus = new List<NiveauxBonus>();
 
         foreach (string file in files)
         {
+            
+
+            //only read txt
             if(file.Contains("txt"))
             {  
                 string[] arr = file.Split('\\');
-                data.niveauxBonus.Add(new NiveauxBonus(arr[1]));
+
+                NameBuilderText = arr[1];
+
+                newBonus.Add(GetBonusLevel());
             }
         }
 
+        data.niveauxBonus = newBonus;
         JoueursNiveauxBonus();
-
-        WriteInJson();
     }
 
     private void JoueursNiveauxBonus()
@@ -302,6 +346,7 @@ public class scrGlobal : MonoBehaviour
     public void WriteInJson()
     {
         string json = JsonConvert.SerializeObject(data);
+        print(json);
         File.WriteAllText(chemin_json, json);
     }
 }

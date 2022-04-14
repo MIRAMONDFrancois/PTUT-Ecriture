@@ -21,6 +21,5 @@ public class NomTextBuilder : MonoBehaviour
         {
             scrGlobal.Instance.NameBuilderText = placeHolder.text;
         }
-        print(scrGlobal.Instance.NameBuilderText);
     }
 }

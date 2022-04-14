@@ -127,6 +127,7 @@ public class scrTextManager : MonoBehaviour
     [SerializeField] private GameObject itemImage;
     [SerializeField] private GameObject popupIndice;
     private bool popupCheckUnlockedLevel = false;
+    [SerializeField] private GameObject container;
 
     // Start is called before the first frame update
     void Start()
@@ -712,8 +713,8 @@ public class scrTextManager : MonoBehaviour
             total_width+=spaceSize/2;
 
             //afficher sur le canvas
-            wordObj.transform.SetParent(canvas.transform);
-            slot.transform.SetParent(canvas.transform);
+            wordObj.transform.SetParent(container.transform);
+            slot.transform.SetParent(container.transform);
 
             vrai_slots_GO.Add(slot);
             vrai_mots_GO.Add(wordObj);
@@ -1228,7 +1229,7 @@ public class scrTextManager : MonoBehaviour
         {
             popupItemWinner.SetActive(true);
             popupItemWinner.transform.SetAsLastSibling();
-            ButtonLayer.transform.SetAsLastSibling();
+            container.SetActive(false);
             switch (globalScript.levelNum)
             {
                 case 1:
@@ -1283,7 +1284,7 @@ public class scrTextManager : MonoBehaviour
         {
             popupIndice.SetActive(true);
             popupIndice.transform.SetAsLastSibling();
-            ButtonLayer.transform.SetAsLastSibling();
+            container.SetActive(false);
         }
     }
 

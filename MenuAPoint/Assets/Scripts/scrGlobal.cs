@@ -197,14 +197,17 @@ public class scrGlobal : MonoBehaviour
 
         if(FromBonusLevel)
         {
-            chemin += "/NiveauBonus";
+            chemin += "/NiveauxBonus/"+NameBuilderText;
             Directory.CreateDirectory(chemin);
 
             File.WriteAllText(chemin+"/Essaie_"+player.essaiesBonus[NameBuilderText]+".txt",recap);
             return;
         }
 
-        chemin = "/Niveau_"+levelNum;
+
+        
+        chemin += "/Niveau_"+levelNum;
+        print(chemin);
         Directory.CreateDirectory(chemin);
 
         File.WriteAllText(chemin+"/Essaie_"+player.essaies[levelNum-1]+".txt",recap);

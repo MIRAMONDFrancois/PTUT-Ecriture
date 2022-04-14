@@ -1214,6 +1214,12 @@ public class scrTextManager : MonoBehaviour
             texte_data("Retour");
         }
 
+        if(scrGlobal.Instance.FromBonusLevel)
+        {
+            SceneManager.LoadScene("AccesBonus");
+            return;
+        }
+        
         if(scrGlobal.Instance.levelNum==15)
         {
             SceneManager.LoadScene("endScene");

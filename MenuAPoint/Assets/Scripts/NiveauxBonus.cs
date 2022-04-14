@@ -12,14 +12,4 @@ public class NiveauxBonus
     {
         this.nom = nom;
     }
-
-    /*public NiveauxBonus(string nom, int[] ponct) :
-    {
-        this.nom = nom;
-
-        for(int a=0;a<6;a++)
-        {
-            this.extraPonct[a] = ponct[a];
-        }
-    }*/
 }

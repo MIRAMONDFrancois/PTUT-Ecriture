@@ -56,41 +56,13 @@ public class scrGlobal : MonoBehaviour
 
     void Start()
     {
-        /*#if UNITY_EDITOR
-            chemin_json = Application.streamingAssetsPath + "/donnees.json";
-            chemin_txt = "./Resultats";
-        #elif UNITY_ANDROID
-            chemin_json = Application.persistentDataPath + "/donnees.json";
-            chemin_txt = Application.persistentDataPath + "/Resultats";
-        
-        #else
-            chemin_json = Application.streamingAssetsPath + "/donnees.json";
-            chemin_txt = "./Resultats";
-        #endif
-
-        chemin_bonus = Application.persistentDataPath + "/NiveauxBonus";
-        Directory.CreateDirectory (chemin_bonus);
-
-        if(!File.Exists(chemin_json))
-        {
-            File.WriteAllText(chemin_json, "{\"donnees\": [],\"niveauxBonus\": []}");
-        }*/
-
         debug.text = Application.persistentDataPath;
         
-        //SetNiveauxBonus();
         InitJson();
         setLevelUnlocked();
     }
 
     void Awake() {
-        /*GameObject[] objs = GameObject.FindGameObjectsWithTag("Global");
-
-        if (objs.Length > 1)
-        {
-            Destroy(this.gameObject);
-        }
-        DontDestroyOnLoad(this.gameObject);*/
         if(Instance != null)
         {
             Destroy(this);
@@ -183,13 +155,18 @@ public class scrGlobal : MonoBehaviour
     {
         if(FromGameBuilder)return 0;
 
+        if(FromBonusLevel)
+        {
+            return player.chronoNiveauBonus[NameBuilderText];
+        }
+
         return player.chronoNiveau[levelNum-1];
     }
 
     //Pour Indice. SceneTest [scrIndice]
     public bool GetIndice()
     {
-        if(FromGameBuilder)return false;
+        if(FromGameBuilder || FromBonusLevel)return false;
 
         return player.indiceNiveau[levelNum-1];
     }
@@ -199,6 +176,12 @@ public class scrGlobal : MonoBehaviour
     {
         if(FromGameBuilder)return;
         
+        if(FromBonusLevel)
+        {
+            player.indiceBonus[NameBuilderText] = true;
+            return;
+        }
+
         player.indiceNiveau[levelNum-1]=true;
         player.indiceRestant = nbIndices;
                 
@@ -210,7 +193,18 @@ public class scrGlobal : MonoBehaviour
     {
         if(FromGameBuilder)return;
 
-        string chemin = chemin_txt+"/"+playerName+"/Niveau_"+levelNum;
+        string chemin = chemin_txt+"/"+playerName;
+
+        if(FromBonusLevel)
+        {
+            chemin += "/NiveauBonus";
+            Directory.CreateDirectory(chemin);
+
+            File.WriteAllText(chemin+"/Essaie_"+player.essaiesBonus[NameBuilderText]+".txt",recap);
+            return;
+        }
+
+        chemin = "/Niveau_"+levelNum;
         Directory.CreateDirectory(chemin);
 
         File.WriteAllText(chemin+"/Essaie_"+player.essaies[levelNum-1]+".txt",recap);
@@ -260,18 +254,33 @@ public class scrGlobal : MonoBehaviour
     {
         if(FromGameBuilder)return;
 
-        player.niveauxFinis[levelNum-1] = true;
-        player.chronoNiveau[levelNum-1] = frame;
-        player.essaies[levelNum-1]++;
-        
+        if(FromBonusLevel)
+        {
+            player.niveauxBonusFinis[NameBuilderText] = true;
+            player.chronoNiveauBonus[NameBuilderText] = frame;
+            player.essaiesBonus[NameBuilderText]++;
+        }else
+        {
+            player.niveauxFinis[levelNum-1] = true;
+            player.chronoNiveau[levelNum-1] = frame;
+            player.essaies[levelNum-1]++;
+        }
+
         WriteInJson();
     }
 
     public void SetRetour(int frame)
     {
-        player.chronoNiveau[levelNum-1] += frame;
-        player.essaies[levelNum-1]++;
-        
+        if(FromBonusLevel)
+        {
+            player.chronoNiveauBonus[NameBuilderText] += frame;
+            player.essaiesBonus[NameBuilderText]++;
+        }else
+        {
+            player.chronoNiveau[levelNum-1] += frame;
+            player.essaies[levelNum-1]++;
+        }
+
         WriteInJson();
     }
 
@@ -318,7 +327,7 @@ public class scrGlobal : MonoBehaviour
         data.niveauxBonus = newBonus;
 
         if(FromGameBuilder)return;
-        
+
         JoueursNiveauxBonus();
     }
 
@@ -340,7 +349,6 @@ public class scrGlobal : MonoBehaviour
     public void WriteInJson()
     {
         string json = JsonConvert.SerializeObject(data);
-        print(json);
         File.WriteAllText(chemin_json, json);
     }
 }

@@ -26,4 +26,19 @@ public class BonusLevelManager : MonoBehaviour
     {
         Application.OpenURL(Application.persistentDataPath +"/NiveauxBonus");
     }
+
+    public void SetPlayBonus()
+    {   
+        //niveau
+        NiveauxBonus niveauxBonus = scrGlobal.Instance.GetBonusLevel();
+        scrGlobal.Instance.pointLimit = niveauxBonus.extraPonct[0];
+        scrGlobal.Instance.virguleLimit = niveauxBonus.extraPonct[1];
+        scrGlobal.Instance.exclamationLimit = niveauxBonus.extraPonct[2];
+        scrGlobal.Instance.interrogationLimit = niveauxBonus.extraPonct[3];
+        scrGlobal.Instance.deuxpointsLimit = niveauxBonus.extraPonct[4];
+        scrGlobal.Instance.pointvirguleLimit = niveauxBonus.extraPonct[5];
+
+        //joueur
+        Joueurs j = scrGlobal.Instance.GetPlayer();
+    }
 }

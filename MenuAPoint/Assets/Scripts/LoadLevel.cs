@@ -31,7 +31,8 @@ public class LoadLevel : MonoBehaviour
 
     public void FinishBuilder()
     {
-        scrGlobal.Instance.CreateTexteBuilder();
+        if(scrGlobal.Instance.FromGameBuilder)scrGlobal.Instance.CreateTexteBuilder();
+
         SceneManager.LoadScene(nameLevel);
     }
 

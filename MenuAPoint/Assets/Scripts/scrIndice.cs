@@ -132,7 +132,7 @@ public class scrIndice : MonoBehaviour
 
     public void level3unlocked()
     {
-        if(scrGlobal.Instance.FromGameBuilder)return;
+        if(scrGlobal.Instance.FromGameBuilder || scrGlobal.Instance.FromBonusLevel)return;
 
         if (scrGlobal.Instance.levelNum <= 3)
             Indice.SetActive(false);

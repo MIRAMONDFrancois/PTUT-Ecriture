@@ -11,21 +11,45 @@ public class LoadLevel : MonoBehaviour
 
     public void LoadThisLevel()
     {
+        scrGlobal.Instance.FromBonusLevel = false;
+        scrGlobal.Instance.FromGameBuilder = false;
+
+        SceneManager.LoadScene(nameLevel);
+    }
+
+    public void LoadBonusLevel()
+    {
+        scrGlobal.Instance.FromBonusLevel = true;
+        SceneManager.LoadScene(nameLevel);
+    }
+
+    public void LoadBuilderLevel()
+    {
+        scrGlobal.Instance.FromGameBuilder = true;
+        SceneManager.LoadScene(nameLevel);
+    }
+
+    public void FinishBuilder()
+    {
+        if(scrGlobal.Instance.FromGameBuilder)scrGlobal.Instance.CreateTexteBuilder();
+
         SceneManager.LoadScene(nameLevel);
     }
 
     public void intro()
     {
-        if(GameObject.Find("Global").GetComponent<scrGlobal>().intro)nameLevel = "MapScene";
+        if(scrGlobal.Instance.intro)nameLevel = "MapScene";
 
-        GameObject.Find("Global").GetComponent<scrGlobal>().SetIntro();
-        GameObject.Find("Global").GetComponent<scrGlobal>().intro = true;
+        scrGlobal.Instance.SetIntro();
+        scrGlobal.Instance.intro = true;
 
+        scrGlobal.Instance.FromBonusLevel = false;
+        scrGlobal.Instance.FromGameBuilder = false;
         SceneManager.LoadScene(nameLevel);
     }
     public void tuto()
     {
-        GameObject.Find("Global").GetComponent<scrGlobal>().SetTuto();
+        scrGlobal.Instance.SetTuto();
     }
 
     public void QuitGame()

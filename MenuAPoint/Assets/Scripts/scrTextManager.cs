@@ -32,7 +32,6 @@ public class scrTextManager : MonoBehaviour
     //Events
     public System.Action OnTextLoad;
 
-
     // Cursor
     private bool movingCursor;
     [HideInInspector]
@@ -114,7 +113,6 @@ public class scrTextManager : MonoBehaviour
     private bool virgule_reussite = false;
 
     // Data Export
-    private scrGlobal globalScript;
     private string fullFolderName;
     private string recapContent;
     private string recapitulatif;
@@ -132,22 +130,21 @@ public class scrTextManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         vrai_nomspropres.Add("Tokki");
         vrai_nomspropres.Add("Pesto");
 
         // DATA IMPORT
-        globalScript = GameObject.Find("Global").GetComponent<scrGlobal>();
-
-        TextFile = globalScript.file;
-        CorrectFile = globalScript.animTextFile;
-        dualAnim = globalScript.nivAntiOubli;
-        pointLimit = globalScript.pointLimit;
-        virguleLimit = globalScript.virguleLimit;
-        exclamationLimit = globalScript.exclamationLimit;
-        interrogationLimit = globalScript.interrogationLimit;
-        deuxpointsLimit = globalScript.deuxpointsLimit;
-        pointvirguleLimit = globalScript.pointvirguleLimit;
+        if(scrGlobal.Instance.FromGameBuilder || scrGlobal.Instance.FromBonusLevel)
+        {
+            TextFile = scrGlobal.Instance.GameBuilderText;
+        }else
+        {
+            TextFile = scrGlobal.Instance.file;
+        }
+        
+        CorrectFile = scrGlobal.Instance.animTextFile;
+        dualAnim = scrGlobal.Instance.nivAntiOubli;
+        
 
         init_taille_texte(); 
 
@@ -191,7 +188,7 @@ public class scrTextManager : MonoBehaviour
             ButtonLayer.SetActive(false);
             
             animationObj.gameObject.SetActive(true);
-            animationObj.GetComponent<SelectionAnimation>().SelectAnimation(false,globalScript.levelNum);
+            animationObj.GetComponent<SelectionAnimation>().SelectAnimation(false,scrGlobal.Instance.levelNum);
             
             animationLog.gameObject.SetActive(false);
             Invoke("boutonlayer_anim",5f);//problem
@@ -233,19 +230,26 @@ public class scrTextManager : MonoBehaviour
                                 animationLog.text = "Ce plat était vraiment au point !";
                                 break;
                         }
-                        // writes on the .txt
                         
                         
                         // Hides all buttons and shows the "continue" one, which is the first child
                         ButtonLayer.SetActive(true);
-                        ButtonLayer.transform.GetChild(0).gameObject.SetActive(true);
-                        for (int i = 1; i < ButtonLayer.transform.childCount; i++) {
+                        if(scrGlobal.Instance.FromGameBuilder)
+                        {
+                            ButtonLayer.transform.GetChild(1).gameObject.SetActive(true);
+                        }else
+                        {
+                            ButtonLayer.transform.GetChild(0).gameObject.SetActive(true);
+                        }
+                        
+                        for (int i = 2; i < ButtonLayer.transform.childCount; i++) {
                             ButtonLayer.transform.GetChild(i).gameObject.SetActive(false);
                         }
 
                         // Unlocks next level
-                        popupCheckUnlockedLevel = globalScript.levelunlocked[globalScript.levelNum];
-                        globalScript.levelunlocked[globalScript.levelNum] = true;
+                        popupCheckUnlockedLevel = scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum];
+                        scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum] = true;
+                        scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum] = true;
                     }
                     // recap phrase for the animation recall
                     else
@@ -1069,7 +1073,7 @@ public class scrTextManager : MonoBehaviour
             if(autre_reussite[a])textreussite=true;
         }
 
-        animationObj.GetComponent<SelectionAnimation>().SelectAnimation(textreussite,globalScript.levelNum);
+        animationObj.GetComponent<SelectionAnimation>().SelectAnimation(textreussite,scrGlobal.Instance.levelNum);
         
         if(textreussite)
         {
@@ -1077,10 +1081,9 @@ public class scrTextManager : MonoBehaviour
 
             Invoke("boutonlayer_anim",6);//timing a changer
             Invoke("DisplayRewardsIndice", 7);
-            if(globalScript.levelunlocked[globalScript.levelNum])return;
-            globalScript.levelunlocked[globalScript.levelNum]=true;
-            globalScript.nbIndices++;
-            
+            if(scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum])return;
+            scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum]=true;
+            scrGlobal.Instance.nbIndices++;
 
         }else
         {
@@ -1183,10 +1186,10 @@ public class scrTextManager : MonoBehaviour
         switch(etat)
         {
             case "Retour":
-                recapitulatif += "--- "+etat+" après "+frames/60 +" secondes. pour un total de "+(frames+globalScript.GetChrono())/60+" secondes. ---";
-                globalScript.SetTexteFichier(recapitulatif);
+                recapitulatif += "--- "+etat+" après "+frames/60 +" secondes. pour un total de "+(frames+scrGlobal.Instance.GetChrono())/60+" secondes. ---";
+                scrGlobal.Instance.SetTexteFichier(recapitulatif);
 
-                globalScript.SetRetour(frames);
+                scrGlobal.Instance.SetRetour(frames);
             return;
             case "Indice":
                 recapitulatif += "--- "+etat+" après "+frames/60 +" secondes. ---\n";
@@ -1195,27 +1198,38 @@ public class scrTextManager : MonoBehaviour
                 recapitulatif += "--- "+etat+" après "+frames/60 +" secondes. ---\n";
                 texte_joueur();
                 recapitulatif += currentText+"\n\n";
-                globalScript.SetTexteFichier(recapitulatif);
+                scrGlobal.Instance.SetTexteFichier(recapitulatif);
             return;
             case "Reussite":
-                recapitulatif += "--- "+etat+" après "+frames/60 +" secondes. pour un total de "+(frames+globalScript.GetChrono())/60+" secondes. ---\n";
+                recapitulatif += "--- "+etat+" après "+frames/60 +" secondes. pour un total de "+(frames+scrGlobal.Instance.GetChrono())/60+" secondes. ---\n";
                 texte_joueur();
                 recapitulatif += currentText;
-                globalScript.SetTexteFichier(recapitulatif);
+                scrGlobal.Instance.SetTexteFichier(recapitulatif);
 
-                globalScript.SetReussite(frames);
+                scrGlobal.Instance.SetReussite(frames);
             return;
         }
     }
 
     public void GoToMap() {
-        
+        if(scrGlobal.Instance.FromGameBuilder)
+        {
+            SceneManager.LoadScene("GameBuilder");
+            return;
+        }
+
         if(!textreussite)
         {
             texte_data("Retour");
         }
 
-        if(globalScript.levelNum==15)
+        if(scrGlobal.Instance.FromBonusLevel)
+        {
+            SceneManager.LoadScene("AccesBonus");
+            return;
+        }
+        
+        if(scrGlobal.Instance.levelNum==15)
         {
             SceneManager.LoadScene("endScene");
             return;
@@ -1230,7 +1244,7 @@ public class scrTextManager : MonoBehaviour
             popupItemWinner.SetActive(true);
             popupItemWinner.transform.SetAsLastSibling();
             container.SetActive(false);
-            switch (globalScript.levelNum)
+            switch (scrGlobal.Instance.levelNum)
             {
                 case 1:
                     itemImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("sprites/endSceneSprites/Casserole");
@@ -1290,10 +1304,10 @@ public class scrTextManager : MonoBehaviour
 
     public bool checkClassicLevel()
     {
-        return globalScript.levelNum == 1 || globalScript.levelNum == 2 || globalScript.levelNum == 4 ||
-            globalScript.levelNum == 5 || globalScript.levelNum == 7 || globalScript.levelNum == 9 ||
-            globalScript.levelNum == 10 || globalScript.levelNum == 12 || globalScript.levelNum == 13 ||
-            globalScript.levelNum == 15;
+        return scrGlobal.Instance.levelNum == 1 || scrGlobal.Instance.levelNum == 2 || scrGlobal.Instance.levelNum == 4 ||
+            scrGlobal.Instance.levelNum == 5 || scrGlobal.Instance.levelNum == 7 || scrGlobal.Instance.levelNum == 9 ||
+            scrGlobal.Instance.levelNum == 10 || scrGlobal.Instance.levelNum == 12 || scrGlobal.Instance.levelNum == 13 ||
+            scrGlobal.Instance.levelNum == 15;
     }
 
     public void AnimationFondu()

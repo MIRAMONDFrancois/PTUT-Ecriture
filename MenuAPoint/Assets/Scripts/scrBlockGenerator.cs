@@ -14,7 +14,6 @@ public class scrBlockGenerator : MonoBehaviour
 
     public string ponct;
     public GameObject textManager;
-    private GameObject globalManager;
 
     private GameObject obj;
 
@@ -25,48 +24,47 @@ public class scrBlockGenerator : MonoBehaviour
 
 
     public void Start() {
-        globalManager = GameObject.Find("Global");
 
         switch (ponct) {
             case ".":
-                if (globalManager.GetComponent<scrGlobal>().pointLimit != -1) {
+                if (scrGlobal.Instance.pointLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                    numberLeft = globalManager.GetComponent<scrGlobal>().pointLimit - GameObject.FindGameObjectsWithTag("Point").Length;
+                    numberLeft = scrGlobal.Instance.pointLimit - GameObject.FindGameObjectsWithTag("Point").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
                 }
                 break;
             case ",":
-                if (globalManager.GetComponent<scrGlobal>().virguleLimit != -1) {
+                if (scrGlobal.Instance.virguleLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                    numberLeft = globalManager.GetComponent<scrGlobal>().virguleLimit - GameObject.FindGameObjectsWithTag("Virgule").Length;
+                    numberLeft = scrGlobal.Instance.virguleLimit - GameObject.FindGameObjectsWithTag("Virgule").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
                 }
                 break;
             case "!":
-                if (globalManager.GetComponent<scrGlobal>().exclamationLimit != -1) {
+                if (scrGlobal.Instance.exclamationLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                    numberLeft = globalManager.GetComponent<scrGlobal>().exclamationLimit - GameObject.FindGameObjectsWithTag("Exclamation").Length;
+                    numberLeft = scrGlobal.Instance.exclamationLimit - GameObject.FindGameObjectsWithTag("Exclamation").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
                 }
                 break;
             case "?":
-                if (globalManager.GetComponent<scrGlobal>().interrogationLimit != -1) {
+                if (scrGlobal.Instance.interrogationLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                    numberLeft = globalManager.GetComponent<scrGlobal>().interrogationLimit - GameObject.FindGameObjectsWithTag("Interrogation").Length;
+                    numberLeft = scrGlobal.Instance.interrogationLimit - GameObject.FindGameObjectsWithTag("Interrogation").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
                 }
                 break;
             case ":":
-                if (globalManager.GetComponent<scrGlobal>().deuxpointsLimit != -1) {
+                if (scrGlobal.Instance.deuxpointsLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                    numberLeft = globalManager.GetComponent<scrGlobal>().deuxpointsLimit - GameObject.FindGameObjectsWithTag("Deux Points").Length;
+                    numberLeft = scrGlobal.Instance.deuxpointsLimit - GameObject.FindGameObjectsWithTag("Deux Points").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
                 }
                 break;
             case ";":
-                if (globalManager.GetComponent<scrGlobal>().pointvirguleLimit != -1) {
+                if (scrGlobal.Instance.pointvirguleLimit != -1) {
                     gameObject.transform.GetChild(1).gameObject.SetActive(true);
-                    numberLeft = globalManager.GetComponent<scrGlobal>().pointvirguleLimit - GameObject.FindGameObjectsWithTag("Point Virgule").Length;
+                    numberLeft = scrGlobal.Instance.pointvirguleLimit - GameObject.FindGameObjectsWithTag("Point Virgule").Length;
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
                 }
                 break;

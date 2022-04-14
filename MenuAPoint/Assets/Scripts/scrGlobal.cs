@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.IO;
+using Newtonsoft.Json;
 
 public class scrGlobal : MonoBehaviour
 {
     [Header("General Informations")]
+    public static scrGlobal Instance;
     public string playerName;//Connexion
     public int levelNum;//Connexion
     private Donnees data;
     private Joueurs player;
     private string chemin_json;
     private string chemin_txt;
+    public string chemin_bonus;
     public TextMeshProUGUI debug;
 
     [Header("Unlocked Levels")]
@@ -48,39 +51,47 @@ public class scrGlobal : MonoBehaviour
     public int nbrDrag = 0;//Check nbr elements qui ont été drag & drop.
     public List<bool> endSceneItemsCanMove = new List<bool>();//List pour savoir si l'item peut ou non être drag & drop
 
+    //GameBuilder
+    public bool FromGameBuilder;
+    public bool FromBonusLevel;
+    public TextAsset GameBuilderText;
+    public string NameBuilderText;
+
     void Start()
     {
-        #if UNITY_EDITOR
-            chemin_json = Application.streamingAssetsPath + "/donnees.json";
-            chemin_txt = "./Resultats";
-        #elif UNITY_ANDROID
-            chemin_json = Application.persistentDataPath + "/donnees.json";
-            chemin_txt = Application.persistentDataPath + "/Resultats";
+        debug.text = Application.persistentDataPath;
         
-        #else
-            chemin_json = Application.streamingAssetsPath + "/donnees.json";
-            chemin_txt = "./Resultats";
-        #endif
-
-        if(!File.Exists(chemin_json))
-        {
-            File.WriteAllText(chemin_json, "{\"donnees\": []}");
-        }
-        
-        debug.text = chemin_json;
+        InitJson();
         setLevelUnlocked();
         setEndSceneItemsCanMove();
         nbrDrag = 0;
     }
 
     void Awake() {
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("Global");
-
-        if (objs.Length > 1)
+        if(Instance != null)
         {
-            Destroy(this.gameObject);
+            Destroy(this);
         }
-        DontDestroyOnLoad(this.gameObject);
+        
+        Instance = this;
+    }
+
+    private void InitJson()
+    {
+        chemin_json = Application.persistentDataPath + "/donnees.json";
+        chemin_txt = Application.persistentDataPath + "/Resultats";
+        chemin_bonus = Application.persistentDataPath + "/NiveauxBonus";
+
+        Directory.CreateDirectory (chemin_bonus);
+
+        if(!File.Exists(chemin_json))
+        {
+            File.WriteAllText(chemin_json, "{\"donnees\": [],\"niveauxBonus\": []}");
+        }
+
+        string jsonFile = File.ReadAllText(chemin_json);
+        print(jsonFile);
+        data = JsonConvert.DeserializeObject<Donnees>(jsonFile);
     }
 
     public void setLevelUnlocked()
@@ -99,15 +110,10 @@ public class scrGlobal : MonoBehaviour
             endSceneItemsCanMove.Add(true);
     }
 
-    private Joueurs GetPlayer()
+    public Joueurs GetPlayer()
     {
-        string jsonFile = File.ReadAllText(chemin_json);
-        //chemin_txt += "/"+playerName;
-
-        data = JsonUtility.FromJson<Donnees>(jsonFile);
         foreach(Joueurs j in data.donnees)
         {
-            
             if(j.joueur.Equals(playerName))return j;
         }
         
@@ -120,12 +126,10 @@ public class scrGlobal : MonoBehaviour
         Joueurs j = new Joueurs();
 
         j.joueur = playerName;
-
+        
         data.donnees.Add(j);
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(chemin_json, json);
-
-        Directory.CreateDirectory (chemin_txt + "/"+playerName);
+        WriteInJson();
+        Directory.CreateDirectory (chemin_txt + "/" +playerName);
 
         return j;
     }
@@ -149,66 +153,217 @@ public class scrGlobal : MonoBehaviour
     public void SetIntro()
     {
         player.intro = true;
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(chemin_json, json);
+        WriteInJson();
     }
 
     public void SetTuto()
     {
         player.tuto = true;
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(chemin_json, json);
+        WriteInJson();
         
     }
     //Pour Jeu. SceneTest [scrTextManager]
     public int GetChrono()
     {
+        if(FromGameBuilder)return 0;
+
+        if(FromBonusLevel)
+        {
+            return player.chronoNiveauBonus[NameBuilderText];
+        }
+
         return player.chronoNiveau[levelNum-1];
     }
 
     //Pour Indice. SceneTest [scrIndice]
     public bool GetIndice()
-    { 
+    {
+        if(FromGameBuilder || FromBonusLevel)return false;
+
         return player.indiceNiveau[levelNum-1];
     }
 
     //Pour Indice. SceneTest [scrIndice]
     public void SetIndice()
     {
+        if(FromGameBuilder)return;
+        
+        if(FromBonusLevel)
+        {
+            player.indiceBonus[NameBuilderText] = true;
+            return;
+        }
+
         player.indiceNiveau[levelNum-1]=true;
         player.indiceRestant = nbIndices;
                 
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(chemin_json, json);
+        WriteInJson();
     }
 
     //Data en .txt dans Resultats. SceneTest [scrTextManager]
     public void SetTexteFichier(string recap)
     {
-        string chemin = chemin_txt+"/"+playerName+"/Niveau_"+levelNum;
+        if(FromGameBuilder)return;
+
+        string chemin = chemin_txt+"/"+playerName;
+
+        if(FromBonusLevel)
+        {
+            chemin += "/NiveauxBonus/"+NameBuilderText;
+            Directory.CreateDirectory(chemin);
+
+            File.WriteAllText(chemin+"/Essaie_"+player.essaiesBonus[NameBuilderText]+".txt",recap);
+            return;
+        }
+
+
+        
+        chemin += "/Niveau_"+levelNum;
+        print(chemin);
         Directory.CreateDirectory(chemin);
 
         File.WriteAllText(chemin+"/Essaie_"+player.essaies[levelNum-1]+".txt",recap);
     }
 
+    public NiveauxBonus GetBonusLevel()
+    {
+        foreach(NiveauxBonus niveaux in data.niveauxBonus)
+        {
+            if(niveaux.nom.Equals(NameBuilderText))return niveaux;
+        }
+        
+        string[] trial = NameBuilderText.Split('.');
+
+        if(!trial[trial.Length-1].Equals("txt"))
+        {
+            NameBuilderText += ".txt";
+        }
+
+        NiveauxBonus niveau = new NiveauxBonus(NameBuilderText);
+
+        if(NameBuilderText.Equals("NomDuTexte.txt"))return niveau;
+        
+        data.niveauxBonus.Add(niveau);
+
+        return niveau;
+    }
+
+    public void CreateTexteBuilder()
+    {
+        NiveauxBonus niveauxBonus = GetBonusLevel();
+        
+        niveauxBonus.extraPonct[0] = pointLimit;
+        niveauxBonus.extraPonct[1] = virguleLimit;
+        niveauxBonus.extraPonct[2] = exclamationLimit;
+        niveauxBonus.extraPonct[3] = interrogationLimit;
+        niveauxBonus.extraPonct[4] = deuxpointsLimit;
+        niveauxBonus.extraPonct[5] = pointvirguleLimit;
+
+        WriteInJson();
+
+        //create .txt
+        File.WriteAllText(chemin_bonus+"/"+NameBuilderText,GameBuilderText.text);
+    }
+
     public void SetReussite(int frame)
     {
-        player.niveauxFinis[levelNum-1] = true;
-        player.chronoNiveau[levelNum-1] = frame;
-        player.essaies[levelNum-1]++;
-        
-        string json = JsonUtility.ToJson(data);
+        if(FromGameBuilder)return;
 
-        File.WriteAllText(chemin_json, json);
+        if(FromBonusLevel)
+        {
+            player.niveauxBonusFinis[NameBuilderText] = true;
+            player.chronoNiveauBonus[NameBuilderText] = frame;
+            player.essaiesBonus[NameBuilderText]++;
+        }else
+        {
+            player.niveauxFinis[levelNum-1] = true;
+            player.chronoNiveau[levelNum-1] = frame;
+            player.essaies[levelNum-1]++;
+        }
+
+        WriteInJson();
     }
 
     public void SetRetour(int frame)
     {
-        player.chronoNiveau[levelNum-1] += frame;
-        player.essaies[levelNum-1]++;
-        
-        string json = JsonUtility.ToJson(data);
+        if(FromBonusLevel)
+        {
+            player.chronoNiveauBonus[NameBuilderText] += frame;
+            player.essaiesBonus[NameBuilderText]++;
+        }else
+        {
+            player.chronoNiveau[levelNum-1] += frame;
+            player.essaies[levelNum-1]++;
+        }
 
+        WriteInJson();
+    }
+
+    public Donnees GetData()
+    {
+        return data;
+    }
+
+    public void SetNiveauxBonus()
+    {
+        chemin_bonus = Application.persistentDataPath + "/NiveauxBonus";
+        string jsonFile = File.ReadAllText(chemin_json);
+        data = JsonConvert.DeserializeObject<Donnees>(jsonFile);
+        
+        RefreshNiveauxBonus();
+
+        WriteInJson();
+    }
+
+    public void NiveauBonusSelected(TextAsset text)
+    {
+        GameBuilderText = text;
+    }
+
+    public void RefreshNiveauxBonus()
+    {
+        string [] files = System.IO.Directory.GetFiles(chemin_bonus);
+        List<NiveauxBonus> newBonus = new List<NiveauxBonus>();
+
+        foreach (string file in files)
+        {
+            
+            //only read txt
+            if(file.Contains("txt"))
+            {  
+                string[] arr = file.Split('\\');
+
+                NameBuilderText = arr[1];
+
+                newBonus.Add(GetBonusLevel());
+            }
+        }
+
+        data.niveauxBonus = newBonus;
+
+        if(FromGameBuilder)return;
+
+        JoueursNiveauxBonus();
+    }
+
+    private void JoueursNiveauxBonus()
+    {
+        Joueurs j = GetPlayer();
+
+        foreach(NiveauxBonus niveaux in data.niveauxBonus)
+        {
+            if(j.niveauxBonusFinis.ContainsKey(niveaux.nom))break;
+
+            j.niveauxBonusFinis.Add(niveaux.nom,false);
+            j.indiceBonus.Add(niveaux.nom,false);
+            j.essaiesBonus.Add(niveaux.nom,1);
+            j.chronoNiveauBonus.Add(niveaux.nom,0);
+        }
+    }
+
+    public void WriteInJson()
+    {
+        string json = JsonConvert.SerializeObject(data);
         File.WriteAllText(chemin_json, json);
     }
 }

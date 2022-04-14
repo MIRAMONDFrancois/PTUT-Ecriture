@@ -35,25 +35,25 @@ public class scrMapManager : MonoBehaviour
     }
 
     private void LevelSetBaseValues(int levelNum, TextAsset TextFile) {
-        GameObject.Find("Global").GetComponent<scrGlobal>().levelNum = levelNum;
-        GameObject.Find("Global").GetComponent<scrGlobal>().file = TextFile;
+        scrGlobal.Instance.levelNum = levelNum;
+        scrGlobal.Instance.file = TextFile;
 
     }
     
     private void LevelSetLimitedGen(int pointLimit, int virguleLimit, int exclamationLimit,int interrogationLimit,int deuxpointsLimit,int pointvirguleLimit) {
-        GameObject.Find("Global").GetComponent<scrGlobal>().pointLimit = pointLimit;
-        GameObject.Find("Global").GetComponent<scrGlobal>().virguleLimit = virguleLimit;
-        GameObject.Find("Global").GetComponent<scrGlobal>().exclamationLimit = exclamationLimit;
-        GameObject.Find("Global").GetComponent<scrGlobal>().pointvirguleLimit = pointvirguleLimit;
-        GameObject.Find("Global").GetComponent<scrGlobal>().deuxpointsLimit = deuxpointsLimit;
-        GameObject.Find("Global").GetComponent<scrGlobal>().interrogationLimit = interrogationLimit;
+        scrGlobal.Instance.pointLimit = pointLimit;
+        scrGlobal.Instance.virguleLimit = virguleLimit;
+        scrGlobal.Instance.exclamationLimit = exclamationLimit;
+        scrGlobal.Instance.pointvirguleLimit = pointvirguleLimit;
+        scrGlobal.Instance.deuxpointsLimit = deuxpointsLimit;
+        scrGlobal.Instance.interrogationLimit = interrogationLimit;
     }
 
     private void LevelSetAnim(bool nivAntiOubli, TextAsset animTextFile, bool canBeMoved, bool canBeDeleted) {
-        GameObject.Find("Global").GetComponent<scrGlobal>().nivAntiOubli = nivAntiOubli;
-        GameObject.Find("Global").GetComponent<scrGlobal>().animTextFile = animTextFile;
-        GameObject.Find("Global").GetComponent<scrGlobal>().canBeMoved = canBeMoved;
-        GameObject.Find("Global").GetComponent<scrGlobal>().canBeDeleted = canBeDeleted;
+        scrGlobal.Instance.nivAntiOubli = nivAntiOubli;
+        scrGlobal.Instance.animTextFile = animTextFile;
+        scrGlobal.Instance.canBeMoved = canBeMoved;
+        scrGlobal.Instance.canBeDeleted = canBeDeleted;
     }
 
     public void selectLevel()
@@ -171,10 +171,10 @@ public class scrMapManager : MonoBehaviour
         }
 
         if (checkUnlocked(levelActuel))
-            if(levelActuel == 2 && !(GameObject.Find("Global").GetComponent<scrGlobal>().tutoChecked))
+            if(levelActuel == 2 && !(scrGlobal.Instance.tutoChecked))
             {
                 SceneManager.LoadScene("sceneTutorielDouble");
-                GameObject.Find("Global").GetComponent<scrGlobal>().tutoChecked = true;
+                scrGlobal.Instance.tutoChecked = true;
             }
             else
                 LoadNewScene();
@@ -184,7 +184,7 @@ public class scrMapManager : MonoBehaviour
 
     private bool checkUnlocked(int level)
     {
-        return GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[level];
+        return scrGlobal.Instance.levelunlocked[level];
     }
 
     void activerBouttons()
@@ -192,8 +192,8 @@ public class scrMapManager : MonoBehaviour
         //le script global contient 1 élément en plus
         for(int a=0;a<boutons.transform.childCount-1;a++)
         {
-            bool niv_next = GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[a+1];
-            bool niv_now = GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[a];
+            bool niv_next = scrGlobal.Instance.levelunlocked[a+1];
+            bool niv_now = scrGlobal.Instance.levelunlocked[a];
             boutons.transform.GetChild(a).GetComponent<Button>().interactable=niv_now;
             
             if(niv_now)
@@ -216,7 +216,7 @@ public class scrMapManager : MonoBehaviour
 
     void checkLevelActuel()
     {
-        if (GameObject.Find("Global").GetComponent<scrGlobal>().levelunlocked[15])
+        if (scrGlobal.Instance.levelunlocked[15])
         {
             SceneManager.LoadScene("endScene");
         }

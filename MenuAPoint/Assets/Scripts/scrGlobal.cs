@@ -142,14 +142,6 @@ public class scrGlobal : MonoBehaviour
         Joueurs j = new Joueurs();
 
         j.joueur = playerName;
-
-        /*for(int a=0;a<data.niveauxBonus.Count;a++)
-        {
-            j.niveauxBonusFinis.Add(data.niveauxBonus[a].nom,false);
-            j.indiceBonus.Add(data.niveauxBonus[a].nom,false);
-            j.essaiesBonus.Add(data.niveauxBonus[a].nom,1);
-            j.chronoNiveauBonus.Add(data.niveauxBonus[a].nom,0);
-        }*/
         
         data.donnees.Add(j);
         WriteInJson();
@@ -312,7 +304,6 @@ public class scrGlobal : MonoBehaviour
         foreach (string file in files)
         {
             
-
             //only read txt
             if(file.Contains("txt"))
             {  
@@ -325,6 +316,9 @@ public class scrGlobal : MonoBehaviour
         }
 
         data.niveauxBonus = newBonus;
+
+        if(FromGameBuilder)return;
+        
         JoueursNiveauxBonus();
     }
 

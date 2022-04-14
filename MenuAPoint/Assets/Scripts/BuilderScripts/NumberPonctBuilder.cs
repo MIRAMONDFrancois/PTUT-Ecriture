@@ -22,7 +22,7 @@ public class NumberPonctBuilder : MonoBehaviour
     {
         while(true)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.5f);
         
             for(int a=0;a<nbPot.Length;a++)
             {
@@ -75,7 +75,8 @@ public class NumberPonctBuilder : MonoBehaviour
                 ponctTot[a].TextTot.text = "-1";
             }else
             {
-                ponctTot[a].TextTot.text = (bonus.extraPonct[a] - nbPot[a]) + "";
+                ponctTot[a].IntSuppl = bonus.extraPonct[a] - nbPot[a];
+                if(ponctTot[a].IntSuppl > 0) ponctTot[a].MoinsPonct.gameObject.SetActive(true);
             }
         }
     }
@@ -84,6 +85,7 @@ public class NumberPonctBuilder : MonoBehaviour
     {
         for(int a=0;a<ListePot.Length;a++)
         {
+
             if(ponctTot[a].InfiniteToggle)
             {
                 ponctTot[a].TextTot.text = "-1";

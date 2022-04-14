@@ -16,6 +16,6 @@ public class scrCredits : MonoBehaviour
     {
         TextFin.text = "Benjamin Zanini, \n Brayan Weber, \n François Miramond, \n Gabriel Viau, \n Hugo Baudin, \n Julie Musseau. \n" +
             "Avec le soutien de Véronique Paolacci. \n" + "\n" +
-            "Nos remerciments à la classe de CM1-CM2 de l'École Verte de l'Hippodrome de Montauban et leur enseignant, Maxime Combes";
+            "Nos remerciements à la classe de CM1-CM2 de l'École Verte de l'Hippodrome de Montauban et leur enseignant, Maxime Combes";
     }
 }

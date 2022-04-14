@@ -122,11 +122,16 @@ public class scrTextManager : MonoBehaviour
     private int frames;
     private int errorNum;
 
+    [Header("Item win menu")]
+    [SerializeField] private GameObject popupItemWinner;
+    [SerializeField] private GameObject itemImage;
+    [SerializeField] private GameObject popupIndice;
+    private bool popupCheckUnlockedLevel = false;
+    [SerializeField] private GameObject container;
 
     // Start is called before the first frame update
     void Start()
     {
-        
 
         vrai_nomspropres.Add("Tokki");
         vrai_nomspropres.Add("Pesto");
@@ -239,6 +244,7 @@ public class scrTextManager : MonoBehaviour
                         }
 
                         // Unlocks next level
+                        popupCheckUnlockedLevel = globalScript.levelunlocked[globalScript.levelNum];
                         globalScript.levelunlocked[globalScript.levelNum] = true;
                     }
                     // recap phrase for the animation recall
@@ -707,8 +713,8 @@ public class scrTextManager : MonoBehaviour
             total_width+=spaceSize/2;
 
             //afficher sur le canvas
-            wordObj.transform.SetParent(canvas.transform);
-            slot.transform.SetParent(canvas.transform);
+            wordObj.transform.SetParent(container.transform);
+            slot.transform.SetParent(container.transform);
 
             vrai_slots_GO.Add(slot);
             vrai_mots_GO.Add(wordObj);
@@ -1070,9 +1076,11 @@ public class scrTextManager : MonoBehaviour
             
 
             Invoke("boutonlayer_anim",6);//timing a changer
+            Invoke("DisplayRewardsIndice", 7);
             if(globalScript.levelunlocked[globalScript.levelNum])return;
             globalScript.levelunlocked[globalScript.levelNum]=true;
             globalScript.nbIndices++;
+            
 
         }else
         {
@@ -1118,7 +1126,7 @@ public class scrTextManager : MonoBehaviour
             }
 
             vrai_slots_GO[i].GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = taillePot;
-            vrai_slots_GO[i].GetComponentInChildren<BoxCollider2D>().size = taillePot*2f;
+            vrai_slots_GO[i].GetComponentInChildren<BoxCollider2D>().size = taillePot*1.25f;
             
             Vector3 V3_slot = vrai_slots_GO[i].GetComponentInChildren<RectTransform>().position;
             vrai_slots_GO[i].GetComponentInChildren<RectTransform>().position = new Vector3(V3_slot.x+slot_pos.x,V3_slot.y+slot_pos.y,V3_slot.z);
@@ -1215,6 +1223,79 @@ public class scrTextManager : MonoBehaviour
         SceneManager.LoadScene("MapScene");
     }
 
+    public void DisplayRewardsItem()
+    {
+        if (textreussite && checkClassicLevel() && !popupCheckUnlockedLevel)
+        {
+            popupItemWinner.SetActive(true);
+            popupItemWinner.transform.SetAsLastSibling();
+            container.SetActive(false);
+            switch (globalScript.levelNum)
+            {
+                case 1:
+                    itemImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("sprites/endSceneSprites/Casserole");
+                    itemImage.GetComponent<RectTransform>().sizeDelta = new Vector2(170, 300);
+                    break;
+                case 2:
+                    itemImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("sprites/endSceneSprites/Poele");
+                    itemImage.GetComponent<RectTransform>().sizeDelta = new Vector2(250, 470);
+                    break;
+                case 4:
+                    itemImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("sprites/endSceneSprites/Cuillere");
+                    itemImage.GetComponent<RectTransform>().sizeDelta = new Vector2(80, 260);
+                    break;
+                case 5:
+                    itemImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("sprites/endSceneSprites/Spatule");
+                    itemImage.GetComponent<RectTransform>().sizeDelta = new Vector2(175, 300);
+                    break;
+                case 7:
+                    itemImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("sprites/endSceneSprites/Rape");
+                    itemImage.GetComponent<RectTransform>().sizeDelta = new Vector2(290, 366);
+                    break;
+                case 9:
+                    itemImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("sprites/endSceneSprites/Louche");
+                    itemImage.GetComponent<RectTransform>().sizeDelta = new Vector2(200, 350);
+                    break;
+                case 10:
+                    itemImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("sprites/endSceneSprites/Fouet");
+                    itemImage.GetComponent<RectTransform>().sizeDelta = new Vector2(190, 375);
+                    break;
+                case 12:
+                    itemImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("sprites/endSceneSprites/Couteau");
+                    itemImage.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 210);
+                    break;
+                case 13:
+                    itemImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("sprites/endSceneSprites/Passoire");
+                    itemImage.GetComponent<RectTransform>().sizeDelta = new Vector2(260, 260);
+                    break;
+                case 15:
+                    itemImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("sprites/endSceneSprites/Rouleau");
+                    itemImage.GetComponent<RectTransform>().sizeDelta = new Vector2(260, 260);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public void DisplayRewardsIndice()
+    {
+        if (!checkClassicLevel())
+        {
+            popupIndice.SetActive(true);
+            popupIndice.transform.SetAsLastSibling();
+            container.SetActive(false);
+        }
+    }
+
+    public bool checkClassicLevel()
+    {
+        return globalScript.levelNum == 1 || globalScript.levelNum == 2 || globalScript.levelNum == 4 ||
+            globalScript.levelNum == 5 || globalScript.levelNum == 7 || globalScript.levelNum == 9 ||
+            globalScript.levelNum == 10 || globalScript.levelNum == 12 || globalScript.levelNum == 13 ||
+            globalScript.levelNum == 15;
+    }
+
     public void AnimationFondu()
     {
         //affichage premier plan
@@ -1290,6 +1371,7 @@ public class scrTextManager : MonoBehaviour
     {  
         fondu.GetComponent<Animator>().SetBool("Actif",false);
         Invoke("fin_animation",1);
+        Invoke("DisplayRewardsItem", 1);
     }
 
     public void fin_animation()

@@ -7,11 +7,17 @@ public class PluieCarotte : MonoBehaviour
     public GameObject carottePrefab;
     public float respawnTime = 1f;
     public float nb_carottes = 20;
+    private bool canBeStarted = true;
     
     
-    void Start()
+    void Update()
     {
-        StartCoroutine(carotteWave());
+        if (canBeStarted)
+            if (GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag > 9)
+            {
+                StartCoroutine(carotteWave());
+                canBeStarted = false;
+            }
     }
 
     private void spawnCarotte()

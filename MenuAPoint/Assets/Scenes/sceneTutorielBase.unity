@@ -398,8 +398,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Comment jouer ?
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 4cfb3b74a57d0fe4ba3a6f191df3a098, type: 2}
-  m_sharedMaterial: {fileID: -8786301704317813746, guid: 4cfb3b74a57d0fe4ba3a6f191df3a098,
+  m_fontAsset: {fileID: 11400000, guid: 0e73731c3ddb1744ca4d127a1c2b4a80, type: 2}
+  m_sharedMaterial: {fileID: -1066312336301406168, guid: 0e73731c3ddb1744ca4d127a1c2b4a80,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -513,7 +513,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: -7.8999, y: 120}
-  m_SizeDelta: {x: 321.2716, y: 191.64825}
+  m_SizeDelta: {x: 300, y: 190}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &803127311
 MonoBehaviour:
@@ -987,7 +987,8 @@ MonoBehaviour:
   tutoChecked: 0
   intro: 0
   nbIndices: 5
-  timestamps: 
+  nbrDrag: 0
+  endSceneItemsCanMove: 
 --- !u!4 &1619533314
 Transform:
   m_ObjectHideFlags: 0

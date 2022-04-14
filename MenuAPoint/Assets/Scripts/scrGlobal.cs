@@ -44,6 +44,10 @@ public class scrGlobal : MonoBehaviour
     public bool intro = false;//Synopsis
     public int nbIndices = 0;//Map pour Jeu
 
+    [Header("Scene de fin")]
+    public int nbrDrag = 0;//Check nbr elements qui ont été drag & drop.
+    public List<bool> endSceneItemsCanMove = new List<bool>();//List pour savoir si l'item peut ou non être drag & drop
+
     void Start()
     {
         #if UNITY_EDITOR
@@ -65,6 +69,8 @@ public class scrGlobal : MonoBehaviour
         
         debug.text = chemin_json;
         setLevelUnlocked();
+        setEndSceneItemsCanMove();
+        nbrDrag = 0;
     }
 
     void Awake() {
@@ -84,6 +90,13 @@ public class scrGlobal : MonoBehaviour
         {
             levelunlocked.Add(false);
         }
+    }
+
+    public void setEndSceneItemsCanMove()
+    {
+        endSceneItemsCanMove.Add(true);
+        for (int i = 1; i <= 10; i++)
+            endSceneItemsCanMove.Add(true);
     }
 
     private Joueurs GetPlayer()

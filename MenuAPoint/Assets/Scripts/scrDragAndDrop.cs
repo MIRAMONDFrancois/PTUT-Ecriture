@@ -48,7 +48,7 @@ public class scrDragAndDrop : MonoBehaviour
         float poty = tailleponct[1]*Screen.height/1080*scale_y;
 
         this.GetComponent<RectTransform>().sizeDelta=new Vector2(potx,poty);
-        this.GetComponent<BoxCollider2D>().size=new Vector2(potx*2f,poty*2f);
+        this.GetComponent<BoxCollider2D>().size=new Vector2(potx*1.2f,poty*1.2f);
     }
 
     private void Update()//pour suivre le déplacement de la souris

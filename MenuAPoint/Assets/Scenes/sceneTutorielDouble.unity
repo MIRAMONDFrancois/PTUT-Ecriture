@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 120382283}
   - component: {fileID: 120382285}
   m_Layer: 5
-  m_Name: Valider
+  m_Name: Passer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -159,8 +159,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0.000061035, y: 111}
-  m_SizeDelta: {x: 714, y: 360}
+  m_AnchoredPosition: {x: -0.000061035, y: 111.65}
+  m_SizeDelta: {x: 300, y: 190}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &120382280
 MonoBehaviour:
@@ -246,7 +246,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 11876cc209f064844aeea07bca7be2a7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 03fe56a91294cb849bde09e9d4e240b1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -382,7 +382,8 @@ MonoBehaviour:
   tutoChecked: 0
   intro: 0
   nbIndices: 5
-  timestamps: 
+  nbrDrag: 0
+  endSceneItemsCanMove: 
 --- !u!4 &389472676
 Transform:
   m_ObjectHideFlags: 0
@@ -431,8 +432,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14.625122, y: 133.79}
-  m_SizeDelta: {x: 1410.7498, y: 343.02478}
+  m_AnchoredPosition: {x: 14.625122, y: 139.5}
+  m_SizeDelta: {x: 1410.7498, y: 331.63287}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &475096283
 MonoBehaviour:
@@ -456,8 +457,9 @@ MonoBehaviour:
   m_text: "Tokki se retrouve confront\xE9e \xE0 des siuations emb\xEAtantes.\nVous
     devrez alors changer la ponctuation de la phrase pour l'aider."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e7e278b79a605b845b30dbbb1cfebcfc, type: 2}
+  m_sharedMaterial: {fileID: 3176864746252412033, guid: e7e278b79a605b845b30dbbb1cfebcfc,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -481,7 +483,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 55.45
+  m_fontSize: 71.7
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -907,8 +909,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 16.3, y: -144.08}
-  m_SizeDelta: {x: 1346.3506, y: 212.71838}
+  m_AnchoredPosition: {x: 16.3, y: -155.5}
+  m_SizeDelta: {x: 1346.3506, y: 189.93451}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1488637657
 MonoBehaviour:
@@ -934,8 +936,9 @@ MonoBehaviour:
     peut se transformer en 
     : "On va manger, les enfants."'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e7e278b79a605b845b30dbbb1cfebcfc, type: 2}
+  m_sharedMaterial: {fileID: 3176864746252412033, guid: e7e278b79a605b845b30dbbb1cfebcfc,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -959,7 +962,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 56.05
+  m_fontSize: 61.3
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1

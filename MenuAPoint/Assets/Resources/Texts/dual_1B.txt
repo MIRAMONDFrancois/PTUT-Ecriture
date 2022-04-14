@@ -1,1 +1,3 @@
-Le food truck de Tokki ne se détache pas, comme prévu.
+La camionnette de Tokki ne se détache pas, comme prévu.
+//
+La camionnette de Tokki ne se détache pas. Comme prévu.

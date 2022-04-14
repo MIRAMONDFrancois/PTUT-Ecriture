@@ -21,6 +21,8 @@ public class scrBlockGenerator : MonoBehaviour
     private bool isActive = true;
     private int numberLeft = 0;
 
+    public GameObject container;
+
 
     public void Start() {
         globalManager = GameObject.Find("Global");
@@ -97,7 +99,7 @@ public class scrBlockGenerator : MonoBehaviour
     {
         if (isActive) {
             obj = Instantiate(block);
-            obj.transform.SetParent(canvas.transform);
+            obj.transform.SetParent(container.transform);
             obj.GetComponent<scrDragAndDrop>().canBeMoved = true;
             obj.GetComponent<scrDragAndDrop>().canBeDeleted = true;
 
@@ -111,7 +113,7 @@ public class scrBlockGenerator : MonoBehaviour
     public void demarrageBlock(GameObject slot)
     {
         obj = Instantiate(block);
-        obj.transform.SetParent(canvas.transform);
+        obj.transform.SetParent(container.transform);
         obj.GetComponent<scrDragAndDrop>().canBeMoved = true;
         obj.GetComponent<scrDragAndDrop>().canBeDeleted = true;
         obj.GetComponent<scrDragAndDrop>().willSnap = true;

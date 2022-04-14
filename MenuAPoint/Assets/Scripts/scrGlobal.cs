@@ -58,9 +58,7 @@ public class scrGlobal : MonoBehaviour
     public string NameBuilderText;
 
     void Start()
-    {
-        debug.text = Application.persistentDataPath;
-        
+    {  
         InitJson();
         setLevelUnlocked();
         setEndSceneItemsCanMove();
@@ -179,7 +177,7 @@ public class scrGlobal : MonoBehaviour
     public bool GetIndice()
     {
         if(FromGameBuilder || FromBonusLevel)return false;
-
+        print(FromGameBuilder +" "+FromBonusLevel);
         return player.indiceNiveau[levelNum-1];
     }
 
@@ -219,7 +217,6 @@ public class scrGlobal : MonoBehaviour
 
         
         chemin += "/Niveau_"+levelNum;
-        print(chemin);
         Directory.CreateDirectory(chemin);
 
         File.WriteAllText(chemin+"/Essaie_"+player.essaies[levelNum-1]+".txt",recap);

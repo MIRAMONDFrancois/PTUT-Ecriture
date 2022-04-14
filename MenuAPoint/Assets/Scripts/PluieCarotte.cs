@@ -13,7 +13,7 @@ public class PluieCarotte : MonoBehaviour
     void Update()
     {
         if (canBeStarted)
-            if (GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag > 9)
+            if (scrGlobal.Instance.nbrDrag > 9)
             {
                 StartCoroutine(carotteWave());
                 canBeStarted = false;

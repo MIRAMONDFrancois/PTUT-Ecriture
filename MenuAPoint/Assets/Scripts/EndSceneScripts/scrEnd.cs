@@ -17,7 +17,7 @@ public class scrEnd : MonoBehaviour
 
     private void Update()
     {
-       if(GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag > 9)
+       if(scrGlobal.Instance.nbrDrag > 9)
         {
             textFin.gameObject.SetActive(true);
             menuButton.SetActive(true);
@@ -28,7 +28,7 @@ public class scrEnd : MonoBehaviour
 
     public void checkIndices()
     {
-        switch (GameObject.Find("Global").GetComponent<scrGlobal>().nbIndices)
+        switch (scrGlobal.Instance.nbIndices)
         {
             case 0:
                 textFin.text = "Grâce à votre aide, Tokki est devenue une cuisinière surprenante !";

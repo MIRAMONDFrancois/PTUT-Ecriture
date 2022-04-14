@@ -70,63 +70,63 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
         switch (name)
         {
             case "Casserole":
-                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[0])
+                if (scrGlobal.Instance.endSceneItemsCanMove[0])
                 {
                     rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
                 }
                 break;
             case "Cuillere":
-                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[1])
+                if (scrGlobal.Instance.endSceneItemsCanMove[1])
                 {
                     rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
                 }
                 break;
             case "Couteau":
 
-                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[2])
+                if (scrGlobal.Instance.endSceneItemsCanMove[2])
                 {
                     rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
                 }
                 break;
             case "Fouet":
 
-                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[3])
+                if (scrGlobal.Instance.endSceneItemsCanMove[3])
                 {
                     rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
                 }
                 break;
             case "Louche":
-                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[4])
+                if (scrGlobal.Instance.endSceneItemsCanMove[4])
                 {
                     rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
                 }
                 break;
             case "Passoire":
-                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[5])
+                if (scrGlobal.Instance.endSceneItemsCanMove[5])
                 {
                     rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
                 }
                 break;
             case "Poele":
-                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[6])
+                if (scrGlobal.Instance.endSceneItemsCanMove[6])
                 {
                     rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
                 }
                 break;
             case "Rouleau":
-                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[7])
+                if (scrGlobal.Instance.endSceneItemsCanMove[7])
                 {
                     rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
                 }
                 break;
             case "Rape":
-                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[8])
+                if (scrGlobal.Instance.endSceneItemsCanMove[8])
                 {
                     rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
                 }
                 break;
             case "Spatule":
-                if (GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[9])
+                if (scrGlobal.Instance.endSceneItemsCanMove[9])
                 {
                     rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
                 }
@@ -144,7 +144,7 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
         switch (name)
         {
             case "Casserole":
-                if ((scrSlotsRewards.nameSlot != "SlotCasserole" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[0] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotCasserole" && scrGlobal.Instance.endSceneItemsCanMove[0] == true) || !scrSlotsRewards.pointerIsOnSlot)
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
@@ -153,13 +153,13 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
 
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
-                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
-                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[0] = false;
+                    scrGlobal.Instance.nbrDrag++;
+                    scrGlobal.Instance.endSceneItemsCanMove[0] = false;
                 }
 
                 break;
             case "Cuillere":
-                if ((scrSlotsRewards.nameSlot != "SlotCuillere" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[1] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotCuillere" && scrGlobal.Instance.endSceneItemsCanMove[1] == true) || !scrSlotsRewards.pointerIsOnSlot)
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
@@ -168,12 +168,12 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
-                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
-                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[1] = false;
+                    scrGlobal.Instance.nbrDrag++;
+                    scrGlobal.Instance.endSceneItemsCanMove[1] = false;
                 }
                 break;
             case "Couteau":
-                if ((scrSlotsRewards.nameSlot != "SlotCouteau" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[2] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotCouteau" && scrGlobal.Instance.endSceneItemsCanMove[2] == true) || !scrSlotsRewards.pointerIsOnSlot)
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
@@ -182,12 +182,12 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
-                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
-                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[2] = false;
+                    scrGlobal.Instance.nbrDrag++;
+                    scrGlobal.Instance.endSceneItemsCanMove[2] = false;
                 }
                 break;
             case "Fouet":
-                if ((scrSlotsRewards.nameSlot != "SlotFouet" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[3] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotFouet" && scrGlobal.Instance.endSceneItemsCanMove[3] == true) || !scrSlotsRewards.pointerIsOnSlot)
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
@@ -196,13 +196,13 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
-                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
-                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[3] = false;
+                    scrGlobal.Instance.nbrDrag++;
+                    scrGlobal.Instance.endSceneItemsCanMove[3] = false;
                 }
 
                 break;
             case "Louche":
-                if ((scrSlotsRewards.nameSlot != "SlotLouche" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[4] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotLouche" && scrGlobal.Instance.endSceneItemsCanMove[4] == true) || !scrSlotsRewards.pointerIsOnSlot)
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
@@ -210,13 +210,13 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
-                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
-                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[4] = false;
+                    scrGlobal.Instance.nbrDrag++;
+                    scrGlobal.Instance.endSceneItemsCanMove[4] = false;
                 }
 
                 break;
             case "Passoire":
-                if ((scrSlotsRewards.nameSlot != "SlotPassoire" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[5] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotPassoire" && scrGlobal.Instance.endSceneItemsCanMove[5] == true) || !scrSlotsRewards.pointerIsOnSlot)
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
@@ -224,12 +224,12 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
-                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
-                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[5] = false;
+                    scrGlobal.Instance.nbrDrag++;
+                    scrGlobal.Instance.endSceneItemsCanMove[5] = false;
                 }
                 break;
             case "Poele":
-                if ((scrSlotsRewards.nameSlot != "SlotPoele" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[6] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotPoele" && scrGlobal.Instance.endSceneItemsCanMove[6] == true) || !scrSlotsRewards.pointerIsOnSlot)
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
@@ -237,12 +237,12 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
-                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
-                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[6] = false;
+                    scrGlobal.Instance.nbrDrag++;
+                    scrGlobal.Instance.endSceneItemsCanMove[6] = false;
                 }
                 break;
             case "Rouleau":
-                if ((scrSlotsRewards.nameSlot != "SlotRouleau" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[7] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotRouleau" && scrGlobal.Instance.endSceneItemsCanMove[7] == true) || !scrSlotsRewards.pointerIsOnSlot)
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
@@ -250,12 +250,12 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
-                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
-                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[7] = false;
+                    scrGlobal.Instance.nbrDrag++;
+                    scrGlobal.Instance.endSceneItemsCanMove[7] = false;
                 }
                 break;
             case "Rape":
-                if ((scrSlotsRewards.nameSlot != "SlotRape" && GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[8] == true) || !scrSlotsRewards.pointerIsOnSlot)
+                if ((scrSlotsRewards.nameSlot != "SlotRape" && scrGlobal.Instance.endSceneItemsCanMove[8] == true) || !scrSlotsRewards.pointerIsOnSlot)
                 {
                     rectTransform.anchoredPosition = initialPosition;
                     canvasGroup.blocksRaycasts = true;
@@ -263,8 +263,8 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
-                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
-                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[8] = false;
+                    scrGlobal.Instance.nbrDrag++;
+                    scrGlobal.Instance.endSceneItemsCanMove[8] = false;
                 }
                 break;
             case "Spatule":
@@ -277,8 +277,8 @@ public class scrEndRewardsBehavior : MonoBehaviour, IPointerClickHandler, IBegin
                 }
                 if (rectTransform.anchoredPosition != initialPosition)
                 {
-                    GameObject.Find("Global").GetComponent<scrGlobal>().nbrDrag++;
-                    GameObject.Find("Global").GetComponent<scrGlobal>().endSceneItemsCanMove[9] = false;
+                    scrGlobal.Instance.nbrDrag++;
+                    scrGlobal.Instance.endSceneItemsCanMove[9] = false;
                     canvasGroup.blocksRaycasts = true;
                 }
                 break;

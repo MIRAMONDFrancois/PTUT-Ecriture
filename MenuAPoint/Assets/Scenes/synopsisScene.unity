@@ -587,9 +587,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Vous allez incarner Tokki la lapine cuisini\xE8re. Tokki r\xEAve de devenir
-    une excellente cheffe cuisini\xE8re.\n\nAccompagnez-la dans ses aventures ! Aidez-la
-    \xE0 r\xE9aliser son r\xEAve !"
+  m_text: "Tokki est une lapine cuisini\xE8re, elle r\xEAve de devenir une grande
+    cheffe. \n\nAccompagnez-la dans ses aventures ! Aidez-la \xE0 r\xE9aliser son
+    r\xEAve !"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e7e278b79a605b845b30dbbb1cfebcfc, type: 2}
   m_sharedMaterial: {fileID: 3176864746252412033, guid: e7e278b79a605b845b30dbbb1cfebcfc,
@@ -617,7 +617,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 65
+  m_fontSize: 72
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1

@@ -280,7 +280,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1030701440}
-        m_MethodName: LoadThisLevel
+        m_MethodName: LoadThisLevel_withSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

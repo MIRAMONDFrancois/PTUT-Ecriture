@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System.IO;
+using UnityEngine.Video;
 
 public class scrTextManager : MonoBehaviour
 {
@@ -196,7 +197,7 @@ public class scrTextManager : MonoBehaviour
             animationObj.GetComponent<SelectionAnimation>().SelectAnimation(false, scrGlobal.Instance.levelNum);
 
             animationLog.gameObject.SetActive(false);
-            Invoke("boutonlayer_anim", 5f);//problem
+            Invoke("boutonlayer_anim", (float) animationObj.GetComponentInChildren<VideoPlayer>().length);//problem
         }
         HideSlots();
 
@@ -1098,22 +1099,15 @@ public class scrTextManager : MonoBehaviour
         }
 
         animationObj.GetComponent<SelectionAnimation>().SelectAnimation(textreussite, scrGlobal.Instance.levelNum);
+        Invoke("boutonlayer_anim", (float) animationObj.GetComponentInChildren<VideoPlayer>().length);//timing a changer
 
         if (textreussite)
         {
-
-
-            Invoke("boutonlayer_anim", 6);//timing a changer
-            Invoke("DisplayRewardsIndice", 7);
+            Invoke("DisplayRewardsIndice", (float) animationObj.GetComponentInChildren<VideoPlayer>().length);
             if (scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum]) return;
             scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum] = true;
             scrGlobal.Instance.nbIndices++;
 
-        }
-        else
-        {
-            //Invoke("dual_anim_reset",1f);
-            Invoke("boutonlayer_anim", 6);//timing a changer
         }
 
     }

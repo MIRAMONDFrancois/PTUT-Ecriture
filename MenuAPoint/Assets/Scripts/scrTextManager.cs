@@ -301,6 +301,16 @@ public class scrTextManager : MonoBehaviour
                         canTouchPonct = true;
                     }
                     //Début animation après fin validation
+                    if (mauvaisPoint)
+                        GameObject.Find("ClientConfuSound").GetComponent<SFX_Script>().client_confus();
+                    if (pasAssezVirgule)
+                        GameObject.Find("ClientFadeSound").GetComponent<SFX_Script>().client_fade();
+                    if (tropVirgule)
+                        GameObject.Find("ClientEpiceSound").GetComponent<SFX_Script>().client_epice();
+                    if (mauvaiseVirgule)
+                        GameObject.Find("ClientConfuSound").GetComponent<SFX_Script>().client_confus();
+                    if (textreussite)
+                        GameObject.Find("ReussiteSound").GetComponent<SFX_Script>().reussite_sound();
                     AnimationFondu();
                 }
             }

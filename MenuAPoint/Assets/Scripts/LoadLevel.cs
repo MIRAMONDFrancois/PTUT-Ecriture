@@ -18,15 +18,20 @@ public class LoadLevel : MonoBehaviour
         yield return new WaitForSeconds(loadLevelSource.clip.length);
 
         loadLevelSource.Stop();
-        scrGlobal.Instance.FromBonusLevel = false;
-        scrGlobal.Instance.FromGameBuilder = false;
 
         SceneManager.LoadScene(nameLevel);
     }
 
-    public void LoadThisLevel()
+    public void LoadThisLevel_withSound()
     {
         StartCoroutine(PlaySound());
+    }
+
+    public void LoadThisLevel()
+    {
+        scrGlobal.Instance.FromBonusLevel = false;
+        scrGlobal.Instance.FromGameBuilder = false;
+        SceneManager.LoadScene(nameLevel);
     }
 
     public void LoadBonusLevel()

@@ -59,6 +59,7 @@ public class scrGlobal : MonoBehaviour
 
     void Start()
     {  
+        debug.text = Application.persistentDataPath;
         InitJson();
         setLevelUnlocked();
         setEndSceneItemsCanMove();
@@ -80,16 +81,22 @@ public class scrGlobal : MonoBehaviour
         chemin_txt = Application.persistentDataPath + "/Resultats";
         chemin_bonus = Application.persistentDataPath + "/NiveauxBonus";
 
-        Directory.CreateDirectory (chemin_bonus);
+        debug.text = "Avant Create";
+        Directory.CreateDirectory(chemin_bonus);
+        debug.text = "Après Create";
 
         if(!File.Exists(chemin_json))
         {
             File.WriteAllText(chemin_json, "{\"donnees\": [],\"niveauxBonus\": []}");
         }
 
+        debug.text = "Après Write";
         string jsonFile = File.ReadAllText(chemin_json);
-        print(jsonFile);
+        debug.text = "Après Read" + jsonFile;
+
         data = JsonConvert.DeserializeObject<Donnees>(jsonFile);
+
+        debug.text = "Après Deserialize";
     }
 
     public void setLevelUnlocked()

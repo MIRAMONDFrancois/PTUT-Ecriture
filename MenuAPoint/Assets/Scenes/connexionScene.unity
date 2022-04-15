@@ -1112,7 +1112,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Debug
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1142,9 +1142,9 @@ MonoBehaviour:
   m_fontSize: 10
   m_fontSizeBase: 10
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 1
+  m_fontSizeMax: 50
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -1175,7 +1175,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -1.1258475, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1205,8 +1205,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -23.8, y: 102.3}
-  m_SizeDelta: {x: 668.3689, y: 67.17488}
+  m_AnchoredPosition: {x: -128.8, y: 194.7}
+  m_SizeDelta: {x: 724.73486, y: 98.266235}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1110752229
 GameObject:
@@ -1819,6 +1819,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: 
   levelNum: 0
+  chemin_bonus: 
   debug: {fileID: 756716788}
   levelunlocked: 
   file: {fileID: 4900000, guid: b3307c36e54e1cd419403a75fe92816e, type: 3}
@@ -1836,8 +1837,14 @@ MonoBehaviour:
   tutoChecked: 0
   intro: 0
   nbIndices: 0
+  nbrDrag: 0
+  endSceneItemsCanMove: 
   FromGameBuilder: 0
+  FromBonusLevel: 0
   GameBuilderText: {fileID: 0}
+  NameBuilderText: 
+  output: 
+  stack: 
 --- !u!4 &1757423993
 Transform:
   m_ObjectHideFlags: 0

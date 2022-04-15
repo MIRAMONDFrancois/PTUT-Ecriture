@@ -19,14 +19,14 @@ public class OpenFiles : MonoBehaviour
 
     public void OpenFileBrowser()
     {   
-        string path = EditorUtility.OpenFilePanel("Sélectionner un fichier .txt", "", "txt");
+        /*string path = EditorUtility.OpenFilePanel("Sélectionner un fichier .txt", "", "txt");
         if (path.Length != 0)
         {
             TextAsset textAsset = new TextAsset(File.ReadAllText(path));
             TextToEdit.text = textAsset.text;
             scrGlobal.Instance.FromGameBuilder = true;
             scrGlobal.Instance.GameBuilderText = textAsset;
-        }
+        }*/
     }
 
     void Update()

@@ -178,7 +178,7 @@ public class scrTextManager : MonoBehaviour
         {
 
             animationLog.gameObject.SetActive(showLog);
-            animationLog.text = "Les clients ont hâte de manger votre plat !";
+            animationLog.text = "Les clients ont hâte de manger votre repas !";
 
             //Taille Curseur
             GameObject.Find("Curseur").GetComponent<CurseurScript>().change_taille();
@@ -898,7 +898,7 @@ public class scrTextManager : MonoBehaviour
         virgule_reussite = !tropVirgule && !pasAssezVirgule && !mauvaiseVirgule && !pasbonneVirgule;
         textreussite = (point_reussite && virgule_reussite) || textreussite;
 
-        animationLog.text = "Les clients sont en train de tester votre plat...";
+        animationLog.text = "Les clients sont en train de goûter votre repas...";
 
         lineToStop = vrai_slots_GO[pos].GetComponent<scrSlot>().ligne;
         text_scalerUL.SetActive(true);

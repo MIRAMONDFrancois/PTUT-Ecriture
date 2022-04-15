@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using TMPro;
+using SFB;
 
 public class OpenFiles : MonoBehaviour
 {
@@ -19,14 +20,15 @@ public class OpenFiles : MonoBehaviour
 
     public void OpenFileBrowser()
     {   
-        /*string path = EditorUtility.OpenFilePanel("Sélectionner un fichier .txt", "", "txt");
-        if (path.Length != 0)
+        var path = StandaloneFileBrowser.OpenFilePanel("Open File", "", "txt", false);
+        
+        if (path[0].Length != 0)
         {
-            TextAsset textAsset = new TextAsset(File.ReadAllText(path));
+            TextAsset textAsset = new TextAsset(File.ReadAllText(path[0]));
             TextToEdit.text = textAsset.text;
             scrGlobal.Instance.FromGameBuilder = true;
             scrGlobal.Instance.GameBuilderText = textAsset;
-        }*/
+        }
     }
 
     void Update()

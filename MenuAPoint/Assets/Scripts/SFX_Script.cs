@@ -11,6 +11,7 @@ public class SFX_Script : MonoBehaviour
     public AudioSource clientfade;
     public AudioSource clientepice;
     public AudioSource reussite;
+    public AudioSource continuer;
 
     public void pop_block()
     {
@@ -56,5 +57,11 @@ public class SFX_Script : MonoBehaviour
     {
         reussite.clip = Resources.Load<AudioClip>("Sounds/reussite");
         reussite.Play();
+    }
+
+    public void continuer_sound()
+    {
+        continuer.clip = Resources.Load<AudioClip>("Sounds/bouton");
+        continuer.Play();
     }
 }

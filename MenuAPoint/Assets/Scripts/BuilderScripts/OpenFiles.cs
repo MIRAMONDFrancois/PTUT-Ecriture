@@ -21,8 +21,8 @@ public class OpenFiles : MonoBehaviour
     public void OpenFileBrowser()
     {   
         var path = StandaloneFileBrowser.OpenFilePanel("Open File", "", "txt", false);
-        
-        if (path[0].Length != 0)
+
+        if (path.Length != 0)
         {
             TextAsset textAsset = new TextAsset(File.ReadAllText(path[0]));
             TextToEdit.text = textAsset.text;

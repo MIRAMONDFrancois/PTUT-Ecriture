@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.IO;
+using System.Text.RegularExpressions;
 
 public class scrMenu : MonoBehaviour 
 {   
@@ -64,7 +65,11 @@ public class scrMenu : MonoBehaviour
     }
 
     public void SetName(){
-        scrGlobal.Instance.playerName = user_prenom.text+user_nom.text;
+
+        string prenom = Regex.Replace(user_prenom.text, @"[^a-zA-Z0-9 ]", "");
+        string nom = Regex.Replace(user_nom.text, @"[^a-zA-Z0-9 ]", "");
+        
+        scrGlobal.Instance.playerName = prenom+nom;
     }
 
     public void Enterpwd(){

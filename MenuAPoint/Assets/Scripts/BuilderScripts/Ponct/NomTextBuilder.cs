@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Text.RegularExpressions;
 
 public class NomTextBuilder : MonoBehaviour
 {
@@ -10,11 +11,13 @@ public class NomTextBuilder : MonoBehaviour
 
     void Start()
     {
-        placeHolder.text = scrGlobal.Instance.NameBuilderText;
+        placeHolder.text = scrGlobal.Instance.NameBuilderText.Split('.')[0];
     }
 
     public void NameChange()
     {
+        
+        nomFichier.text = Regex.Replace(nomFichier.text, @"[^a-zA-Z0-9 ]", "");
         scrGlobal.Instance.NameBuilderText = nomFichier.text;
         
         if(nomFichier.text.Trim() == "")

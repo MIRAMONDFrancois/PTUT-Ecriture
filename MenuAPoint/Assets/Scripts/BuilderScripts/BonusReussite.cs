@@ -14,6 +14,7 @@ public class BonusReussite : MonoBehaviour
     {
         GetComponentInParent<ScrollAreaManager>().OnNiveauSelected += ShowOutline;
 
+        print(scrGlobal.Instance.FromBonusLevel +" "+ scrGlobal.Instance.FromGameBuilder);
         if(!scrGlobal.Instance.FromBonusLevel)return;
         
         Joueurs j = scrGlobal.Instance.GetPlayer();

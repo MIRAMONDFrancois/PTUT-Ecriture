@@ -55,7 +55,7 @@ public class ScrollAreaManager : MonoBehaviour
     public void LoadNouveau()
     {
         scrGlobal.Instance.GameBuilderText = null;
-        scrGlobal.Instance.NameBuilderText = "NomDuTexte.txt";
+        scrGlobal.Instance.NameBuilderText = "NomDuTexte";
         OnNiveauSelected?.Invoke();
     }
 }

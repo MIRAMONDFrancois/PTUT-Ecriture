@@ -256,12 +256,13 @@ public class scrGlobal : MonoBehaviour
     {
         NiveauxBonus niveauxBonus = GetBonusLevel();
         
-        niveauxBonus.extraPonct[0] = pointLimit;
-        niveauxBonus.extraPonct[1] = virguleLimit;
-        niveauxBonus.extraPonct[2] = exclamationLimit;
-        niveauxBonus.extraPonct[3] = interrogationLimit;
-        niveauxBonus.extraPonct[4] = deuxpointsLimit;
-        niveauxBonus.extraPonct[5] = pointvirguleLimit;
+
+        niveauxBonus.totalPonct[0] = pointLimit;
+        niveauxBonus.totalPonct[1] = virguleLimit;
+        niveauxBonus.totalPonct[2] = exclamationLimit;
+        niveauxBonus.totalPonct[3] = interrogationLimit;
+        niveauxBonus.totalPonct[4] = deuxpointsLimit;
+        niveauxBonus.totalPonct[5] = pointvirguleLimit;
 
         WriteInJson();
 

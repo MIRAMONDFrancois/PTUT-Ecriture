@@ -31,12 +31,13 @@ public class BonusLevelManager : MonoBehaviour
     {   
         //niveau
         NiveauxBonus niveauxBonus = scrGlobal.Instance.GetBonusLevel();
-        scrGlobal.Instance.pointLimit = niveauxBonus.extraPonct[0];
-        scrGlobal.Instance.virguleLimit = niveauxBonus.extraPonct[1];
-        scrGlobal.Instance.exclamationLimit = niveauxBonus.extraPonct[2];
-        scrGlobal.Instance.interrogationLimit = niveauxBonus.extraPonct[3];
-        scrGlobal.Instance.deuxpointsLimit = niveauxBonus.extraPonct[4];
-        scrGlobal.Instance.pointvirguleLimit = niveauxBonus.extraPonct[5];
+
+        scrGlobal.Instance.pointLimit = niveauxBonus.totalPonct[0];
+        scrGlobal.Instance.virguleLimit = niveauxBonus.totalPonct[1];
+        scrGlobal.Instance.exclamationLimit = niveauxBonus.totalPonct[2];
+        scrGlobal.Instance.interrogationLimit = niveauxBonus.totalPonct[3];
+        scrGlobal.Instance.deuxpointsLimit = niveauxBonus.totalPonct[4];
+        scrGlobal.Instance.pointvirguleLimit = niveauxBonus.totalPonct[5];
 
         //joueur
         Joueurs j = scrGlobal.Instance.GetPlayer();

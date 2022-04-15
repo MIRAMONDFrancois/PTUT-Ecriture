@@ -6,7 +6,8 @@ using UnityEngine;
 public class NiveauxBonus
 {
     public string nom;
-    public int[] extraPonct = {-1,-1,-1,-1,-1,-1};
+    public int[] totalPonct = {-1,-1,-1,-1,-1,-1};
+    public int[] extraPonct = {0,0,0,0,0,0};
 
     public NiveauxBonus(string nom)
     {

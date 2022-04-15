@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class NumberPonctBuilder : MonoBehaviour
@@ -8,6 +9,7 @@ public class NumberPonctBuilder : MonoBehaviour
     public TMP_InputField PonctTexte;
     private List<PonctBuildEvents> ponctTot = new List<PonctBuildEvents>();
 
+    public Button testTextButton;
     public Transform[] ListePot;
     private int[] nbPot = {0,0,0,0,0,0};
 
@@ -22,8 +24,8 @@ public class NumberPonctBuilder : MonoBehaviour
     {
         while(true)
         {
-            yield return new WaitForSeconds(.5f);
-        
+            testTextButton.interactable = false;
+
             for(int a=0;a<nbPot.Length;a++)
             {
                 nbPot[a]=0;
@@ -54,9 +56,10 @@ public class NumberPonctBuilder : MonoBehaviour
                 }
             }
 
+            testTextButton.interactable = true;
             ChangementNbPonct();
 
-
+            yield return new WaitForSeconds(.5f);
         }
         
     }
@@ -68,16 +71,16 @@ public class NumberPonctBuilder : MonoBehaviour
         for(int a=0;a<ListePot.Length;a++)
         {
             ponctTot.Add(ListePot[a].GetComponent<PonctBuildEvents>());
-            
-            if(bonus.extraPonct[a] == -1)
+
+            ponctTot[a].IntSuppl = bonus.extraPonct[a];
+            ponctTot[a].TextSuppl.text = bonus.extraPonct[a] +"";
+
+            if(bonus.totalPonct[a] == -1)
             {
                 ponctTot[a].PonctInfinite();
-                ponctTot[a].TextTot.text = "-1";
-            }else
-            {
-                ponctTot[a].IntSuppl = bonus.extraPonct[a] - nbPot[a];
-                if(ponctTot[a].IntSuppl > 0) ponctTot[a].MoinsPonct.gameObject.SetActive(true);
             }
+
+            if(ponctTot[a].IntSuppl > 0) ponctTot[a].MoinsPonct.gameObject.SetActive(true);
         }
     }
 
@@ -99,8 +102,13 @@ public class NumberPonctBuilder : MonoBehaviour
     public void OnEssayage()
     {
         scrGlobal.Instance.GameBuilderText = new TextAsset(PonctTexte.text);
+        NiveauxBonus bonus = scrGlobal.Instance.GetBonusLevel();
 
-        
+        for(int a=0;a<6;a++)
+        {
+            bonus.extraPonct[a] = ponctTot[a].IntSuppl; 
+        }
+
         scrGlobal.Instance.pointLimit = ponctTot[0].InfiniteToggle ? -1 : ponctTot[0].IntSuppl + nbPot[0];
         scrGlobal.Instance.virguleLimit = ponctTot[1].InfiniteToggle ? -1 : ponctTot[1].IntSuppl + nbPot[1];
         scrGlobal.Instance.exclamationLimit = ponctTot[2].InfiniteToggle ? -1 : ponctTot[2].IntSuppl + nbPot[2];

@@ -100,10 +100,23 @@ public class scrMenu : MonoBehaviour
 
     }
 
-    public void LoadMenu()
+    public IEnumerator LoadMenuSound()
     {
+        AudioSource continueSource = GameObject.Find("ButtonSound").GetComponent<SFX_Script>().continuer;
+
+        continueSource.GetComponent<SFX_Script>().continuer_sound();
+
+        yield return new WaitForSeconds(continueSource.clip.length);
+
+        continueSource.Stop();
+
         scrGlobal.Instance.ChargeJoueur();
 
         SceneManager.LoadScene("menuScene");
+    }
+
+    public void LoadMenu()
+    {
+        StartCoroutine(LoadMenuSound());
     }
 }

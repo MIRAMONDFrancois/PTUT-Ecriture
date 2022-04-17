@@ -30,8 +30,6 @@ public class NumberPonctBuilder : MonoBehaviour
     {
         while(true)
         {
-            testTextButton.interactable = false;
-
             for(int a=0;a<nbPot.Length;a++)
             {
                 nbPot[a]=0;
@@ -62,7 +60,6 @@ public class NumberPonctBuilder : MonoBehaviour
                 }
             }
 
-            testTextButton.interactable = true;
             ChangementNbPonct();
 
             yield return new WaitForSeconds(.5f);

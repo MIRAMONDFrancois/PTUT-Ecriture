@@ -18,12 +18,9 @@ public class ScrollAreaManager : MonoBehaviour
     void Start()
     {
         scrGlobal.Instance.RefreshNiveauxBonus();
-
         _data = scrGlobal.Instance.GetData();
-
         SuppNiveauxBonus();
         CreerNiveauxBonus();
-
         ScrollBarValue.value = 1f;//slide on top
     }
 

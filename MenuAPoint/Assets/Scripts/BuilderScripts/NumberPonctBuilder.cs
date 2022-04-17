@@ -6,8 +6,10 @@ using TMPro;
 
 public class NumberPonctBuilder : MonoBehaviour
 {
+    public GameObject ButtonOpen;
     public TMP_InputField PonctTexte;
     private List<PonctBuildEvents> ponctTot = new List<PonctBuildEvents>();
+    
 
     public Button testTextButton;
     public Transform[] ListePot;
@@ -15,6 +17,10 @@ public class NumberPonctBuilder : MonoBehaviour
 
     void Start()
     {
+        #if (UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN ||UNITY_EDITOR)
+            ButtonOpen.SetActive(true);
+        #endif
+
         Init();
         StartCoroutine(ComptagePonct());
     }

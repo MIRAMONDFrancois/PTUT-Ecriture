@@ -16,7 +16,6 @@ public class scrGlobal : MonoBehaviour
     private string chemin_json;
     private string chemin_txt;
     public string chemin_bonus;
-    public TextMeshProUGUI debug;
 
     [Header("Unlocked Levels")]
     public List<bool> levelunlocked = new List<bool>();//Map
@@ -59,7 +58,6 @@ public class scrGlobal : MonoBehaviour
 
     void Start()
     {  
-        debug.text = Application.persistentDataPath;
         InitJson();
         setLevelUnlocked();
         setEndSceneItemsCanMove();
@@ -80,23 +78,16 @@ public class scrGlobal : MonoBehaviour
         chemin_json = Application.persistentDataPath + "/donnees.json";
         chemin_txt = Application.persistentDataPath + "/Resultats";
         chemin_bonus = Application.persistentDataPath + "/NiveauxBonus";
-
-        debug.text = "Avant Create";
         Directory.CreateDirectory(chemin_bonus);
-        debug.text = "Après Create";
 
         if(!File.Exists(chemin_json))
         {
             File.WriteAllText(chemin_json, "{\"donnees\": [],\"niveauxBonus\": []}");
         }
 
-        debug.text = "Après Write";
         string jsonFile = File.ReadAllText(chemin_json);
-        debug.text = "Après Read" + jsonFile;
 
         data = JsonConvert.DeserializeObject<Donnees>(jsonFile);
-
-        debug.text = "Après Deserialize";
     }
 
     public void setLevelUnlocked()
@@ -184,7 +175,6 @@ public class scrGlobal : MonoBehaviour
     public bool GetIndice()
     {
         if(FromGameBuilder || FromBonusLevel)return false;
-        print(FromGameBuilder +" "+FromBonusLevel);
         return player.indiceNiveau[levelNum-1];
     }
 
@@ -233,22 +223,25 @@ public class scrGlobal : MonoBehaviour
     {
         foreach(NiveauxBonus niveaux in data.niveauxBonus)
         {
-            if(niveaux.nom.Equals(NameBuilderText))return niveaux;
+            
+            if(niveaux.nom.Equals(NameBuilderText))
+            {
+                print("existe");
+                return niveaux;
+            }
         }
-        
         string[] trial = NameBuilderText.Split('.');
 
         if(!trial[trial.Length-1].Equals("txt"))
         {
             NameBuilderText += ".txt";
         }
-
         NiveauxBonus niveau = new NiveauxBonus(NameBuilderText);
 
         if(NameBuilderText.Equals("NomDuTexte.txt"))return niveau;
         
         data.niveauxBonus.Add(niveau);
-
+        print("new");
         return niveau;
     }
 
@@ -328,26 +321,26 @@ public class scrGlobal : MonoBehaviour
     public void RefreshNiveauxBonus()
     {
         string [] files = System.IO.Directory.GetFiles(chemin_bonus);
+        
         List<NiveauxBonus> newBonus = new List<NiveauxBonus>();
-
         foreach (string file in files)
         {
-            
             //only read txt
             if(file.Contains("txt"))
             {  
-                string[] arr = file.Split('\\');
-
-                NameBuilderText = arr[1];
-
+                #if (UNITY_STANDALONE_WIN || UNITY_EDITOR)
+                    string[] arr = file.Split('\\');    
+                #else
+                    string[] arr = file.Split('/');
+                #endif
+            
+                NameBuilderText = arr[arr.Length-1]; 
                 newBonus.Add(GetBonusLevel());
             }
         }
-
         data.niveauxBonus = newBonus;
 
         if(FromGameBuilder)return;
-
         JoueursNiveauxBonus();
     }
 
@@ -357,12 +350,13 @@ public class scrGlobal : MonoBehaviour
 
         foreach(NiveauxBonus niveaux in data.niveauxBonus)
         {
-            if(j.niveauxBonusFinis.ContainsKey(niveaux.nom))break;
-
-            j.niveauxBonusFinis.Add(niveaux.nom,false);
-            j.indiceBonus.Add(niveaux.nom,false);
-            j.essaiesBonus.Add(niveaux.nom,1);
-            j.chronoNiveauBonus.Add(niveaux.nom,0);
+            if(!j.niveauxBonusFinis.ContainsKey(niveaux.nom))
+            {
+                j.niveauxBonusFinis.Add(niveaux.nom,false);
+                j.indiceBonus.Add(niveaux.nom,false);
+                j.essaiesBonus.Add(niveaux.nom,1);
+                j.chronoNiveauBonus.Add(niveaux.nom,0);
+            }
         }
     }
 

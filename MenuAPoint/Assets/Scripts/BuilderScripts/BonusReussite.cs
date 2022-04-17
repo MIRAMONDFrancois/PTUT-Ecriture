@@ -19,13 +19,20 @@ public class BonusReussite : MonoBehaviour
         
         Joueurs j = scrGlobal.Instance.GetPlayer();
 
-        if(j.niveauxBonusFinis[TextCorrect.text])
+        try
         {
-            ImageCorrecte.color = Color.green;
-        }else
+            if(j.niveauxBonusFinis[TextCorrect.text])
+            {
+                ImageCorrecte.color = Color.green;
+            }else
+            {
+                ImageCorrecte.color = Color.red;
+            }
+        }catch
         {
             ImageCorrecte.color = Color.red;
         }
+        
                 
     }
     

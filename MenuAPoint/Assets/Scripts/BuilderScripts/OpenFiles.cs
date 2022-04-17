@@ -10,7 +10,7 @@ public class OpenFiles : MonoBehaviour
 {
     public TMP_InputField TextToEdit;
     public GameObject TextQuiBouge;
-
+    
     void Start()
     {
         if(scrGlobal.Instance.GameBuilderText == null)return;
@@ -21,7 +21,6 @@ public class OpenFiles : MonoBehaviour
     public void OpenFileBrowser()
     {   
         var path = StandaloneFileBrowser.OpenFilePanel("Open File", "", "txt", false);
-
         if (path.Length != 0)
         {
             TextAsset textAsset = new TextAsset(File.ReadAllText(path[0]));

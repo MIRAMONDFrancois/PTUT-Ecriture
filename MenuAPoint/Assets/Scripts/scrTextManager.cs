@@ -221,6 +221,7 @@ public class scrTextManager : MonoBehaviour
                 {
                     // play animations
                     movingCursor = false;
+                    cursor.GetComponent<CurseurScript>().AudioManger.Stop();
                     //prhase correcte
                     if (textreussite)
                     {
@@ -909,6 +910,8 @@ public class scrTextManager : MonoBehaviour
         cursor.transform.position = cursorStart;
         lineCursor = 0;
         cursor.transform.SetAsLastSibling();
+        cursor.GetComponent<CurseurScript>().AudioManger.Play();
+
     }
 
     public void replaceWords()

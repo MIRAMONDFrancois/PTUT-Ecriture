@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CurseurScript : MonoBehaviour
 {
+    public AudioSource AudioManger;
+    
     public void change_taille()
     {
         scrTextManager GameManagerScript = GameObject.Find("GameManager").GetComponent<scrTextManager>();

@@ -302,6 +302,16 @@ public class scrTextManager : MonoBehaviour
                         canTouchPonct = true;
                     }
                     //Début animation après fin validation
+                    if (mauvaisPoint)
+                        GameObject.Find("ClientConfuSound").GetComponent<SFX_Script>().client_confus();
+                    if (pasAssezVirgule)
+                        GameObject.Find("ClientFadeSound").GetComponent<SFX_Script>().client_fade();
+                    if (tropVirgule)
+                        GameObject.Find("ClientEpiceSound").GetComponent<SFX_Script>().client_epice();
+                    if (mauvaiseVirgule)
+                        GameObject.Find("ClientConfuSound").GetComponent<SFX_Script>().client_confus();
+                    if (textreussite)
+                        GameObject.Find("ReussiteSound").GetComponent<SFX_Script>().reussite_sound();
                     AnimationFondu();
                 }
             }
@@ -1235,12 +1245,19 @@ public class scrTextManager : MonoBehaviour
         }
     }
 
-    public void GoToMap()
+    public IEnumerator BackSound()
     {
+        AudioSource backsource = GameObject.Find("BackSound").GetComponent<SFX_Script>().back;
+
+        backsource.GetComponent<SFX_Script>().back_sound();
+
+        yield return new WaitForSeconds(backsource.clip.length);
+
+        backsource.Stop();
+
         if (scrGlobal.Instance.FromGameBuilder)
         {
             SceneManager.LoadScene("GameBuilder");
-            return;
         }
 
         if (!textreussite)
@@ -1251,15 +1268,50 @@ public class scrTextManager : MonoBehaviour
         if (scrGlobal.Instance.FromBonusLevel)
         {
             SceneManager.LoadScene("AccesBonus");
-            return;
         }
 
-        if (scrGlobal.Instance.levelNum == 15)
+        if (scrGlobal.Instance.levelNum == 15 && scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum])
         {
             SceneManager.LoadScene("endScene");
-            return;
         }
         SceneManager.LoadScene("MapScene");
+    }
+
+    public void BackToMap()
+    {
+        StartCoroutine(BackSound());
+    }
+
+    public IEnumerator ContinueSound()
+    {
+        AudioSource continueSource = GameObject.Find("ButtonSound").GetComponent<SFX_Script>().continuer;
+
+        continueSource.GetComponent<SFX_Script>().continuer_sound();
+
+        yield return new WaitForSeconds(continueSource.clip.length);
+
+        continueSource.Stop();
+
+        if (scrGlobal.Instance.FromGameBuilder)
+        {
+            SceneManager.LoadScene("GameBuilder");
+        }
+
+        if (scrGlobal.Instance.FromBonusLevel)
+        {
+            SceneManager.LoadScene("AccesBonus");
+        }
+
+        if (scrGlobal.Instance.levelNum == 15 && scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum])
+        {
+            SceneManager.LoadScene("endScene");
+        }
+        SceneManager.LoadScene("MapScene");
+    }
+
+    public void ContinueToMap()
+    {
+        StartCoroutine(ContinueSound());
     }
 
     public void DisplayRewardsItem()

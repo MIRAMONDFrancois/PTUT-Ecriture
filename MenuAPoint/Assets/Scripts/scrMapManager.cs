@@ -24,6 +24,19 @@ public class scrMapManager : MonoBehaviour
         //checkLevelActuel();//mettre au valider reussi du dernier niveau
     }
 
+    public IEnumerator PlaySound_Back()
+    {
+        AudioSource continueSource = GameObject.Find("BackSound").GetComponent<SFX_Script>().back;
+
+        continueSource.GetComponent<SFX_Script>().back_sound();
+
+        yield return new WaitForSeconds(continueSource.clip.length);
+
+        continueSource.Stop();
+
+        SceneManager.LoadScene("menuScene");
+    }
+
     public void LoadNewScene()
     {
         SceneManager.LoadScene(sceneName);
@@ -31,7 +44,7 @@ public class scrMapManager : MonoBehaviour
 
     public void backToMenu()
     {
-        SceneManager.LoadScene("menuScene");
+        StartCoroutine(PlaySound_Back());
     }
 
     private void LevelSetBaseValues(int levelNum, TextAsset TextFile) {

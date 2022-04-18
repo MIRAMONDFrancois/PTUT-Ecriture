@@ -9,11 +9,28 @@ public class LoadLevel : MonoBehaviour
     public Scene level;
     public string nameLevel;
 
+    public IEnumerator PlaySound()
+    {
+        AudioSource loadLevelSource = GameObject.Find("ButtonSound").GetComponent<SFX_Script>().continuer;
+
+        loadLevelSource.GetComponent<SFX_Script>().continuer_sound();
+
+        yield return new WaitForSeconds(loadLevelSource.clip.length);
+
+        loadLevelSource.Stop();
+
+        SceneManager.LoadScene(nameLevel);
+    }
+
+    public void LoadThisLevel_withSound()
+    {
+        StartCoroutine(PlaySound());
+    }
+
     public void LoadThisLevel()
     {
         scrGlobal.Instance.FromBonusLevel = false;
         scrGlobal.Instance.FromGameBuilder = false;
-
         SceneManager.LoadScene(nameLevel);
     }
 
@@ -36,9 +53,17 @@ public class LoadLevel : MonoBehaviour
         SceneManager.LoadScene(nameLevel);
     }
 
-    public void intro()
+    public IEnumerator Intro_Sound()
     {
-        if(scrGlobal.Instance.intro)nameLevel = "MapScene";
+        AudioSource soundSource = GameObject.Find("ButtonSound").GetComponent<SFX_Script>().continuer;
+
+        soundSource.GetComponent<SFX_Script>().continuer_sound();
+
+        yield return new WaitForSeconds(soundSource.clip.length);
+
+        soundSource.Stop();
+
+        if (scrGlobal.Instance.intro) nameLevel = "MapScene";
 
         scrGlobal.Instance.SetIntro();
         scrGlobal.Instance.intro = true;
@@ -47,6 +72,12 @@ public class LoadLevel : MonoBehaviour
         scrGlobal.Instance.FromGameBuilder = false;
         SceneManager.LoadScene(nameLevel);
     }
+
+    public void intro()
+    {
+        StartCoroutine(Intro_Sound());
+    }
+
     public void tuto()
     {
         scrGlobal.Instance.SetTuto();

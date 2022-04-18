@@ -39,4 +39,20 @@ public class scrButton : MonoBehaviour
         }
            
     }
+
+    public IEnumerator PlaySound()
+    {
+        AudioSource soundSource = GameObject.Find("ButtonSound").GetComponent<SFX_Script>().continuer;
+
+        soundSource.GetComponent<SFX_Script>().continuer_sound();
+
+        yield return new WaitForSeconds(soundSource.clip.length);
+
+        soundSource.Stop();
+    }
+
+    public void ButtonSound()
+    {
+        StartCoroutine(PlaySound());
+    }
 }

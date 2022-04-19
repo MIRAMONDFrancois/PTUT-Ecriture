@@ -75,9 +75,17 @@ public class scrGlobal : MonoBehaviour
 
     private void InitJson()
     {
-        chemin_json = Application.persistentDataPath + "/donnees.json";
-        chemin_txt = Application.persistentDataPath + "/Resultats";
-        chemin_bonus = Application.persistentDataPath + "/NiveauxBonus";
+
+        string chemin = Application.persistentDataPath;
+
+        #if UNITY_STANDALONE_OSX
+            chemin = Application.streamingAssetsPath;
+        #endif
+
+        chemin_json = chemin + "/donnees.json";
+        chemin_txt = chemin + "/Resultats";
+        chemin_bonus = chemin + "/NiveauxBonus";
+
         Directory.CreateDirectory(chemin_bonus);
 
         if(!File.Exists(chemin_json))

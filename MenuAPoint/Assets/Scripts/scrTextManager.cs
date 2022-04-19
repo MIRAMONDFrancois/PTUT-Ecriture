@@ -241,7 +241,7 @@ public class scrTextManager : MonoBehaviour
 
                         // Hides all buttons and shows the "continue" one, which is the first child
                         ButtonLayer.SetActive(true);
-                        if (scrGlobal.Instance.FromGameBuilder)
+                        if (scrGlobal.Instance.FromGameBuilder || scrGlobal.Instance.FromBonusLevel)
                         {
                             ButtonLayer.transform.GetChild(1).gameObject.SetActive(true);
                         }

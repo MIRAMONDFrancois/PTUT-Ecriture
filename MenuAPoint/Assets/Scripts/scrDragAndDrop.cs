@@ -33,7 +33,7 @@ public class scrDragAndDrop : MonoBehaviour
     public void Awake()//on commence à prendre un ingrédient
     {
         textManager = GameObject.Find("GameManager");
-
+        RectTransform canvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
         ogPos = transform.position;
         snapPos = ogPos;
         willSnap = false;
@@ -44,8 +44,11 @@ public class scrDragAndDrop : MonoBehaviour
 
         Vector2 tailleponct = this.GetComponent<RectTransform>().sizeDelta;//taille origine
 
-        float potx = tailleponct[0]*Screen.width/1920*scale_x;
-        float poty = tailleponct[1]*Screen.height/1080*scale_y;
+        //float potx = tailleponct[0]*Screen.width/1920*scale_x;
+        //float poty = tailleponct[1]*Screen.height/1080*scale_y;
+
+        float potx = tailleponct[0]*canvas.localScale.x;
+        float poty = tailleponct[1]*canvas.localScale.y;
 
         this.GetComponent<RectTransform>().sizeDelta=new Vector2(potx,poty);
         this.GetComponent<BoxCollider2D>().size=new Vector2(potx*1.2f,poty*1.2f);

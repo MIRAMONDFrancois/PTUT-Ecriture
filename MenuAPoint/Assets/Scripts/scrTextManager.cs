@@ -1073,6 +1073,9 @@ public class scrTextManager : MonoBehaviour
     {
         ButtonLayer.SetActive(false);
         canTouchPonct = false;
+        scrGlobal.Instance.nbEssaiTab[scrGlobal.Instance.levelNum]++;
+        print("Niveau actuel : " + scrGlobal.Instance.levelNum);
+        print("Nombre de tentatives : " + scrGlobal.Instance.nbEssaiTab[scrGlobal.Instance.levelNum]);
 
         if (!dualAnim) vrai_valider();
         else ValiderDual();
@@ -1274,7 +1277,8 @@ public class scrTextManager : MonoBehaviour
         {
             SceneManager.LoadScene("endScene");
         }
-        SceneManager.LoadScene("MapScene");
+        else
+            SceneManager.LoadScene("MapScene");
     }
 
     public void BackToMap()
@@ -1306,7 +1310,8 @@ public class scrTextManager : MonoBehaviour
         {
             SceneManager.LoadScene("endScene");
         }
-        SceneManager.LoadScene("MapScene");
+        else
+            SceneManager.LoadScene("MapScene");
     }
 
     public void ContinueToMap()

@@ -16,6 +16,7 @@ public class scrGlobal : MonoBehaviour
     private string chemin_json;
     private string chemin_txt;
     public string chemin_bonus;
+    public List<int> nbEssaiTab = new List<int>();
 
     [Header("Unlocked Levels")]
     public List<bool> levelunlocked = new List<bool>();//Map
@@ -61,6 +62,7 @@ public class scrGlobal : MonoBehaviour
         InitJson();
         setLevelUnlocked();
         setEndSceneItemsCanMove();
+        setNbEssaiTab();
         nbrDrag = 0;
     }
 
@@ -104,6 +106,15 @@ public class scrGlobal : MonoBehaviour
         for (int i = 1; i <= 15; i++)
         {
             levelunlocked.Add(false);
+        }
+    }
+
+    public void setNbEssaiTab()
+    {
+        nbEssaiTab.Add(0);
+        for(int i = 1; i < 15; i++)
+        {
+            nbEssaiTab.Add(0);
         }
     }
 

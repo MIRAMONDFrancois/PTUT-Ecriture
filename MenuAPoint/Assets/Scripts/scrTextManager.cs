@@ -1274,7 +1274,8 @@ public class scrTextManager : MonoBehaviour
         {
             SceneManager.LoadScene("endScene");
         }
-        SceneManager.LoadScene("MapScene");
+        else
+            SceneManager.LoadScene("MapScene");
     }
 
     public void BackToMap()
@@ -1306,7 +1307,8 @@ public class scrTextManager : MonoBehaviour
         {
             SceneManager.LoadScene("endScene");
         }
-        SceneManager.LoadScene("MapScene");
+        else
+            SceneManager.LoadScene("MapScene");
     }
 
     public void ContinueToMap()

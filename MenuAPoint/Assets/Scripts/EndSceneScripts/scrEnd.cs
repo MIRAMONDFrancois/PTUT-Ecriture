@@ -31,22 +31,22 @@ public class scrEnd : MonoBehaviour
         switch (scrGlobal.Instance.nbIndices)
         {
             case 0:
-                textFin.text = "Grâce à votre aide, Tokki est devenue une cuisinière surprenante !";
+                textFin.text = "Grâce à ton aide, Tokki est devenue une cuisinière surprenante !";
                 break;
             case 1:
-                textFin.text = "Grâce à votre aide, Tokki est devenue une cuisinière remarquable !";
+                textFin.text = "Grâce à ton aide, Tokki est devenue une cuisinière remarquable !";
                 break;
             case 2:
-                textFin.text = "Grâce à votre aide, Tokki est devenue une cuisinière épatante !";
+                textFin.text = "Grâce à ton aide, Tokki est devenue une cuisinière épatante !";
                 break;
             case 3:
-                textFin.text = "Grâce à votre aide, Tokki est devenue une cuisinière géniale !";
+                textFin.text = "Grâce à ton aide, Tokki est devenue une cuisinière géniale !";
                 break;
             case 4:
-                textFin.text = "Grâce à votre aide, Tokki est devenue une cuisinière formidable !";
+                textFin.text = "Grâce à ton aide, Tokki est devenue une cuisinière formidable !";
                 break;
             case 5:
-                textFin.text = "Grâce à votre aide, Tokki a réalisé son rêve ultime ; elle est devenue une excellente cuisinière !";
+                textFin.text = "Grâce à ton aide, Tokki a réalisé son rêve ultime ; elle est devenue une excellente cuisinière !";
                 break;
             default:
                 throw new System.Exception("Erreur Nombre Indices --- WTF");

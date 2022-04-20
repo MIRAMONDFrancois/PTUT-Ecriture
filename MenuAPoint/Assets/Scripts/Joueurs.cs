@@ -10,11 +10,12 @@ public class Joueurs
     public int indiceRestant = 0;
     public bool intro = false;
     public bool tuto = false;
+    //public bool tutoIndice = false;
 
     //Niveaux
     public bool[] niveauxFinis = {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
     public bool[] indiceNiveau = {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
-    public int[] essaies = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+    public int[] essaies = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     public int[] chronoNiveau = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
     //NiveauBonus

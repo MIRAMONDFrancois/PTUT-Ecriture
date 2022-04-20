@@ -1073,9 +1073,14 @@ public class scrTextManager : MonoBehaviour
     {
         ButtonLayer.SetActive(false);
         canTouchPonct = false;
-        scrGlobal.Instance.nbEssaiTab[scrGlobal.Instance.levelNum-1]++;
-        print("Niveau actuel : " + scrGlobal.Instance.levelNum);
-        print("Nombre de tentatives : " + scrGlobal.Instance.nbEssaiTab[scrGlobal.Instance.levelNum-1]);
+
+        if(!scrGlobal.Instance.FromBonusLevel && !scrGlobal.Instance.FromGameBuilder)
+        {
+            scrGlobal.Instance.nbEssaiTab[scrGlobal.Instance.levelNum-1]++;
+            print(scrGlobal.Instance.nbEssaiTab[scrGlobal.Instance.levelNum-1]);
+        }
+        
+        
 
         if (!dualAnim) vrai_valider();
         else ValiderDual();

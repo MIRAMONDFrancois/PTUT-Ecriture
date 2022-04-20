@@ -1128,6 +1128,7 @@ public class scrTextManager : MonoBehaviour
             if (scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum]) return;
             scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum] = true;
             scrGlobal.Instance.nbIndices++;
+            scrGlobal.Instance.SetIndice();
 
         }
 
@@ -1228,29 +1229,29 @@ public class scrTextManager : MonoBehaviour
         switch (etat)
         {
             case "Retour":
-                recapitulatif += "--- " + etat + " après " + frames / 60 + " secondes. pour un total de " + (frames + scrGlobal.Instance.GetChrono()) / 60 + " secondes. ---";
-                scrGlobal.Instance.SetTexteFichier(recapitulatif);
+                recapitulatif = "--- " + etat + " après " + frames / 60 + " secondes. pour un total de " + (frames + scrGlobal.Instance.GetChrono()) / 60 + " secondes. ---";
 
                 scrGlobal.Instance.SetRetour(frames);
-                return;
+                break;
             case "Indice":
-                recapitulatif += "--- " + etat + " après " + frames / 60 + " secondes. ---\n";
-                return;
+                recapitulatif = "--- " + etat + " après " + frames / 60 + " secondes. ---\n";
+                break;
             case "Erreur":
-                recapitulatif += "--- " + etat + " après " + frames / 60 + " secondes. ---\n";
+                recapitulatif = "--- " + etat + " après " + frames / 60 + " secondes. ---\n";
                 texte_joueur();
                 recapitulatif += currentText + "\n\n";
-                scrGlobal.Instance.SetTexteFichier(recapitulatif);
-                return;
+                
+                break;
             case "Reussite":
-                recapitulatif += "--- " + etat + " après " + frames / 60 + " secondes. pour un total de " + (frames + scrGlobal.Instance.GetChrono()) / 60 + " secondes. ---\n";
+                recapitulatif = "--- " + etat + " après " + frames / 60 + " secondes. pour un total de " + (frames + scrGlobal.Instance.GetChrono()) / 60 + " secondes. ---\n";
                 texte_joueur();
                 recapitulatif += currentText;
-                scrGlobal.Instance.SetTexteFichier(recapitulatif);
 
                 scrGlobal.Instance.SetReussite(frames);
-                return;
+                break;
         }
+
+        scrGlobal.Instance.SetTexteFichier(recapitulatif);
     }
 
     public IEnumerator BackSound()

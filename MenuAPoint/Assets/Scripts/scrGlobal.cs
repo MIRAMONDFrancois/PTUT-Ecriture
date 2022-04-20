@@ -155,7 +155,7 @@ public class scrGlobal : MonoBehaviour
         
         data.joueurs.Add(playerName,j);
 
-        WriteInJson();
+        WriteInJson(true);
         Directory.CreateDirectory (chemin_txt + "/" +playerName);
 
         return j;
@@ -181,13 +181,13 @@ public class scrGlobal : MonoBehaviour
     public void SetIntro()
     {
         player.intro = true;
-        WriteInJson();
+        WriteInJson(true);
     }
 
     public void SetTuto()
     {
         player.tuto = true;
-        WriteInJson();
+        WriteInJson(true);
         
     }
     //Pour Jeu. SceneTest [scrTextManager]
@@ -225,7 +225,7 @@ public class scrGlobal : MonoBehaviour
         player.indiceNiveau[levelNum-1]=true;
         player.indiceRestant = nbIndices;
                 
-        WriteInJson();
+        WriteInJson(true);
     }
 
     //Data en .txt dans Resultats. SceneTest [scrTextManager]
@@ -306,7 +306,7 @@ public class scrGlobal : MonoBehaviour
         niveauxBonus.totalPonct[4] = deuxpointsLimit;
         niveauxBonus.totalPonct[5] = pointvirguleLimit;
 
-        WriteInJson();
+        WriteInJson(false);
 
         //create .txt
         File.WriteAllText(chemin_bonus+"/"+NameBuilderText,GameBuilderText.text);
@@ -328,7 +328,7 @@ public class scrGlobal : MonoBehaviour
             player.essaies[levelNum-1]++;
         }
 
-        WriteInJson();
+        WriteInJson(true);
     }
 
     public void SetRetour(int frame)
@@ -343,7 +343,7 @@ public class scrGlobal : MonoBehaviour
             player.essaies[levelNum-1]++;
         }
 
-        WriteInJson();
+        WriteInJson(true);
     }
 
     public Donnees GetData()
@@ -405,12 +405,18 @@ public class scrGlobal : MonoBehaviour
         }
     }
 
-    public void WriteInJson()
+    public void WriteInJson(bool pourJoueur)//true = joueur // false = bonus 
     {
-        string json = JsonConvert.SerializeObject(data);
-        string jsonBonus = JsonConvert.SerializeObject(dataBonus);
+        string json;
 
-        File.WriteAllText(chemin_json, json);
-        File.WriteAllText(chemin_jsonBonus, jsonBonus);
+        if(pourJoueur)
+        {
+            json = JsonConvert.SerializeObject(data);
+            File.WriteAllText(chemin_json, json);
+        }else
+        {
+            json = JsonConvert.SerializeObject(dataBonus);
+            File.WriteAllText(chemin_jsonBonus, json);
+        }
     }
 }

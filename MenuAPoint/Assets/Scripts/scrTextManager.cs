@@ -25,7 +25,7 @@ public class scrTextManager : MonoBehaviour
     public GameObject clients;
     public GameObject client_virgule;
     public bool showLog;
-    public Text animationLog;
+    public TextMeshProUGUI animationLog;
 
     [Header("Taille Police Debut")]
     public float taille_police;
@@ -125,6 +125,8 @@ public class scrTextManager : MonoBehaviour
     [SerializeField] private GameObject popupItemWinner;
     [SerializeField] private GameObject itemImage;
     [SerializeField] private GameObject popupIndice;
+    [SerializeField] private GameObject tutoIndice;
+    [SerializeField] private GameObject itemIndice;
     private bool popupCheckUnlockedLevel = false;
     [SerializeField] private GameObject container;
 
@@ -196,12 +198,15 @@ public class scrTextManager : MonoBehaviour
             animationObj.gameObject.SetActive(true);
             animationObj.GetComponent<SelectionAnimation>().SelectAnimation(false, scrGlobal.Instance.levelNum);
 
-            animationLog.gameObject.SetActive(false);
+            animationLog.gameObject.SetActive(true);
+            UpdateAnimationLog();
             Invoke("boutonlayer_anim", (float) animationObj.GetComponentInChildren<VideoPlayer>().length);//problem
         }
         HideSlots();
 
         OnTextLoad?.Invoke();
+
+        popupCheckUnlockedLevel = scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum];
     }
 
     // Update is called once per frame
@@ -256,7 +261,8 @@ public class scrTextManager : MonoBehaviour
                         }
 
                         // Unlocks next level
-                        popupCheckUnlockedLevel = scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum];
+                        //popupCheckUnlockedLevel = scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum];
+                        //Debug.Log("TEST : " + popupCheckUnlockedLevel);
                         scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum] = true;
                         scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum] = true;
                     }
@@ -1342,6 +1348,7 @@ public class scrTextManager : MonoBehaviour
 
     public void DisplayRewardsItem()
     {
+        
         if (textreussite && checkClassicLevel() && !popupCheckUnlockedLevel)
         {
             popupItemWinner.SetActive(true);
@@ -1397,10 +1404,16 @@ public class scrTextManager : MonoBehaviour
 
     public void DisplayRewardsIndice()
     {
-        if (!checkClassicLevel())
+        if (!checkClassicLevel() && !popupCheckUnlockedLevel)
         {
             popupIndice.SetActive(true);
             popupIndice.transform.SetAsLastSibling();
+            if (scrGlobal.Instance.levelNum == 3)
+            {
+                itemIndice.GetComponent<RectTransform>().sizeDelta = new Vector2(180, 200);
+                itemIndice.GetComponent<RectTransform>().anchoredPosition = new Vector2(0,180);
+                tutoIndice.SetActive(true);
+            }
             container.SetActive(false);
         }
     }
@@ -1611,5 +1624,29 @@ public class scrTextManager : MonoBehaviour
         text_scalerUL.SetActive(false);
         text_scalerUL_Dual.SetActive(false);
         text_scalerDR.SetActive(false);
+    }
+
+    public void UpdateAnimationLog()
+    {
+        switch (scrGlobal.Instance.levelNum)
+        {
+            case 3:
+                animationLog.text = "Empêche le camion de tomber !";
+                break;
+            case 6:
+                animationLog.text = "Mets la toque sur la tête de Tokki.";
+                break;
+            case 8:
+                animationLog.text = "Aide le pilote à contrôler l'avion !";
+                break;
+            case 11:
+                animationLog.text = "Il n'y a pas besoin de deux capitaines.";
+                break;
+            case 14:
+                animationLog.text = "Donne la casserole à Tokki.";
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -12,7 +12,7 @@ public class SFX_Script : MonoBehaviour
     public AudioSource clientepice;
     public AudioSource reussite;
     public AudioSource continuer;
-
+    public AudioSource end;
     public void pop_block()
     {
         int popnb = Random.Range(1,4);
@@ -63,5 +63,11 @@ public class SFX_Script : MonoBehaviour
     {
         continuer.clip = Resources.Load<AudioClip>("Sounds/bouton");
         continuer.Play();
+    }
+
+    public void end_sound()
+    {
+        end.clip = Resources.Load<AudioClip>("Sounds/victoire_ecran_fin");
+        end.Play();
     }
 }

@@ -390,8 +390,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Tokki se retrouve confront\xE9e \xE0 des situations emb\xEAtantes.\nVous
-    devrez alors changer la ponctuation de la phrase pour l'aider."
+  m_text: "Tokki se retrouve confront\xE9e \xE0 des situations emb\xEAtantes.\nTu
+    devras alors changer la ponctuation de la phrase pour l'aider."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e7e278b79a605b845b30dbbb1cfebcfc, type: 2}
   m_sharedMaterial: {fileID: 3176864746252412033, guid: e7e278b79a605b845b30dbbb1cfebcfc,

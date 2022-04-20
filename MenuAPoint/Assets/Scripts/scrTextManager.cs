@@ -125,6 +125,8 @@ public class scrTextManager : MonoBehaviour
     [SerializeField] private GameObject popupItemWinner;
     [SerializeField] private GameObject itemImage;
     [SerializeField] private GameObject popupIndice;
+    [SerializeField] private GameObject tutoIndice;
+    [SerializeField] private GameObject itemIndice;
     private bool popupCheckUnlockedLevel = false;
     [SerializeField] private GameObject container;
 
@@ -202,6 +204,8 @@ public class scrTextManager : MonoBehaviour
         HideSlots();
 
         OnTextLoad?.Invoke();
+
+        popupCheckUnlockedLevel = scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum];
     }
 
     // Update is called once per frame
@@ -256,7 +260,8 @@ public class scrTextManager : MonoBehaviour
                         }
 
                         // Unlocks next level
-                        popupCheckUnlockedLevel = scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum];
+                        //popupCheckUnlockedLevel = scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum];
+                        //Debug.Log("TEST : " + popupCheckUnlockedLevel);
                         scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum] = true;
                         scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum] = true;
                     }
@@ -1341,7 +1346,8 @@ public class scrTextManager : MonoBehaviour
 
     public void DisplayRewardsItem()
     {
-        if (textreussite && checkClassicLevel() && !popupCheckUnlockedLevel)
+        
+        if (checkClassicLevel() && !popupCheckUnlockedLevel)
         {
             popupItemWinner.SetActive(true);
             popupItemWinner.transform.SetAsLastSibling();
@@ -1396,10 +1402,16 @@ public class scrTextManager : MonoBehaviour
 
     public void DisplayRewardsIndice()
     {
-        if (!checkClassicLevel())
+        if (!checkClassicLevel() && !popupCheckUnlockedLevel)
         {
             popupIndice.SetActive(true);
             popupIndice.transform.SetAsLastSibling();
+            if (scrGlobal.Instance.levelNum == 3)
+            {
+                itemIndice.GetComponent<RectTransform>().sizeDelta = new Vector2(180, 200);
+                itemIndice.GetComponent<RectTransform>().anchoredPosition = new Vector2(0,180);
+                tutoIndice.SetActive(true);
+            }
             container.SetActive(false);
         }
     }

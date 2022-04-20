@@ -1384,12 +1384,12 @@ MonoBehaviour:
   PonctTexte: {fileID: 740154058}
   testTextButton: {fileID: 1092562729}
   ListePot:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 338260717}
+  - {fileID: 66332643}
+  - {fileID: 772613098}
+  - {fileID: 1128280133}
+  - {fileID: 2093302902}
+  - {fileID: 227455532}
 --- !u!1 &981138590
 GameObject:
   m_ObjectHideFlags: 0

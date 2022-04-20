@@ -1261,24 +1261,32 @@ public class scrTextManager : MonoBehaviour
         if (scrGlobal.Instance.FromGameBuilder)
         {
             SceneManager.LoadScene("GameBuilder");
+            yield return null;
         }
 
         if (!textreussite)
         {
             texte_data("Retour");
+            yield return null;
         }
 
         if (scrGlobal.Instance.FromBonusLevel)
         {
             SceneManager.LoadScene("AccesBonus");
+            yield return null;
         }
 
         if (scrGlobal.Instance.levelNum == 15 && scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum])
         {
             SceneManager.LoadScene("endScene");
+            yield return null;
         }
         else
+        {
             SceneManager.LoadScene("MapScene");
+            yield return null;
+        }
+            
     }
 
     public void BackToMap()
@@ -1299,19 +1307,26 @@ public class scrTextManager : MonoBehaviour
         if (scrGlobal.Instance.FromGameBuilder)
         {
             SceneManager.LoadScene("GameBuilder");
+            yield return null;
         }
 
         if (scrGlobal.Instance.FromBonusLevel)
         {
             SceneManager.LoadScene("AccesBonus");
+            yield return null;
         }
 
         if (scrGlobal.Instance.levelNum == 15 && scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum])
         {
             SceneManager.LoadScene("endScene");
+            yield return null;
         }
         else
+        {
             SceneManager.LoadScene("MapScene");
+            yield return null;
+        }
+            
     }
 
     public void ContinueToMap()

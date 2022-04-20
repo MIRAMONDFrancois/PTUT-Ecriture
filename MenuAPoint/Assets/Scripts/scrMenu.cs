@@ -66,8 +66,8 @@ public class scrMenu : MonoBehaviour
 
     public void SetName(){
 
-        string prenom = Regex.Replace(user_prenom.text, @"[^a-zA-Z0-9 ]", "");
-        string nom = Regex.Replace(user_nom.text, @"[^a-zA-Z0-9 ]", "");
+        string prenom = Regex.Replace(user_prenom.text, @"[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôûÂÊÎÔãõñÃÕÑçÇäëïöüÄËÏÖÜ_ ]", "");
+        string nom = Regex.Replace(user_nom.text, @"[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôûÂÊÎÔãõñÃÕÑçÇäëïöüÄËÏÖÜ_ ]", "");
         
         scrGlobal.Instance.playerName = prenom+nom;
     }

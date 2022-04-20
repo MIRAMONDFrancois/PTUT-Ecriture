@@ -17,7 +17,7 @@ public class NomTextBuilder : MonoBehaviour
     public void NameChange()
     {
         
-        nomFichier.text = Regex.Replace(nomFichier.text, @"[^a-zA-Z0-9 ]", "");
+        nomFichier.text = Regex.Replace(nomFichier.text, @"[^a-zA-Z0-9áéíóúÁÉÍÓÚâêîôûÂÊÎÔãõñÃÕÑçÇäëïöüÄËÏÖÜ_ ]", "");
         scrGlobal.Instance.NameBuilderText = nomFichier.text;
         
         if(nomFichier.text.Trim() == "")

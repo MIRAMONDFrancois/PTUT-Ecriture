@@ -153,7 +153,7 @@ public class scrMapManager : MonoBehaviour
 
             case "Level12":
                 LevelSetBaseValues(12, Resources.Load("Texts/Level8") as TextAsset);
-                LevelSetLimitedGen(4, 1, 1, 0, 0, 0);
+                LevelSetLimitedGen(3, 2, 1, 0, 0, 0);
                 LevelSetAnim(false, null, false, false);
                 levelActuel = 11;
                 break;

@@ -25,7 +25,7 @@ public class scrTextManager : MonoBehaviour
     public GameObject clients;
     public GameObject client_virgule;
     public bool showLog;
-    public Text animationLog;
+    public TextMeshProUGUI animationLog;
 
     [Header("Taille Police Debut")]
     public float taille_police;
@@ -198,7 +198,8 @@ public class scrTextManager : MonoBehaviour
             animationObj.gameObject.SetActive(true);
             animationObj.GetComponent<SelectionAnimation>().SelectAnimation(false, scrGlobal.Instance.levelNum);
 
-            animationLog.gameObject.SetActive(false);
+            animationLog.gameObject.SetActive(true);
+            UpdateAnimationLog();
             Invoke("boutonlayer_anim", (float) animationObj.GetComponentInChildren<VideoPlayer>().length);//problem
         }
         HideSlots();
@@ -1347,7 +1348,7 @@ public class scrTextManager : MonoBehaviour
     public void DisplayRewardsItem()
     {
         
-        if (checkClassicLevel() && !popupCheckUnlockedLevel)
+        if (textreussite && checkClassicLevel() && !popupCheckUnlockedLevel)
         {
             popupItemWinner.SetActive(true);
             popupItemWinner.transform.SetAsLastSibling();
@@ -1622,5 +1623,29 @@ public class scrTextManager : MonoBehaviour
         text_scalerUL.SetActive(false);
         text_scalerUL_Dual.SetActive(false);
         text_scalerDR.SetActive(false);
+    }
+
+    public void UpdateAnimationLog()
+    {
+        switch (scrGlobal.Instance.levelNum)
+        {
+            case 3:
+                animationLog.text = "Empêche le camion de tomber !";
+                break;
+            case 6:
+                animationLog.text = "Mets la toque sur la tête de Tokki.";
+                break;
+            case 8:
+                animationLog.text = "Aide le pilote à contrôler l'avion !";
+                break;
+            case 11:
+                animationLog.text = "Il n'y a pas besoin de deux capitaines.";
+                break;
+            case 14:
+                animationLog.text = "Donne la casserole à Tokki.";
+                break;
+            default:
+                break;
+        }
     }
 }

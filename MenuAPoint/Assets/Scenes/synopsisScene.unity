@@ -588,8 +588,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Tokki est une lapine cuisini\xE8re, elle r\xEAve de devenir une grande
-    cheffe. \n\nAccompagnez-la dans ses aventures ! Aidez-la \xE0 r\xE9aliser son
-    r\xEAve !"
+    cheffe. \n\nAccompagne-la dans ses aventures ! Aide-la \xE0 r\xE9aliser son r\xEAve
+    !"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e7e278b79a605b845b30dbbb1cfebcfc, type: 2}
   m_sharedMaterial: {fileID: 3176864746252412033, guid: e7e278b79a605b845b30dbbb1cfebcfc,

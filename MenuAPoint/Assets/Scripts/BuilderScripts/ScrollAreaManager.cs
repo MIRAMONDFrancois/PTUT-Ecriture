@@ -11,14 +11,14 @@ public class ScrollAreaManager : MonoBehaviour
     public RectTransform Content;
     public Scrollbar ScrollBarValue;
 
-    private Donnees _data;
+    private DonneesBonus _data;
     private List<GameObject> niveaux = new List<GameObject>();
     public Action OnNiveauSelected;
 
     void Start()
     {
         scrGlobal.Instance.RefreshNiveauxBonus();
-        _data = scrGlobal.Instance.GetData();
+        _data = scrGlobal.Instance.GetDataBonus();
         SuppNiveauxBonus();
         CreerNiveauxBonus();
         ScrollBarValue.value = 1f;//slide on top
@@ -28,16 +28,17 @@ public class ScrollAreaManager : MonoBehaviour
     {
         niveaux = new List<GameObject>();
 
-        foreach(NiveauxBonus niveauBonus in _data.niveauxBonus)
+        foreach(string keys in _data.niveaux.Keys)
         {
             GameObject niveau = Instantiate(NivBonusPrefab);
             
-            niveau.GetComponentInChildren<TextMeshProUGUI>().text = niveauBonus.nom;
+            niveau.GetComponentInChildren<TextMeshProUGUI>().text = keys;
             niveau.transform.SetParent(Content.transform);
             niveau.transform.localScale = Vector3.one;
 
             niveaux.Add(niveau);
         }
+
     }
 
     private void SuppNiveauxBonus()

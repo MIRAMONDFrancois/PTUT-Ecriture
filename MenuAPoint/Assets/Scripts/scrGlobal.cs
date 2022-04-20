@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Text;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -12,8 +13,10 @@ public class scrGlobal : MonoBehaviour
     public string playerName;//Connexion
     public int levelNum;//Connexion
     private Donnees data;
+    private DonneesBonus dataBonus;
     private Joueurs player;
     private string chemin_json;
+    private string chemin_jsonBonus;
     private string chemin_txt;
     public string chemin_bonus;
     public List<int> nbEssaiTab = new List<int>();
@@ -85,6 +88,7 @@ public class scrGlobal : MonoBehaviour
         #endif
 
         chemin_json = chemin + "/donnees.json";
+        chemin_jsonBonus = chemin + "/NiveauxBonus.json";
         chemin_txt = chemin + "/Resultats";
         chemin_bonus = chemin + "/NiveauxBonus";
 
@@ -92,12 +96,19 @@ public class scrGlobal : MonoBehaviour
 
         if(!File.Exists(chemin_json))
         {
-            File.WriteAllText(chemin_json, "{\"donnees\": [],\"niveauxBonus\": []}");
+            File.WriteAllText(chemin_json, "{}");
+        }
+
+        if(!File.Exists(chemin_jsonBonus))
+        {
+            File.WriteAllText(chemin_jsonBonus, "{}");
         }
 
         string jsonFile = File.ReadAllText(chemin_json);
+        string jsonFileBonus = File.ReadAllText(chemin_jsonBonus);
 
         data = JsonConvert.DeserializeObject<Donnees>(jsonFile);
+        dataBonus = JsonConvert.DeserializeObject<DonneesBonus>(jsonFileBonus);
     }
 
     public void setLevelUnlocked()
@@ -127,9 +138,9 @@ public class scrGlobal : MonoBehaviour
 
     public Joueurs GetPlayer()
     {
-        foreach(Joueurs j in data.donnees)
+        if(data.joueurs.ContainsKey(playerName))
         {
-            if(j.joueur.Equals(playerName))return j;
+            return data.joueurs[playerName];
         }
         
         return CreationJoueur();
@@ -142,7 +153,8 @@ public class scrGlobal : MonoBehaviour
 
         j.joueur = playerName;
         
-        data.donnees.Add(j);
+        data.joueurs.Add(playerName,j);
+
         WriteInJson();
         Directory.CreateDirectory (chemin_txt + "/" +playerName);
 
@@ -160,6 +172,7 @@ public class scrGlobal : MonoBehaviour
 
         for(int a=0;a<15;a++)
         {
+            nbEssaiTab[a] = player.essaies[a];
             levelunlocked[a+1] = player.niveauxFinis[a];
         }
     }
@@ -194,6 +207,7 @@ public class scrGlobal : MonoBehaviour
     public bool GetIndice()
     {
         if(FromGameBuilder || FromBonusLevel)return false;
+
         return player.indiceNiveau[levelNum-1];
     }
 
@@ -223,32 +237,49 @@ public class scrGlobal : MonoBehaviour
 
         if(FromBonusLevel)
         {
-            chemin += "/NiveauxBonus/"+NameBuilderText.Split('.')[0];
+            chemin += "/NiveauxBonus";
             Directory.CreateDirectory(chemin);
+            chemin += "/"+NameBuilderText;
 
-            File.WriteAllText(chemin+"/Essaie_"+player.essaiesBonus[NameBuilderText]+".txt",recap);
+            if(File.Exists(chemin))
+            {
+                StringBuilder sb =  new StringBuilder(File.ReadAllText(chemin));
+                sb.Append("\n");
+                sb.Append(recap);
+                File.WriteAllText(chemin,sb.ToString());
+                return;
+            }
+
+            File.WriteAllText(chemin, recap);
             return;
         }
 
 
-        
-        chemin += "/Niveau_"+levelNum;
+        chemin += "/NiveauxClassiques";
         Directory.CreateDirectory(chemin);
+        chemin += "/Niveau_"+levelNum;
 
-        File.WriteAllText(chemin+"/Essaie_"+player.essaies[levelNum-1]+".txt",recap);
+        if(File.Exists(chemin))
+        {
+            StringBuilder sb =  new StringBuilder(File.ReadAllText(chemin));
+            sb.Append("\n");
+            sb.Append(recap);
+            File.WriteAllText(chemin,sb.ToString());
+            return;
+        }
+
+        File.WriteAllText(chemin, recap);
+        return;
     }
 
     public NiveauxBonus GetBonusLevel()
     {
-        foreach(NiveauxBonus niveaux in data.niveauxBonus)
+        if(dataBonus.niveaux.ContainsKey(NameBuilderText))
         {
-            
-            if(niveaux.nom.Equals(NameBuilderText))
-            {
-                print("existe");
-                return niveaux;
-            }
+            return dataBonus.niveaux[NameBuilderText];
         }
+
+        //new niveau
         string[] trial = NameBuilderText.Split('.');
 
         if(!trial[trial.Length-1].Equals("txt"))
@@ -259,8 +290,7 @@ public class scrGlobal : MonoBehaviour
 
         if(NameBuilderText.Equals("NomDuTexte.txt"))return niveau;
         
-        data.niveauxBonus.Add(niveau);
-        print("new");
+        dataBonus.niveaux.Add(NameBuilderText,niveau);
         return niveau;
     }
 
@@ -321,15 +351,9 @@ public class scrGlobal : MonoBehaviour
         return data;
     }
 
-    public void SetNiveauxBonus()
+    public DonneesBonus GetDataBonus()
     {
-        chemin_bonus = Application.persistentDataPath + "/NiveauxBonus";
-        string jsonFile = File.ReadAllText(chemin_json);
-        data = JsonConvert.DeserializeObject<Donnees>(jsonFile);
-        
-        RefreshNiveauxBonus();
-
-        WriteInJson();
+        return dataBonus;
     }
 
     public void NiveauBonusSelected(TextAsset text)
@@ -341,7 +365,9 @@ public class scrGlobal : MonoBehaviour
     {
         string [] files = System.IO.Directory.GetFiles(chemin_bonus);
         
-        List<NiveauxBonus> newBonus = new List<NiveauxBonus>();
+        //List<NiveauxBonus> newBonus = new List<NiveauxBonus>();
+        Dictionary<string, NiveauxBonus> newBonus = new Dictionary<string, NiveauxBonus>();
+
         foreach (string file in files)
         {
             //only read txt
@@ -354,10 +380,10 @@ public class scrGlobal : MonoBehaviour
                 #endif
             
                 NameBuilderText = arr[arr.Length-1]; 
-                newBonus.Add(GetBonusLevel());
+                newBonus.Add(NameBuilderText,GetBonusLevel());
             }
         }
-        data.niveauxBonus = newBonus;
+        dataBonus.niveaux = newBonus;
 
         if(FromGameBuilder)return;
         JoueursNiveauxBonus();
@@ -367,14 +393,14 @@ public class scrGlobal : MonoBehaviour
     {
         Joueurs j = GetPlayer();
 
-        foreach(NiveauxBonus niveaux in data.niveauxBonus)
+        foreach(string keys in dataBonus.niveaux.Keys)
         {
-            if(!j.niveauxBonusFinis.ContainsKey(niveaux.nom))
+            if(!j.niveauxBonusFinis.ContainsKey(keys))
             {
-                j.niveauxBonusFinis.Add(niveaux.nom,false);
-                j.indiceBonus.Add(niveaux.nom,false);
-                j.essaiesBonus.Add(niveaux.nom,1);
-                j.chronoNiveauBonus.Add(niveaux.nom,0);
+                j.niveauxBonusFinis.Add(keys,false);
+                j.indiceBonus.Add(keys,false);
+                j.essaiesBonus.Add(keys,0);
+                j.chronoNiveauBonus.Add(keys,0);
             }
         }
     }
@@ -382,6 +408,9 @@ public class scrGlobal : MonoBehaviour
     public void WriteInJson()
     {
         string json = JsonConvert.SerializeObject(data);
+        string jsonBonus = JsonConvert.SerializeObject(dataBonus);
+
         File.WriteAllText(chemin_json, json);
+        File.WriteAllText(chemin_jsonBonus, jsonBonus);
     }
 }

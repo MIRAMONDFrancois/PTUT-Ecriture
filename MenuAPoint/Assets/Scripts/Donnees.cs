@@ -5,6 +5,5 @@ using UnityEngine;
 [System.Serializable]
 public class Donnees
 {
-   public List<Joueurs> donnees = new List<Joueurs>();
-   public List<NiveauxBonus> niveauxBonus = new List<NiveauxBonus>();
+   public Dictionary<string, Joueurs> joueurs = new Dictionary<string, Joueurs>();
 }

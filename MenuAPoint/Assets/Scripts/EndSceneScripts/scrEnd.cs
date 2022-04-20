@@ -9,21 +9,33 @@ public class scrEnd : MonoBehaviour
     public GameObject menuButton;
     public GameObject boxItems;
     public GameObject tokkiSprite;
+    public AudioSource endSound;
+    private bool endSoundPlayed;
 
     private void Start()
     {
         checkIndices();
+        endSoundPlayed = false;
     }
 
     private void Update()
     {
-       if(scrGlobal.Instance.nbrDrag > 9)
+        Debug.Log("Nombre drags : " + scrGlobal.Instance.nbrDrag);
+
+        if(scrGlobal.Instance.nbrDrag > 9)
         {
+            if(!endSoundPlayed)
+            {
+                endSound.Play();
+                endSoundPlayed = true;
+            }
             textFin.gameObject.SetActive(true);
             menuButton.SetActive(true);
             boxItems.SetActive(false);
             tokkiSprite.SetActive(true);
         }
+        
+       
     }
 
     public void checkIndices()

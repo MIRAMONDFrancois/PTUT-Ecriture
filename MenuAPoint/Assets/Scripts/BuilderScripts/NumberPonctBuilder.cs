@@ -10,6 +10,7 @@ public class NumberPonctBuilder : MonoBehaviour
     public TMP_InputField PonctTexte;
     private List<PonctBuildEvents> ponctTot = new List<PonctBuildEvents>();
     
+    public Image Indice;
 
     public Button testTextButton;
     public Transform[] ListePot;
@@ -85,6 +86,9 @@ public class NumberPonctBuilder : MonoBehaviour
 
             if(ponctTot[a].IntSuppl > 0) ponctTot[a].MoinsPonct.gameObject.SetActive(true);
         }
+
+        float alpha = bonus.indice ? 1f : 0.4f;
+        Indice.color = new Color(1f,1f,1f,alpha);
     }
 
     private void ChangementNbPonct()
@@ -109,7 +113,7 @@ public class NumberPonctBuilder : MonoBehaviour
 
         for(int a=0;a<6;a++)
         {
-            bonus.extraPonct[a] = ponctTot[a].IntSuppl; 
+            bonus.extraPonct[a] = ponctTot[a].IntSuppl;
         }
 
         scrGlobal.Instance.pointLimit = ponctTot[0].InfiniteToggle ? -1 : ponctTot[0].IntSuppl + nbPot[0];
@@ -118,5 +122,13 @@ public class NumberPonctBuilder : MonoBehaviour
         scrGlobal.Instance.interrogationLimit = ponctTot[3].InfiniteToggle ? -1 : ponctTot[3].IntSuppl + nbPot[3];
         scrGlobal.Instance.deuxpointsLimit = ponctTot[4].InfiniteToggle ? -1 : ponctTot[4].IntSuppl + nbPot[4];
         scrGlobal.Instance.pointvirguleLimit = ponctTot[5].InfiniteToggle ? -1 : ponctTot[5].IntSuppl + nbPot[5];
+    }
+
+    public void LockIndice()
+    {
+        scrGlobal.Instance.LockIndice = !scrGlobal.Instance.LockIndice;
+
+        float alpha = scrGlobal.Instance.LockIndice ? 1f : 0.4f;
+        Indice.color = new Color(1f,1f,1f,alpha);
     }
 }

@@ -59,6 +59,7 @@ public class scrGlobal : MonoBehaviour
     public bool FromBonusLevel;
     public TextAsset GameBuilderText;
     public string NameBuilderText;
+    public bool LockIndice = false;
 
     void Start()
     {  
@@ -305,6 +306,8 @@ public class scrGlobal : MonoBehaviour
         niveauxBonus.totalPonct[3] = interrogationLimit;
         niveauxBonus.totalPonct[4] = deuxpointsLimit;
         niveauxBonus.totalPonct[5] = pointvirguleLimit;
+
+        niveauxBonus.indice = LockIndice;
 
         WriteInJson(false);
 

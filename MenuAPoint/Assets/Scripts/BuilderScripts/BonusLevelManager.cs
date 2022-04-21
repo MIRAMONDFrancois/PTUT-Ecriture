@@ -39,6 +39,8 @@ public class BonusLevelManager : MonoBehaviour
         scrGlobal.Instance.deuxpointsLimit = niveauxBonus.totalPonct[4];
         scrGlobal.Instance.pointvirguleLimit = niveauxBonus.totalPonct[5];
 
+        scrGlobal.Instance.LockIndice = niveauxBonus.indice;
+
         //joueur
         Joueurs j = scrGlobal.Instance.GetPlayer();
     }

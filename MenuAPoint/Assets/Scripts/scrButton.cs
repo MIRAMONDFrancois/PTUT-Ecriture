@@ -33,10 +33,7 @@ public class scrButton : MonoBehaviour
     }
 
     public void SetTargeted(bool value) {
-        if(this.GetComponent<Button>().interactable)
-        {   
-            isTargeted = value;
-        }
+        isTargeted = value;
            
     }
 

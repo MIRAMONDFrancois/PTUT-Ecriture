@@ -400,6 +400,13 @@ public class scrTextManager : MonoBehaviour
                     vrai_separators[vrai_separators.Count - 1] = ";";
                     v_skip = true;
                     break;
+                case '…':
+                    vrai_separators.Add("…");
+                    vrai_slot.Add("");
+                    vrai_mots.Add(v_mots);
+                    v_skip = true;
+                    v_mots = "";
+                break;
                 case '-'://lettre_tiret_lettre ou tiret_espace_lettre
                     v_mots += "-";
                     v_tiret = true;
@@ -535,6 +542,10 @@ public class scrTextManager : MonoBehaviour
                     liste_ponct[liste_ponct.Count - 1] = ":";
                     v_skip = true;
                     break;
+                case '…':
+                    liste_ponct.Add("…");
+                    v_skip = true;
+                break;
                 case '-':
                     v_tiret = true;
                     cond1 = false;

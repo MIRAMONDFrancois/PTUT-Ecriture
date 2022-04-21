@@ -70,7 +70,7 @@ public class scrIndice : MonoBehaviour
             {
                 scrGlobal.Instance.nbIndices--;
                 used = true;
-                scrGlobal.Instance.SetIndice();
+                scrGlobal.Instance.SetIndice(true);
             }
             
             scriptText.showIndice();

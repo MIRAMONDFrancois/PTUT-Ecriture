@@ -1134,7 +1134,7 @@ public class scrTextManager : MonoBehaviour
             if (scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum]) return;
             scrGlobal.Instance.levelunlocked[scrGlobal.Instance.levelNum] = true;
             scrGlobal.Instance.nbIndices++;
-            scrGlobal.Instance.SetIndice();
+            scrGlobal.Instance.SetIndice(false);
 
         }
 

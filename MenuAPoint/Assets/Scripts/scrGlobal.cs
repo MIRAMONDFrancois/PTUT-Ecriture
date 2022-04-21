@@ -213,7 +213,7 @@ public class scrGlobal : MonoBehaviour
     }
 
     //Pour Indice. SceneTest [scrIndice]
-    public void SetIndice()
+    public void SetIndice(bool moins)
     {
         if(FromGameBuilder)return;
         
@@ -223,7 +223,10 @@ public class scrGlobal : MonoBehaviour
             return;
         }
 
-        player.indiceNiveau[levelNum-1]=true;
+        if(moins)
+        {
+            player.indiceNiveau[levelNum-1]=true;
+        }
         player.indiceRestant = nbIndices;
                 
         WriteInJson(true);

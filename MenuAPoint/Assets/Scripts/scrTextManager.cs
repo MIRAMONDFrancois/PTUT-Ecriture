@@ -1592,7 +1592,7 @@ public class scrTextManager : MonoBehaviour
         }
         else if (pot == "Suspension")
         {
-            return new Vector2(0 * ratio_x, 0 * ratio_y);
+            return new Vector2(-10 * ratio_x, -20 * ratio_y);
         }
         else
         {

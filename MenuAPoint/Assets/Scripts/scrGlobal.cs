@@ -261,7 +261,7 @@ public class scrGlobal : MonoBehaviour
 
         chemin += "/NiveauxClassiques";
         Directory.CreateDirectory(chemin);
-        chemin += "/Niveau_"+levelNum;
+        chemin += "/Niveau_"+levelNum+".txt";
 
         if(File.Exists(chemin))
         {

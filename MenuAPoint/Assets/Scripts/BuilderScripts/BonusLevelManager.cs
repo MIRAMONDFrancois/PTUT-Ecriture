@@ -38,6 +38,7 @@ public class BonusLevelManager : MonoBehaviour
         scrGlobal.Instance.interrogationLimit = niveauxBonus.totalPonct[3];
         scrGlobal.Instance.deuxpointsLimit = niveauxBonus.totalPonct[4];
         scrGlobal.Instance.pointvirguleLimit = niveauxBonus.totalPonct[5];
+        scrGlobal.Instance.suspensionLimit = niveauxBonus.totalPonct[6];
 
         scrGlobal.Instance.LockIndice = niveauxBonus.indice;
 

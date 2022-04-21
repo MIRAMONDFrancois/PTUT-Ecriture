@@ -189,6 +189,8 @@ public class scrDragAndDrop : MonoBehaviour
                 return "Deux Points Gen";
             case ";":
                 return "Point Virgule Gen";
+            case "…":
+                return "Points Suspension Gen";
             default:
             break;
         }

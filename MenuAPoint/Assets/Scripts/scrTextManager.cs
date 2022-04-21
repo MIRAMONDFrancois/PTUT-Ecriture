@@ -692,6 +692,9 @@ public class scrTextManager : MonoBehaviour
                 case ";":
                     GameObject.Find("Point Virgule Gen").GetComponent<scrBlockGenerator>().demarrageBlock(vrai_slots_GO[a]);
                     break;
+                case "Suspensions":
+                    GameObject.Find("Points Suspension Gen").GetComponent<scrBlockGenerator>().demarrageBlock(vrai_slots_GO[a]);
+                    break;
                 default:
                     break;
             }
@@ -847,7 +850,7 @@ public class scrTextManager : MonoBehaviour
                         nb_midponct_verif++;
                     }
                     //au lieu de fin ponct
-                    else if (slot_verif.Equals(".") || slot_verif.Equals("?") || slot_verif.Equals("!"))
+                    else if (slot_verif.Equals(".") || slot_verif.Equals("?") || slot_verif.Equals("!") || slot_verif.Equals("…"))
                     {
 
                         manquePoint = true;
@@ -863,7 +866,7 @@ public class scrTextManager : MonoBehaviour
                         mauvaiseVirgule = true;
                     }
                     //au lieu de fin ponct
-                    else if (slot_verif.Equals(".") || slot_verif.Equals("?") || slot_verif.Equals("!"))
+                    else if (slot_verif.Equals(".") || slot_verif.Equals("?") || slot_verif.Equals("!") || slot_verif.Equals("…"))
                     {
                         manquePoint = true;
                         mauvaiseVirgule = true;
@@ -910,7 +913,7 @@ public class scrTextManager : MonoBehaviour
 
             if (arret_premier_point)
             {
-                if (slot_joueur.Equals(".") || slot_joueur.Equals("?") || slot_joueur.Equals("!"))
+                if (slot_joueur.Equals(".") || slot_joueur.Equals("?") || slot_joueur.Equals("!") || slot_verif.Equals("…"))
                 {
                     deplacement_cursor(a);
                     return;
@@ -1029,7 +1032,7 @@ public class scrTextManager : MonoBehaviour
         if (slot_pos == vrai_mots_GO.Count - 1) return;
 
 
-        if (tag.Equals("Point") || tag.Equals("Exclamation") || tag.Equals("Interrogation"))
+        if (tag.Equals("Point") || tag.Equals("Exclamation") || tag.Equals("Interrogation") || tag.Equals("Suspension"))
         {
             if (!vrai_mots_GO[slot_pos + 1].GetComponent<MotsGO>().nom_propre)
             {
@@ -1071,7 +1074,7 @@ public class scrTextManager : MonoBehaviour
         if (slot_pos == vrai_mots_GO.Count - 1) return;
 
 
-        if (tag.Equals("Point") || tag.Equals("Exclamation") || tag.Equals("Interrogation"))
+        if (tag.Equals("Point") || tag.Equals("Exclamation") || tag.Equals("Interrogation") || tag.Equals("Suspension"))
         {
             if (!vrai_mots_GO[slot_pos + 1].GetComponent<MotsGO>().nom_propre)
             {
@@ -1584,6 +1587,10 @@ public class scrTextManager : MonoBehaviour
             return new Vector2(0 * ratio_x, 0 * ratio_y);
         }
         else if (pot == "Interrogation")
+        {
+            return new Vector2(0 * ratio_x, 0 * ratio_y);
+        }
+        else if (pot == "Suspension")
         {
             return new Vector2(0 * ratio_x, 0 * ratio_y);
         }

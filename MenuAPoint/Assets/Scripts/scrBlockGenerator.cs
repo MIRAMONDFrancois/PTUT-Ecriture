@@ -68,6 +68,13 @@ public class scrBlockGenerator : MonoBehaviour
                     gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
                 }
                 break;
+            case "…":
+                if (scrGlobal.Instance.suspensionLimit != -1) {
+                    gameObject.transform.GetChild(1).gameObject.SetActive(true);
+                    numberLeft = scrGlobal.Instance.suspensionLimit - GameObject.FindGameObjectsWithTag("Suspension").Length;
+                    gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = numberLeft + "";
+                }
+                break;
             default:
                 break;
         }

@@ -38,6 +38,7 @@ public class scrGlobal : MonoBehaviour
     public int interrogationLimit = 0;
     public int deuxpointsLimit = 0;
     public int pointvirguleLimit = 0;
+    public int suspensionLimit = 0;
 
     [Header("Animation Levels")]
     public bool nivAntiOubli;
@@ -309,6 +310,7 @@ public class scrGlobal : MonoBehaviour
         niveauxBonus.totalPonct[3] = interrogationLimit;
         niveauxBonus.totalPonct[4] = deuxpointsLimit;
         niveauxBonus.totalPonct[5] = pointvirguleLimit;
+        niveauxBonus.totalPonct[6] = suspensionLimit;
 
         niveauxBonus.indice = LockIndice;
 

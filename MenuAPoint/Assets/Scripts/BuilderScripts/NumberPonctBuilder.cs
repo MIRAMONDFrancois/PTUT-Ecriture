@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Text;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +15,7 @@ public class NumberPonctBuilder : MonoBehaviour
 
     public Button testTextButton;
     public Transform[] ListePot;
-    private int[] nbPot = {0,0,0,0,0,0};
+    private int[] nbPot = {0,0,0,0,0,0,0};
 
     void Start()
     {
@@ -36,7 +37,12 @@ public class NumberPonctBuilder : MonoBehaviour
                 nbPot[a]=0;
             }
             
-            for(int a=0;a<PonctTexte.text.Length;a++)
+            StringBuilder sb = new StringBuilder(PonctTexte.text);
+            sb.Replace("...","…");
+            PonctTexte.text = sb.ToString();
+
+            int taille = PonctTexte.text.Length;
+            for(int a=0;a<taille;a++)
             {
                 switch (PonctTexte.text[a])
                 {
@@ -57,6 +63,9 @@ public class NumberPonctBuilder : MonoBehaviour
                     break;
                     case ';':
                         nbPot[5]++;
+                    break;
+                    case '…':
+                        nbPot[6]++;
                     break;
                 }
             }
@@ -111,7 +120,7 @@ public class NumberPonctBuilder : MonoBehaviour
         scrGlobal.Instance.GameBuilderText = new TextAsset(PonctTexte.text);
         NiveauxBonus bonus = scrGlobal.Instance.GetBonusLevel();
 
-        for(int a=0;a<6;a++)
+        for(int a=0;a<nbPot.Length;a++)
         {
             bonus.extraPonct[a] = ponctTot[a].IntSuppl;
         }
@@ -122,6 +131,7 @@ public class NumberPonctBuilder : MonoBehaviour
         scrGlobal.Instance.interrogationLimit = ponctTot[3].InfiniteToggle ? -1 : ponctTot[3].IntSuppl + nbPot[3];
         scrGlobal.Instance.deuxpointsLimit = ponctTot[4].InfiniteToggle ? -1 : ponctTot[4].IntSuppl + nbPot[4];
         scrGlobal.Instance.pointvirguleLimit = ponctTot[5].InfiniteToggle ? -1 : ponctTot[5].IntSuppl + nbPot[5];
+        scrGlobal.Instance.suspensionLimit = ponctTot[6].InfiniteToggle ? -1 : ponctTot[6].IntSuppl + nbPot[6];
     }
 
     public void LockIndice()
